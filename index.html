@@ -198,6 +198,22 @@ footer{border-top:1px solid var(--line);padding-block:30px;font:500 12px/1.6 var
 .scale b{display:block;margin:10px 0 6px;font:700 18px/1.25 var(--sans);color:var(--fg)}
 @media (max-width:980px){.prio{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:720px){.stats,.scale,.prio{grid-template-columns:minmax(0,1fr)}}
+
+/* top menu: compact dropdown below 1180px */
+.links a{white-space:nowrap}
+nav{position:relative}
+.mtog{display:none}
+@media (max-width:1320px){.links{gap:20px;font-size:14.5px}}
+@media (max-width:1180px){
+  .mtog{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px;margin-left:auto;margin-right:10px;border:1px solid var(--line);border-radius:99px;background:rgba(14,18,24,.75);color:var(--fg);font:500 13.5px var(--sans);cursor:pointer}
+  .mtog:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+  .mtog svg{flex:none}
+  .links{display:none!important;position:absolute;right:0;top:calc(100% + 4px);z-index:60;flex-direction:column;gap:2px;min-width:230px;padding:8px;background:#0e1218;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 44px rgba(0,0,0,.55);font-size:15px}
+  .links.open{display:flex!important}
+  .links a{padding:10px 12px;border-radius:8px;color:var(--fg)}
+  .links a:hover,.links a[aria-current]{background:rgba(62,230,196,.08);color:var(--mint)}
+}
+@media (max-width:420px){.mtog span{display:none}.mtog{padding:0 11px;margin-right:8px}}
 </style>
 </head>
 <body>
@@ -213,7 +229,8 @@ footer{border-top:1px solid var(--line);padding-block:30px;font:500 12px/1.6 var
         <svg width="54" height="54" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"><path d="M99.8 37L60 14L20.2 37M20.2 83L60 106L99.8 83" stroke="#3ee6c4" opacity=".55"/><path d="M20.2 83V37L99.8 83V37" stroke="#3ee6c4"/></g><g fill="#07090d" stroke="#3ee6c4" stroke-width="5"><circle cx="20.2" cy="83" r="7"/><circle cx="20.2" cy="37" r="7"/><circle cx="99.8" cy="83" r="7"/><circle cx="99.8" cy="37" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="106" r="7"/></g></svg>
         <span class="wm"><b>NeuraChain</b><span>Solutions</span></span>
       </a>
-      <div class="links"><a href="#services">Services</a><a href="#how">How it works</a><a href="#why">Why NeuraChain</a><a href="about.html">About</a><a href="#contact">Contact</a></div>
+      <button class="mtog" type="button" aria-expanded="false" aria-controls="topmenu"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Menu</span></button>
+      <div class="links" id="topmenu"><a href="#services">What we do</a><a href="#how">How it works</a><a href="#why">Why NeuraChain</a><a href="#matters">Why it matters</a><a href="about.html">About Us</a><a href="#contact">Contact</a></div>
       <a class="pill book" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a <span class="pd">discovery </span>call</a>
     </nav>
   </div>
@@ -446,6 +463,32 @@ footer{border-top:1px solid var(--line);padding-block:30px;font:500 12px/1.6 var
   }
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   addEventListener("resize", update); update();
+})();
+</script>
+
+<script>
+(() => {
+  const b = document.querySelector(".mtog"), m = document.getElementById("topmenu");
+  if (!b || !m) return;
+  const set = o => { m.classList.toggle("open", o); b.setAttribute("aria-expanded", o); };
+  b.addEventListener("click", e => { e.stopPropagation(); set(!m.classList.contains("open")); });
+  m.addEventListener("click", e => { if (e.target.closest("a")) set(false); });
+  document.addEventListener("click", e => { if (!e.target.closest("nav")) set(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") set(false); });
+})();
+</script>
+
+<script>
+// In-page links: scroll to a section's layout position (ignores the fade-in offset) so its heading lands at the top
+(() => {
+  const absTop = el => { let y = 0; for (let n = el; n; n = n.offsetParent) y += n.offsetTop; return y; };
+  const go = (id, smooth) => { const t = document.getElementById(id); if (!t) return false; scrollTo({top: Math.max(0, absTop(t) - 20), behavior: smooth ? "smooth" : "auto"}); return true; };
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    const id = a.getAttribute("href").slice(1); if (!id || id === "top") return;
+    if (go(id, !matchMedia("(prefers-reduced-motion: reduce)").matches)){ e.preventDefault(); history.replaceState(null, "", "#" + id); }
+  });
+  if (location.hash.length > 1) addEventListener("load", () => setTimeout(() => go(location.hash.slice(1), false), 60));
 })();
 </script>
 </body>
