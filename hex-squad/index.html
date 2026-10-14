@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Meet the Hex Squad: six AI agents, one per strategic sourcing phase, from intake to supplier performance. Human in the loop, every play.">
+<meta name="theme-color" content="#07090d">
+<link rel="canonical" href="https://www.neurachainsolutions.com/hex-squad/">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NeuraChain Solutions">
+<meta property="og:url" content="https://www.neurachainsolutions.com/hex-squad/">
+<meta property="og:description" content="Meet the Hex Squad: six AI agents, one per strategic sourcing phase, from intake to supplier performance. Human in the loop, every play.">
+<meta property="og:image" content="https://www.neurachainsolutions.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="The Hex Squad">
+<title>The Hex Squad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Geist:wght@600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>/* Layout: control-room board. Header, then a stage (the animated scene) with a side rail of KPIs and the agent log, then an impact strip. One dark look by choice, shared by all seven pages. */
+:root{
+  --ink:#0d1726; --panel:#132136; --raise:#1a2b44; --line:#22344f; --fg:#e7edf5; --muted:#8a9bb3;
+  --brass:#e3a54a; --teal:#5cc2b3; --coral:#e86f5a; --sky:#6aa7e0; --idle:#3a4d6b;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--fg);font-family:var(--display);margin:0;font-size:14px}
+a{color:var(--teal)}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:22px 34px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px}
+.hgroup{min-width:0;flex:1 1 520px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+h1{font-size:clamp(23px,3.3vw,36px);font-weight:800;margin:5px 0 0;letter-spacing:-.015em;line-height:1.08;text-wrap:balance}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.5;margin:8px 0 0;max-width:72ch}
+.sub b{color:var(--fg);font-weight:600}
+.controls{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12px}
+.clock{color:var(--muted);font-variant-numeric:tabular-nums;min-width:9ch;text-align:right}
+button{font:600 12px var(--mono);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--brass)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+.board{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}
+.stage-card{position:relative;border:1px solid var(--line);border-radius:12px;min-width:0;display:flex;flex-direction:column;
+  background:radial-gradient(circle at 1px 1px,#1a2a42 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);background:rgba(19,33,54,.9);border-radius:12px 12px 0 0;flex-wrap:wrap}
+.st-lab{font-weight:600;font-size:14px}
+.st-sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+.stage{position:relative;padding:16px;flex:1;min-height:440px;min-width:0}
+
+/* export */
+.export{position:relative}
+.xbtn{display:inline-flex;align-items:center;gap:8px;background:var(--brass);color:var(--ink);border-color:var(--brass);padding:8px 13px;position:relative;overflow:hidden;min-width:150px;justify-content:center}
+.xbtn:hover{background:#efb862;border-color:#efb862}
+.xbtn svg{flex:none}
+.xbtn::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);background:var(--ink);opacity:.55}
+.xbtn.done{background:var(--teal);border-color:var(--teal)}
+.xmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:20;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:5px;min-width:228px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.xmenu button{display:flex;flex-direction:column;width:100%;gap:2px;background:transparent;border:0;border-radius:5px;padding:8px 9px;font-weight:400;text-align:left}
+.xmenu button:hover,.xmenu button.hot{background:var(--line)}
+.xmenu small{color:var(--muted);font-size:10.5px}
+[hidden]{display:none!important}
+.toast{position:absolute;left:14px;right:14px;bottom:14px;z-index:15;background:var(--raise);border:1px solid var(--teal);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 28px rgba(0,0,0,.4)}
+.toast b{color:var(--teal)}
+.cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:30;pointer-events:none;opacity:0;will-change:transform}
+.cursor svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.cursor .rip{position:absolute;left:-12px;top:-12px;width:26px;height:26px;border-radius:50%;border:2px solid var(--brass);opacity:0}
+.cursor.click .rip{animation:rip .45s ease-out}
+@keyframes rip{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(1.6)}}
+
+/* side rail */
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{background:var(--panel);padding:11px 12px;min-width:0}
+.kpi .lab{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap}
+.kpi .note{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.lh{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.logc{flex:1;display:flex;flex-direction:column;min-height:220px}
+.log{font-family:var(--mono);font-size:11px;line-height:1.5;flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:5px}
+.log div{animation:in .35s ease-out}
+.log .ts{color:var(--muted)} .log .who{color:var(--teal)} .log .who.h{color:var(--brass)} .log .who.w{color:var(--coral)}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+
+.impact{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:10px;padding:13px 16px}
+.il{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.impact p{margin:0;font-size:15px;line-height:1.45}
+.steps{display:flex;gap:5px}
+.steps span{font:600 11px var(--mono);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--muted)}
+.steps span.cur{background:var(--teal);border-color:var(--teal);color:var(--ink)}
+.foot{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+
+/* shared scene bits */
+.colh{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.chip{display:inline-block;font:600 9.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;border:1px solid var(--idle);color:var(--muted);white-space:nowrap}
+.chip.ok{border-color:transparent;background:rgba(92,194,179,.16);color:var(--teal)}
+.chip.warn{border-color:var(--brass);color:var(--brass)}
+.chip.bad{border-color:transparent;background:rgba(232,111,90,.18);color:var(--coral)}
+.chip.info{border-color:var(--sky);color:var(--sky)}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.fade{opacity:0;transform:translateY(6px);transition:opacity .45s,transform .45s}
+.fade.on{opacity:1;transform:none}
+
+@media (max-width:1020px){
+  .board{grid-template-columns:1fr}
+  .side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .logc{min-height:180px}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .side{grid-template-columns:1fr}
+  .impact{grid-template-columns:1fr}
+  .stage{padding:12px}
+  .xbtn{min-width:0}
+}
+@media (prefers-reduced-motion:reduce){ .log div{animation:none} .fade{transition:none} }
+
+/* NeuraChain A6.1 brand bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;align-items:center;gap:11px;color:var(--fg);text-decoration:none;border-radius:8px}
+.brand svg{width:40px;height:40px;flex:none;overflow:visible}
+.brand .wm{font-family:"Geist",var(--display);font-size:25px;font-weight:600;letter-spacing:-.045em;line-height:1}
+a.brand:hover .wm{color:#ffffff}
+.tb-tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.lgLine{fill:none;stroke:#f5f7fa;stroke-width:7.5;stroke-linecap:round;stroke-linejoin:round}
+.lgFl{fill:none;stroke:#3ee6c4;stroke-width:7.5;stroke-linecap:round;stroke-linejoin:round;opacity:0;filter:drop-shadow(0 0 3px rgba(62,230,196,.9))}
+.lgV{fill:var(--ink);stroke:#3ee6c4;stroke-width:3.4}
+.lgR{fill:none;stroke:#ffb547;stroke-width:1.6;opacity:0}
+.lgH{fill:#ffb547;opacity:0;filter:drop-shadow(0 0 3px #ffb547)}
+@media (max-width:420px){.tb-tag{display:none}}
+
+.ov{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center}
+.ringbox{min-width:0;max-width:440px;width:100%;margin:0 auto}
+#ring{width:100%;height:auto;display:block}
+#ring text{font-family:var(--display);fill:var(--fg)}
+#ring .lbl{font-size:12.5px;font-weight:600;paint-order:stroke;stroke:var(--ink);stroke-width:5px;stroke-linejoin:round}
+#ring .num{font-family:var(--mono);font-size:13px;font-weight:600;fill:var(--muted)}
+#ring .node{fill:var(--panel);stroke:var(--line);stroke-width:1.5;transition:fill .4s,stroke .4s}
+#ring .node.done{stroke:var(--teal)}
+#ring .node.act{fill:var(--teal);stroke:var(--teal)}
+#ring .num.act{fill:var(--ink)}
+#ring .halo{fill:none;stroke:var(--teal);stroke-width:2;opacity:0}
+#ring .track{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:3 6}
+#ring .prog{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linecap:round}
+#ring .hub{fill:var(--panel);stroke:var(--line)}
+#ring .hubt{font-size:15px;font-weight:800}
+#ring .hubs{font-family:var(--mono);font-size:10px;fill:var(--muted)}
+#ring .pkt{fill:var(--brass)}
+.focus{min-width:0;background:rgba(15,18,24,.92);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.fn{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.focus h2{font-size:clamp(20px,2.3vw,26px);margin:6px 0 10px;line-height:1.15;text-wrap:balance}
+.fk{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+.focus p{margin:4px 0 0;font-size:13.5px;line-height:1.5;color:#c9d3e0}
+.ticker{font-size:11.5px;margin-top:5px;display:flex;flex-direction:column;gap:4px;min-height:58px}
+.ticker div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ticker div::before{content:"▸ ";color:var(--teal)}
+.ticker div.old{color:var(--muted)}
+.fimp{margin-top:12px;padding:9px 11px;border-left:3px solid var(--brass);background:var(--ink);border-radius:0 6px 6px 0;font-size:13.5px;font-weight:600}
+.open{display:inline-block;margin-top:12px;font:600 12px var(--mono);text-decoration:none}
+.open:hover{text-decoration:underline}
+.cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:18px}
+.pc{display:flex;flex-direction:column;gap:5px;background:rgba(15,18,24,.92);border:1px solid var(--line);border-radius:8px;padding:10px;text-decoration:none;color:var(--fg);transition:border-color .3s,transform .2s;min-width:0}
+.pc:hover{border-color:var(--teal);transform:translateY(-2px)}
+.pc.act{border-color:var(--teal)}
+.pc .n{font-family:var(--mono);font-size:10.5px;color:var(--brass)}
+.pc .t{font-size:12.5px;font-weight:600;line-height:1.25}
+.pc .i{font-size:11px;color:var(--muted);line-height:1.35;flex:1}
+.pc .b{height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.pc .b i{display:block;height:100%;width:0;background:var(--teal)}
+.pc .go{font-family:var(--mono);font-size:10.5px;color:var(--teal)}
+@media (max-width:1100px){ .cards{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:820px){ .ov{grid-template-columns:1fr} }
+@media (max-width:520px){ .cards{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
+/* Hex Squad theme: logo palette + the phase agent's signature color */
+:root{
+  --ink:#07090d; --panel:#0f1218; --raise:#161b24; --line:#1f2632; --fg:#f5f7fa; --muted:#8a93a2;
+  --teal:#3ee6c4; --brass:#ffb547; --sky:#6aa7ff; --coral:#ff6b5a; --idle:#323b4a;
+  --display:"Geist","Helvetica Neue",Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --accent:#3ee6c4; --acc-rgb:62,230,196;
+}
+h1{letter-spacing:-.035em}
+.eyebrow{color:var(--accent)}
+.stage-card{border-color:rgba(var(--acc-rgb),.3);background:radial-gradient(circle at 1px 1px,#151b25 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{background:rgba(15,18,24,.92)}
+.kpis{border-color:rgba(var(--acc-rgb),.25)}
+.impact{border-left-color:var(--accent)}
+.impact .il{color:var(--accent)}
+.steps span.cur{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.log .who{color:var(--accent)}
+.agent-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px 18px;margin-bottom:18px;padding:12px 16px 12px 12px;border:1px solid rgba(var(--acc-rgb),.28);border-radius:14px;background:radial-gradient(220px 140px at 70px 50%,rgba(var(--acc-rgb),.15),transparent 75%),var(--panel)}
+.agent-strip > svg{grid-row:span 2}
+.as-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.as-n{font-size:28px;font-weight:600;letter-spacing:-.04em;line-height:1.1;margin-top:3px;color:var(--fg)}
+.as-q{font-size:14px;font-style:italic;color:var(--accent);margin-top:4px}
+.as-traits{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.as-traits span{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:99px;border:1px solid rgba(var(--acc-rgb),.45);color:var(--accent)}
+.as-next{grid-column:2 / -1;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
+.as-next b{color:var(--fg);font-weight:500}
+@media (max-width:700px){.agent-strip{grid-template-columns:auto minmax(0,1fr)}.as-traits{grid-column:1 / -1;justify-content:flex-start}.as-next{grid-column:1 / -1;text-align:left}.agent-strip > svg{grid-row:auto;width:84px;height:84px}}
+
+#ring .seg{fill:none;stroke-width:3;stroke-linecap:round}
+#ring .anode{fill:var(--panel);stroke:var(--line);stroke-width:2;transition:stroke .4s}
+#ring .halo{fill:none;stroke-width:2}
+#ring .badge{fill:var(--ink);stroke-width:2;transition:fill .3s}
+#ring .bnum{font-family:var(--mono);font-size:10px;font-weight:600}
+#ring .lrole{font-family:var(--mono);font-size:10px;paint-order:stroke;stroke:var(--ink);stroke-width:4px;stroke-linejoin:round}
+#ring .hubt{font-size:15px;letter-spacing:-.02em}
+.focus{--fa:#3ee6c4;border-color:color-mix(in srgb,var(--fa) 38%,transparent);transition:border-color .4s}
+.fav{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.fav svg{flex:none}
+.fa-n{font-size:22px;font-weight:600;letter-spacing:-.03em;line-height:1.15}
+.fa-q{font-size:13px;font-style:italic;color:var(--fa);margin-top:3px}
+.fn{color:var(--fa)}
+.fimp{border-left-color:var(--fa)}
+.open{color:var(--fa)}
+.ticker div::before{color:var(--fa)}
+.pc{--ac:#3ee6c4}
+.pc-top{display:flex;gap:9px;align-items:center;min-width:0}
+.pc-top svg{flex:none}
+.pc .n{display:block;color:var(--muted)}
+.pc-name{display:block;font-size:12.5px;font-weight:600;color:var(--ac);line-height:1.2}
+.pc .t{font-size:12px;color:#c3cad5}
+.pc .b i{background:var(--ac)}
+.pc.act{border-color:var(--ac)}
+.pc .go{color:var(--ac)}
+
+.av-float{animation:avFloat 4s ease-in-out infinite}
+.av-blink{transform-box:fill-box;transform-origin:center;animation:avBlink 4.6s infinite}
+.av-scan{animation:avScan 1.8s ease-in-out infinite alternate}
+@keyframes avFloat{50%{transform:translateY(-3px)}}
+@keyframes avBlink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+@keyframes avScan{from{transform:translateX(-46px)}to{transform:translateX(46px)}}
+@media (prefers-reduced-motion:reduce){.av-float,.av-blink,.av-scan{animation:none}}
+.av-blink{transform-box:fill-box;transform-origin:center;animation:avBlink 5.2s infinite}
+.av-twitch{transform-box:fill-box;transform-origin:50% 100%;animation:avTwitch 3.4s ease-in-out infinite}
+@keyframes avTwitch{0%,84%,100%{transform:rotate(0)}88%{transform:rotate(-8deg)}92%{transform:rotate(4deg)}}
+@media (prefers-reduced-motion:reduce){.av-float,.av-blink,.av-twitch{animation:none}}
+.av-blink{transform-box:fill-box;transform-origin:center;animation:avBlink 4.8s infinite}
+.av-sweepL{transform-origin:98px 122px;animation:avSpin 2.4s linear infinite}
+.av-sweepR{transform-origin:142px 122px;animation:avSpin 2.4s linear infinite}
+.av-ping{transform-box:fill-box;transform-origin:center;animation:avPing 2.4s ease-out infinite}
+@keyframes avSpin{to{transform:rotate(360deg)}}
+@keyframes avPing{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.av-float,.av-blink,.av-sweepL,.av-sweepR,.av-ping{animation:none}}
+.av-blink{transform-box:fill-box;transform-origin:center;animation:avBlink 5s infinite}
+.av-bang{transform-box:fill-box;transform-origin:50% 100%;animation:avBang 2.8s ease-in-out infinite}
+@keyframes avBang{0%,70%,100%{transform:translateY(0)}76%{transform:translateY(-6px)}82%{transform:translateY(1px)}88%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.av-float,.av-blink,.av-bang{animation:none}}
+.av-blink{transform-box:fill-box;transform-origin:center;animation:avBlink 4.4s infinite}
+.av-pen{transform-origin:76px 196px;animation:avPen 2.2s ease-in-out infinite}
+.av-glow{animation:avGlow 2.2s ease-in-out infinite}
+@keyframes avPen{0%,100%{transform:rotate(0)}50%{transform:rotate(-7deg)}}
+@keyframes avGlow{0%,100%{opacity:.55}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.av-float,.av-blink,.av-pen,.av-glow{animation:none}}
+.av-blink{transform-box:fill-box;transform-origin:center;animation:avBlink 4.2s infinite}
+.av-beacon{animation:avBeacon 1.4s steps(1) infinite}
+.av-ear{transform-origin:176px 76px;animation:avEar 3s ease-in-out infinite}
+@keyframes avBeacon{0%{opacity:1}50%{opacity:.25}}
+@keyframes avEar{0%,80%,100%{transform:rotate(0)}86%{transform:rotate(10deg)}92%{transform:rotate(-4deg)}}
+@media (prefers-reduced-motion:reduce){.av-float,.av-blink,.av-beacon,.av-ear{animation:none}}</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar">
+  <a class="brand" href="../" aria-label="NeuraChain Solutions home">
+    <svg id="nclogo" viewBox="0 0 120 120" width="40" height="40" aria-hidden="true"><g class="lgAll">
+      <path class="lgC lgLine" d="M99.8 37 L60 14 L20.2 37 L20.2 83 L60 106 L99.8 83"/>
+      <path class="lgN lgLine" d="M20.2 83 L20.2 37 L99.8 83 L99.8 37"/>
+      <path class="lgNF lgFl" d="M20.2 83 L20.2 37 L99.8 83 L99.8 37"/>
+      <path class="lgCF lgFl" d="M99.8 37 L60 14 L20.2 37 L20.2 83 L60 106 L99.8 83"/>
+      <circle class="lgV" cx="60" cy="14" r="8"/><circle class="lgV" cx="99.8" cy="37" r="8"/><circle class="lgV" cx="99.8" cy="83" r="8"/>
+      <circle class="lgV" cx="60" cy="106" r="8"/><circle class="lgV" cx="20.2" cy="83" r="8"/><circle class="lgV" cx="20.2" cy="37" r="8"/>
+      <circle class="lgR" cx="99.8" cy="83" r="8"/><circle class="lgH" cx="99.8" cy="83" r="4.6"/>
+    </g></svg>
+    <span class="wm">neurachain</span>
+  </a>
+  <span class="tb-tag">manufacturing intelligence</span>
+</div>
+<header>
+  <div class="hgroup"><div class="eyebrow">NeuraChain Solutions · AI-driven strategic sourcing</div><h1>Strategic sourcing, run by AI agents</h1><p class="sub">We turn manual buying into an automated, data-driven cycle. Six AI agents, the Hex Squad, handle the administrative work so your procurement team can focus on supplier partnerships and risk.</p></div>
+  <div class="controls"><span class="clock" id="clock">T+00:00</span><button id="toggle" type="button">Pause</button><button id="replay" type="button">Replay</button></div>
+</header>
+<div class="board" id="board">
+  <section class="stage-card">
+    <div class="stage-head">
+      <div><div class="st-lab">Meet the Hex Squad</div><div class="st-sub">Six agents, one continuous loop · select an agent to meet them</div></div>
+      <div class="export"><button class="xbtn" id="xbtn" type="button" aria-haspopup="menu" aria-expanded="false"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13h10"/></svg><span class="xl">Export overview</span></button><div class="xmenu" id="xmenu" role="menu" hidden></div></div>
+    </div>
+    <div class="stage" id="stage"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<div class="ov">
+  <div class="ringbox"><svg id="ring" viewBox="0 0 440 440" role="img" aria-label="Six-phase AI sourcing cycle"></svg></div>
+  <div class="focus" id="focus">
+    <div class="fav" id="fav"></div>
+    <div class="fn mono" id="fnum">Phase 1 of 6</div>
+    <h2 id="ftitle"></h2>
+    <div class="fk">AI role</div><p id="frole"></p>
+    <div class="fk" id="fwho">Agents right now</div>
+    <div class="ticker mono" id="ftick"></div>
+    <div class="fimp" id="fimp"></div>
+    <a class="open" id="flink" href="#">See this phase in detail →</a>
+  </div>
+</div>
+<div class="cards" id="cards"></div>
+</div>
+    <div class="toast" id="toast" role="status" hidden></div>
+  </section>
+  <aside class="side"><div class="kpis" id="kpis"></div><div class="card logc"><div class="lh">Agent log</div><div class="log" id="log"></div></div></aside>
+  <div class="cursor" id="cursor" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 2l14 8.2-6.1 1.3L8.2 18z" fill="#e7edf5" stroke="#0d1726" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="rip"></span></div>
+</div>
+<section class="impact"><div class="il">Impact</div><p>Procurement moves from administrative tasks to high-value supplier partnerships and risk management.</p><nav class="steps" aria-label="Phases"><span class="">1</span><span class="">2</span><span class="">3</span><span class="">4</span><span class="">5</span><span class="">6</span></nav></section>
+<div class="foot">Illustrative simulation with sample data. The export button previews the live product.</div>
+</div>
+<script>
+const clamp = x => Math.max(0, Math.min(1, x));
+const ease = x => 1 - Math.pow(1 - clamp(x), 3);
+const prog = (t, s, e) => clamp((t - s) / (e - s));
+const fmt = n => Math.round(n).toLocaleString("en-US");
+const el = (tag, cls, html) => { const d = document.createElement(tag); if (cls) d.className = cls; if (html != null) d.innerHTML = html; return d; };
+
+function runScene(cfg){
+  const C = cfg.cycle, X = C - 6.5;
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const board = $("board"), xbtn = $("xbtn"), xmenu = $("xmenu"), toast = $("toast"), cursor = $("cursor"), stage = $("stage");
+  const xlabel = xbtn.querySelector(".xl");
+  const XL = xlabel.textContent;
+
+  // KPIs
+  const kw = $("kpis");
+  const kels = cfg.kpis.map(k => { const d = el("div","kpi",`<div class="lab">${k.lab}</div><div class="val"></div><div class="note"></div>`); kw.appendChild(d); return {k, v:d.querySelector(".val"), n:d.querySelector(".note")}; });
+
+  // log
+  const logEl = $("log"); let li = 0;
+  const scale = cfg.scale || 40;
+  const stamp = t => { const s = Math.floor(t*scale); return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`; };
+  function addLog(t, who, msg, kind){
+    const d = el("div", null, `<span class="ts">[${stamp(t)}]</span> <span class="who ${kind||""}">${who}</span> ${msg}`);
+    logEl.appendChild(d);
+    while (logEl.children.length > 8) logEl.firstChild.remove();
+  }
+
+  // export menu
+  const FMT = cfg.exports || [{l:"PDF report",x:"pdf",n:"summary + detail"},{l:"Excel workbook",x:"xlsx",n:"all tables"},{l:"CSV data",x:"csv",n:"raw rows"}];
+  FMT.forEach((f,i) => { const b = el("button", null, `<span>${f.l}</span><small>.${f.x} · ${f.n}</small>`); b.type="button"; b.setAttribute("role","menuitem"); b.dataset.i = i; xmenu.appendChild(b); });
+  let manualUntil = 0, manualPrep = null;
+  const menuOpen = o => { xmenu.hidden = !o; xbtn.setAttribute("aria-expanded", o); };
+  function showToast(html){ toast.innerHTML = html; toast.hidden = false; }
+  xbtn.addEventListener("click", () => { manualUntil = performance.now() + 9000; hideCursor(); menuOpen(xmenu.hidden); });
+  xmenu.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const f = FMT[+b.dataset.i]; menuOpen(false);
+    manualUntil = performance.now() + 9000;
+    manualPrep = {start: performance.now(), f};
+  });
+  document.addEventListener("click", e => { if (!e.target.closest(".export")) menuOpen(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") menuOpen(false); });
+  const file = f => `${cfg.file}.${f.x}`;
+  function setPrep(p, done){
+    xbtn.style.setProperty("--p", (p*100)+"%");
+    xbtn.classList.toggle("done", !!done);
+    xlabel.textContent = done ? "Exported" : p > 0 ? `Preparing ${Math.round(p*100)}%` : XL;
+  }
+
+  // cursor
+  function rel(node){ const b = board.getBoundingClientRect(), r = node.getBoundingClientRect(); return {x:r.left-b.left+r.width*0.55, y:r.top-b.top+r.height*0.6}; }
+  function placeCursor(p, o){ cursor.style.transform = `translate(${p.x}px,${p.y}px)`; cursor.style.opacity = o; }
+  function hideCursor(){ cursor.style.opacity = 0; }
+  let clicked = {};
+  function click(key){ if (clicked[key]) return; clicked[key] = true; cursor.classList.remove("click"); void cursor.offsetWidth; cursor.classList.add("click"); }
+  const lerp = (a,b,u) => ({x:a.x+(b.x-a.x)*u, y:a.y+(b.y-a.y)*u});
+
+  function demo(t){
+    const now = performance.now();
+    if (manualPrep){
+      const p = clamp((now - manualPrep.start)/1400);
+      setPrep(p, p >= 1);
+      if (p >= 1 && toast.hidden) showToast(`<b>Preview</b><span>On the live site this downloads <span class="mono">${file(manualPrep.f)}</span></span>`);
+      if (now - manualPrep.start > 5200){ manualPrep = null; toast.hidden = true; setPrep(0); }
+      return;
+    }
+    if (now < manualUntil) return;
+    const u = t - X;
+    if (u < 0){ hideCursor(); if (!xmenu.hidden && Object.keys(clicked).length) menuOpen(false); clicked = {}; setPrep(0); toast.hidden = true; xmenu.querySelectorAll("button").forEach(b=>b.classList.remove("hot")); return; }
+    const sr = stage.getBoundingClientRect(), br = board.getBoundingClientRect();
+    const start = {x: sr.left-br.left+sr.width*0.45, y: sr.top-br.top+sr.height*0.55};
+    const bp = rel(xbtn);
+    if (u < 1.6){ placeCursor(lerp(start, bp, ease((u-0.3)/1.3)), Math.min(1, u/0.4)); }
+    else if (u < 1.8){ placeCursor(bp, 1); click("a"); menuOpen(true); }
+    else if (u < 2.6){
+      menuOpen(true);
+      const item = xmenu.querySelector("button"); item.classList.add("hot");
+      placeCursor(lerp(bp, rel(item), ease((u-1.8)/0.7)), 1);
+    }
+    else if (u < 4.1){
+      const item = xmenu.querySelector("button");
+      if (!clicked.b){ placeCursor(rel(item), 1); click("b"); }
+      if (u > 2.75){ menuOpen(false); item.classList.remove("hot"); }
+      setPrep(prog(u, 2.75, 4.0));
+      cursor.style.opacity = 1 - prog(u, 3.4, 4.1);
+    }
+    else {
+      hideCursor(); setPrep(1, true);
+      if (toast.hidden) showToast(`<b>✓ Ready</b><span class="mono">${file(FMT[0])}</span><span class="muted">· ${FMT[0].n}</span>`);
+    }
+  }
+
+  // loop
+  cfg.build && cfg.build();
+  let playing = !reduce, t0 = performance.now(), held = 0, last = -1;
+  function reset(){ logEl.innerHTML = ""; li = 0; cfg.reset && cfg.reset(); }
+  function step(t, now){
+    $("clock").textContent = "T+" + stamp(Math.min(t, X));
+    const ts = Math.min(t, X);
+    kels.forEach(o => { const v = o.k.val(ts); if (o.v.textContent !== v) o.v.textContent = v; const n = typeof o.k.note === "function" ? o.k.note(ts) : o.k.note; if (o.n.textContent !== n) o.n.textContent = n; });
+    while (li < cfg.logs.length && cfg.logs[li][0] <= ts){ const L = cfg.logs[li]; addLog(L[0], L[1], L[2], L[3]); li++; }
+    cfg.render(ts, now);
+    demo(t);
+  }
+  function frame(now){
+    if (playing){
+      const t = Math.max(0, (now - t0)/1000) % C;
+      if (t < last) reset();
+      last = t; held = t;
+      step(t, now);
+    }
+    requestAnimationFrame(frame);
+  }
+  const tg = $("toggle");
+  tg.onclick = () => { playing = !playing; if (playing) t0 = performance.now() - held*1000; tg.textContent = playing ? "Pause" : "Play"; };
+  $("replay").onclick = () => { reset(); last = -1; t0 = performance.now(); held = 0; playing = true; tg.textContent = "Pause"; };
+  if (reduce){ held = X; step(X - 0.01, performance.now()); hideCursor(); tg.textContent = "Play"; }
+  else step(0, performance.now());
+  requestAnimationFrame(frame);
+}
+
+(() => {
+  const svg = document.getElementById("nclogo");
+  if (!svg) return;
+  const $ = s => svg.querySelector(s);
+  const G = $(".lgAll"), N = $(".lgN"), C = $(".lgC"), NF = $(".lgNF"), CF = $(".lgCF"), H = $(".lgH"), RG = $(".lgR");
+  const V = [...svg.querySelectorAll(".lgV")];
+  const P = [[20.2,83],[20.2,37],[99.8,83],[99.8,37],[60,14],[20.2,37],[20.2,83],[60,106],[99.8,83]];
+  const seg = [], cum = [0]; let total = 0;
+  for (let i = 1; i < P.length; i++) { const L = Math.hypot(P[i][0]-P[i-1][0], P[i][1]-P[i-1][1]); seg.push(L); total += L; cum.push(total); }
+  const LN = cum[3], LC = total - LN;
+  N.setAttribute("stroke-dasharray", `${LN} ${LN + 2}`);
+  C.setAttribute("stroke-dasharray", `${LC} ${LC + 2}`);
+  const T0 = 0.3, T1 = 4.2, ANIM = 7.4, PERIOD = 20;
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const at = d => {
+    for (let k = 0; k < seg.length; k++) if (d <= cum[k+1] || k === seg.length - 1) {
+      const u = clamp((d - cum[k]) / seg[k]);
+      return [P[k][0] + (P[k+1][0]-P[k][0]) * u, P[k][1] + (P[k+1][1]-P[k][1]) * u];
+    }
+  };
+  const tOf = d => T0 + d / total * (T1 - T0);
+  const pulse = x => (x >= 0 && x <= 0.35) ? Math.sin(Math.PI * x / 0.35) : 0;
+  // vertex order in markup: top, upper-right, lower-right, bottom, lower-left, upper-left
+  const VP = [[60,14],[99.8,37],[99.8,83],[60,106],[20.2,83],[20.2,37]];
+  const hits = [[cum[4]],[cum[3]],[cum[2],cum[8]],[cum[7]],[cum[0],cum[6]],[cum[1],cum[5]]];
+  const blink = (t, s) => { const r = t - s; return (r >= 0 && r < 0.66 && Math.floor(r / 0.11) % 2 === 0) ? 1 : 0; };
+
+  function draw(t) {
+    const d = clamp((t - T0) / (T1 - T0)) * total;
+    N.setAttribute("stroke-dashoffset", LN - Math.min(d, LN));
+    C.setAttribute("stroke-dashoffset", LC - Math.max(0, d - LN));
+    const dim = t >= 5.05 && t < 6.65;
+    N.style.opacity = C.style.opacity = dim ? 0.14 : 1;
+    NF.style.opacity = blink(t, 5.15); CF.style.opacity = blink(t, 5.9);
+    V.forEach((v, i) => {
+      let s = 1; hits[i].forEach(h => { s += 0.45 * pulse(t - tOf(h)); });
+      v.setAttribute("transform", `translate(${VP[i][0]} ${VP[i][1]}) scale(${s.toFixed(3)}) translate(${-VP[i][0]} ${-VP[i][1]})`);
+    });
+    const h = at(d);
+    H.setAttribute("cx", h[0]); H.setAttribute("cy", h[1]);
+    let hOp = 0, hR = 4.6, rR = 8, rOp = 0;
+    if (t >= T0 && t < T1) hOp = 1;
+    else if (t >= T1 && t < 5.0) {
+      const e = (t - T1) / (5.0 - T1), w = Math.abs(Math.sin(e * Math.PI * 2));
+      hR = 4.6 + 3.2 * w; hOp = 1 - e; rR = 8 + 22 * e; rOp = 0.9 * (1 - e);
+    }
+    H.setAttribute("r", hR); H.style.opacity = hOp;
+    RG.setAttribute("cx", h[0]); RG.setAttribute("cy", h[1]); RG.setAttribute("r", rR); RG.style.opacity = rOp;
+    const g = (t >= 6.65 && t < 7.35) ? Math.sin(Math.PI * (t - 6.65) / 0.7) : 0;
+    G.style.filter = g > 0 ? `drop-shadow(0 0 ${(6 * g).toFixed(1)}px rgba(62,230,196,${(0.8 * g).toFixed(2)}))` : "none";
+  }
+  function frame(t) {
+    // t runs 0..PERIOD: the full A6.1 sequence, then the finished logo holds until the next run
+    let op = 1;
+    if (t < 0.3) op = t / 0.3;
+    else if (t > PERIOD - 0.4) op = (PERIOD - t) / 0.4;
+    G.style.opacity = op;
+    draw(Math.min(t, ANIM));
+  }
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { G.style.opacity = 1; draw(ANIM); return; }
+  let t0 = performance.now();
+  svg.closest(".brand").addEventListener("mouseenter", () => {
+    const t = ((performance.now() - t0) / 1000) % PERIOD;
+    if (t > ANIM) t0 = performance.now();
+  });
+  const loop = now => { frame(((now - t0) / 1000) % PERIOD); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+})();
+
+const LINKS = {"1": "bouncer-bo.html", "2": "ledger-lynx.html", "3": "radar-rosie.html", "4": "gavel-gus.html", "5": "redline-rex.html", "6": "watchdog-willa.html", "home": "index.html"};
+(() => {
+const AG = [{"name": "Bouncer Bo", "short": "Bo", "col": "#3ee6c4", "quote": "If it\u2019s not on the list, it\u2019s not getting in.", "svg": "\n<defs>\n<clipPath id=\"hxBo__S__\"><polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\"></polygon></clipPath>\n<clipPath id=\"visorBo__S__\"><rect x=\"58\" y=\"94\" width=\"124\" height=\"36\" rx=\"18\"></rect></clipPath>\n</defs>\n<polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\" style=\"fill: #0f1218; stroke: #3ee6c4; stroke-width: 2\"></polygon>\n<g clip-path=\"url(#hxBo__S__)\">\n<path d=\"M30 240 Q38 194 120 190 Q202 194 210 240 Z\" style=\"fill: #1a2130\"></path>\n<path d=\"M120 192 L100 240 M120 192 L140 240\" style=\"stroke: #07090d; stroke-width: 5; fill: none\"></path>\n<rect x=\"102\" y=\"166\" width=\"36\" height=\"30\" style=\"fill: #252e3f\"></rect>\n<g class=\"av-float\">\n<rect x=\"62\" y=\"56\" width=\"116\" height=\"122\" rx=\"30\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2\"></rect>\n<rect x=\"70\" y=\"48\" width=\"100\" height=\"16\" rx=\"8\" style=\"fill: #3ee6c4\"></rect>\n<rect x=\"50\" y=\"102\" width=\"14\" height=\"32\" rx=\"6\" style=\"fill: #1a2130\"></rect>\n<rect x=\"176\" y=\"102\" width=\"14\" height=\"32\" rx=\"6\" style=\"fill: #1a2130\"></rect>\n<circle cx=\"57\" cy=\"126\" r=\"5\" style=\"fill: #ffb547\"></circle>\n<path d=\"M57 131 q-9 9 0 17 q9 8 0 17\" style=\"fill: none; stroke: #ffb547; stroke-width: 2.5; stroke-linecap: round\"></path>\n<rect x=\"56\" y=\"92\" width=\"128\" height=\"40\" rx=\"20\" style=\"fill: #07090d; stroke: #3ee6c4; stroke-width: 2.5\"></rect>\n<g clip-path=\"url(#visorBo__S__)\">\n<rect class=\"av-scan\" x=\"112\" y=\"94\" width=\"16\" height=\"36\" style=\"fill: #3ee6c4; opacity: 0.32\"></rect>\n</g>\n<g class=\"av-blink\">\n<rect x=\"82\" y=\"108\" width=\"22\" height=\"7\" rx=\"3.5\" style=\"fill: #3ee6c4\"></rect>\n<rect x=\"136\" y=\"108\" width=\"22\" height=\"7\" rx=\"3.5\" style=\"fill: #3ee6c4\"></rect>\n</g>\n<path d=\"M98 152 Q122 158 144 148\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 4; stroke-linecap: round\"></path>\n<rect x=\"88\" y=\"164\" width=\"64\" height=\"5\" rx=\"2.5\" style=\"fill: #3b475e\"></rect>\n</g>\n</g>\n"}, {"name": "Ledger Lynx", "short": "Lynx", "col": "#ffb547", "quote": "Nothing slips past these eyes.", "svg": "\n<defs>\n<clipPath id=\"hxLynx__S__\"><polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\"></polygon></clipPath>\n</defs>\n<polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\" style=\"fill: #0f1218; stroke: #ffb547; stroke-width: 2\"></polygon>\n<g clip-path=\"url(#hxLynx__S__)\">\n<path d=\"M34 240 Q42 196 120 192 Q198 196 206 240 Z\" style=\"fill: #1a2130\"></path>\n<path d=\"M92 196 L120 214 L148 196\" style=\"fill: none; stroke: #ffb547; stroke-width: 3; stroke-linejoin: round\"></path>\n<g class=\"av-float\">\n<g class=\"av-twitch\">\n<polygon points=\"62,104 74,40 112,80\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2; stroke-linejoin: round\"></polygon>\n<polygon points=\"72,94 78,56 100,80\" style=\"fill: #ffb547; opacity: 0.35\"></polygon>\n<path d=\"M74 40 l-5 -15 M74 40 l3 -14\" style=\"stroke: #ffb547; stroke-width: 3; stroke-linecap: round\"></path>\n</g>\n<polygon points=\"178,104 166,40 128,80\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2; stroke-linejoin: round\"></polygon>\n<polygon points=\"168,94 162,56 140,80\" style=\"fill: #ffb547; opacity: 0.35\"></polygon>\n<path d=\"M166 40 l5 -15 M166 40 l-3 -14\" style=\"stroke: #ffb547; stroke-width: 3; stroke-linecap: round\"></path>\n<path d=\"M60 138 L40 146 L60 150 M180 138 L200 146 L180 150\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2; stroke-linejoin: round\"></path>\n<ellipse cx=\"120\" cy=\"126\" rx=\"62\" ry=\"56\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2\"></ellipse>\n<path d=\"M120 76 L114 92 L120 104 L126 92 Z\" style=\"fill: #3b475e\"></path>\n<g class=\"av-blink\">\n<path d=\"M78 118 Q96 100 114 118 Q96 130 78 118 Z\" style=\"fill: #ffb547\"></path>\n<rect x=\"94\" y=\"107\" width=\"4\" height=\"22\" rx=\"2\" style=\"fill: #07090d\"></rect>\n<path d=\"M126 118 Q144 100 162 118 Q144 130 126 118 Z\" style=\"fill: #ffb547\"></path>\n<rect x=\"142\" y=\"107\" width=\"4\" height=\"22\" rx=\"2\" style=\"fill: #07090d\"></rect>\n</g>\n<circle cx=\"144\" cy=\"118\" r=\"23\" style=\"fill: none; stroke: #3ee6c4; stroke-width: 3\"></circle>\n<path d=\"M124 110 H164 M124 126 H164 M136 97 V139 M152 97 V139\" style=\"stroke: #3ee6c4; stroke-width: 1; opacity: 0.4\"></path>\n<path d=\"M166 124 q16 22 4 48\" style=\"fill: none; stroke: #3ee6c4; stroke-width: 2; stroke-dasharray: 2 3\"></path>\n<path d=\"M112 142 L128 142 L120 151 Z\" style=\"fill: #3ee6c4\"></path>\n<path d=\"M107 158 Q114 165 120 158 Q126 165 133 158\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 2.5; stroke-linecap: round\"></path>\n<path d=\"M96 152 H62 M96 158 L64 168 M144 152 H178 M144 158 L176 168\" style=\"stroke: #f5f7fa; stroke-width: 1.5; opacity: 0.5; stroke-dasharray: 4 3\"></path>\n</g>\n</g>\n"}, {"name": "Radar Rosie", "short": "Rosie", "col": "#6aa7ff", "quote": "I saw that coming.", "svg": "\n<defs>\n<clipPath id=\"hxRosie__S__\"><polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\"></polygon></clipPath>\n<clipPath id=\"eyeL__S__\"><circle cx=\"98\" cy=\"122\" r=\"15\"></circle></clipPath>\n<clipPath id=\"eyeR__S__\"><circle cx=\"142\" cy=\"122\" r=\"15\"></circle></clipPath>\n</defs>\n<polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\" style=\"fill: #0f1218; stroke: #6aa7ff; stroke-width: 2\"></polygon>\n<g clip-path=\"url(#hxRosie__S__)\">\n<path d=\"M34 240 Q42 196 120 192 Q198 196 206 240 Z\" style=\"fill: #1a2130\"></path>\n<path d=\"M98 194 Q120 206 142 194\" style=\"fill: none; stroke: #6aa7ff; stroke-width: 3\"></path>\n<g class=\"av-float\">\n<line x1=\"146\" y1=\"78\" x2=\"160\" y2=\"46\" style=\"stroke: #3b475e; stroke-width: 4; stroke-linecap: round\"></line>\n<path d=\"M140 40 Q160 22 184 34 Q172 52 140 40 Z\" style=\"fill: #2a3447; stroke: #6aa7ff; stroke-width: 2.5; stroke-linejoin: round\"></path>\n<circle cx=\"162\" cy=\"37\" r=\"3.5\" style=\"fill: #ffb547\"></circle>\n<circle class=\"av-ping\" cx=\"170\" cy=\"26\" r=\"6\" style=\"fill: none; stroke: #6aa7ff; stroke-width: 1.5\"></circle>\n<circle cx=\"120\" cy=\"128\" r=\"56\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2\"></circle>\n<path d=\"M62 142 Q56 72 120 70 Q184 72 178 142 L168 142 Q170 104 150 92 Q128 104 96 96 Q72 104 72 142 Z\" style=\"fill: #6aa7ff\"></path>\n<g class=\"av-blink\">\n<circle cx=\"98\" cy=\"122\" r=\"15\" style=\"fill: #07090d; stroke: #6aa7ff; stroke-width: 2.5\"></circle>\n<circle cx=\"98\" cy=\"122\" r=\"8\" style=\"fill: none; stroke: #6aa7ff; stroke-width: 1; opacity: 0.6\"></circle>\n<g clip-path=\"url(#eyeL__S__)\"><path class=\"av-sweepL\" d=\"M98 122 L98 107 A15 15 0 0 1 112 117 Z\" style=\"fill: #6aa7ff; opacity: 0.55\"></path></g>\n<circle cx=\"98\" cy=\"122\" r=\"2.5\" style=\"fill: #f5f7fa\"></circle>\n<circle cx=\"142\" cy=\"122\" r=\"15\" style=\"fill: #07090d; stroke: #6aa7ff; stroke-width: 2.5\"></circle>\n<circle cx=\"142\" cy=\"122\" r=\"8\" style=\"fill: none; stroke: #6aa7ff; stroke-width: 1; opacity: 0.6\"></circle>\n<g clip-path=\"url(#eyeR__S__)\"><path class=\"av-sweepR\" d=\"M142 122 L142 107 A15 15 0 0 1 156 117 Z\" style=\"fill: #6aa7ff; opacity: 0.55\"></path></g>\n<circle cx=\"142\" cy=\"122\" r=\"2.5\" style=\"fill: #f5f7fa\"></circle>\n</g>\n<circle cx=\"80\" cy=\"148\" r=\"6\" style=\"fill: #6aa7ff; opacity: 0.25\"></circle>\n<circle cx=\"160\" cy=\"148\" r=\"6\" style=\"fill: #6aa7ff; opacity: 0.25\"></circle>\n<path d=\"M104 156 Q120 170 136 156\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 3; stroke-linecap: round\"></path>\n<rect x=\"170\" y=\"112\" width=\"13\" height=\"28\" rx=\"6\" style=\"fill: #ffb547\"></rect>\n<path d=\"M176 140 Q178 164 148 170\" style=\"fill: none; stroke: #ffb547; stroke-width: 3; stroke-linecap: round\"></path>\n<circle cx=\"146\" cy=\"170\" r=\"4.5\" style=\"fill: #ffb547\"></circle>\n</g>\n</g>\n"}, {"name": "Gavel Gus", "short": "Gus", "col": "#b49cff", "quote": "Going once, going twice\u2026 awarded.", "svg": "\n<defs>\n<clipPath id=\"hxGus__S__\"><polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\"></polygon></clipPath>\n</defs>\n<polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\" style=\"fill: #0f1218; stroke: #b49cff; stroke-width: 2\"></polygon>\n<g clip-path=\"url(#hxGus__S__)\">\n<path d=\"M34 240 Q42 198 120 194 Q198 198 206 240 Z\" style=\"fill: #1a2130\"></path>\n<rect x=\"104\" y=\"170\" width=\"32\" height=\"24\" style=\"fill: #252e3f\"></rect>\n<polygon points=\"120,196 98,184 98,208\" style=\"fill: #b49cff\"></polygon>\n<polygon points=\"120,196 142,184 142,208\" style=\"fill: #b49cff\"></polygon>\n<circle cx=\"120\" cy=\"196\" r=\"5\" style=\"fill: #ffb547\"></circle>\n<g class=\"av-float\">\n<rect x=\"70\" y=\"62\" width=\"100\" height=\"112\" rx=\"18\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2\"></rect>\n<g class=\"av-bang\">\n<rect x=\"54\" y=\"38\" width=\"132\" height=\"30\" rx=\"10\" style=\"fill: #b49cff\"></rect>\n<rect x=\"74\" y=\"38\" width=\"8\" height=\"30\" style=\"fill: #07090d; opacity: 0.25\"></rect>\n<rect x=\"158\" y=\"38\" width=\"8\" height=\"30\" style=\"fill: #07090d; opacity: 0.25\"></rect>\n</g>\n<path d=\"M84 96 L110 92 M130 92 L156 96\" style=\"stroke: #b49cff; stroke-width: 4; stroke-linecap: round\"></path>\n<circle cx=\"98\" cy=\"114\" r=\"15\" style=\"fill: #07090d; stroke: #f5f7fa; stroke-width: 3\"></circle>\n<circle cx=\"142\" cy=\"114\" r=\"15\" style=\"fill: #07090d; stroke: #f5f7fa; stroke-width: 3\"></circle>\n<path d=\"M113 112 Q120 106 127 112\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 3\"></path>\n<g class=\"av-blink\">\n<ellipse cx=\"98\" cy=\"115\" rx=\"5\" ry=\"6\" style=\"fill: #3ee6c4\"></ellipse>\n<ellipse cx=\"142\" cy=\"115\" rx=\"5\" ry=\"6\" style=\"fill: #3ee6c4\"></ellipse>\n</g>\n<path d=\"M94 142 Q107 134 120 142 Q133 134 146 142\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 4; stroke-linecap: round\"></path>\n<circle cx=\"92\" cy=\"142\" r=\"3.5\" style=\"fill: #ffb547\"></circle>\n<circle cx=\"148\" cy=\"142\" r=\"3.5\" style=\"fill: #ffb547\"></circle>\n<path d=\"M108 156 Q120 163 132 156\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 3; stroke-linecap: round\"></path>\n<rect x=\"60\" y=\"100\" width=\"10\" height=\"26\" rx=\"4\" style=\"fill: #3b475e\"></rect>\n<rect x=\"170\" y=\"100\" width=\"10\" height=\"26\" rx=\"4\" style=\"fill: #3b475e\"></rect>\n</g>\n</g>\n"}, {"name": "Redline Rex", "short": "Rex", "col": "#ff6b5a", "quote": "Sign here. Well, after my edits.", "svg": "\n<defs>\n<clipPath id=\"hxRex__S__\"><polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\"></polygon></clipPath>\n</defs>\n<polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\" style=\"fill: #0f1218; stroke: #ff6b5a; stroke-width: 2\"></polygon>\n<g clip-path=\"url(#hxRex__S__)\">\n<path d=\"M40 240 Q48 196 112 188 Q170 186 196 240 Z\" style=\"fill: #1a2130\"></path>\n<g class=\"av-float\">\n<polygon points=\"78,92 80,68 94,84\" style=\"fill: #3ee6c4\"></polygon>\n<polygon points=\"96,80 104,56 116,76\" style=\"fill: #3ee6c4\"></polygon>\n<polygon points=\"118,74 130,52 138,74\" style=\"fill: #3ee6c4\"></polygon>\n<path d=\"M66 164 Q54 96 108 78 Q158 64 190 98 Q202 114 194 130 Q178 140 142 140 L138 154 Q122 180 92 182 Q70 182 66 164 Z\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2; stroke-linejoin: round\"></path>\n<path d=\"M142 140 L192 132\" style=\"stroke: #3b475e; stroke-width: 2\"></path>\n<path d=\"M144 140 L149 134 L154 140 L159 134 L164 139 L169 133 L174 138 L179 132 L184 136\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 2.5; stroke-linejoin: round\"></path>\n<circle cx=\"184\" cy=\"106\" r=\"3\" style=\"fill: #07090d\"></circle>\n<rect class=\"av-glow\" x=\"108\" y=\"92\" width=\"52\" height=\"16\" rx=\"8\" style=\"fill: #ff6b5a; opacity: 0.3\"></rect>\n<g class=\"av-blink\">\n<ellipse cx=\"134\" cy=\"100\" rx=\"11\" ry=\"8\" style=\"fill: #ff6b5a\"></ellipse>\n<circle cx=\"137\" cy=\"99\" r=\"3\" style=\"fill: #07090d\"></circle>\n</g>\n<path d=\"M116 86 L150 90\" style=\"stroke: #ff6b5a; stroke-width: 4; stroke-linecap: round\"></path>\n<rect x=\"88\" y=\"174\" width=\"18\" height=\"10\" rx=\"5\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2\"></rect>\n<g class=\"av-pen\">\n<g transform=\"rotate(-32 76 196)\">\n<rect x=\"30\" y=\"190\" width=\"92\" height=\"11\" rx=\"5.5\" style=\"fill: #ff6b5a\"></rect>\n<rect x=\"44\" y=\"190\" width=\"6\" height=\"11\" style=\"fill: #f5f7fa; opacity: 0.8\"></rect>\n<polygon points=\"122,190 136,195.5 122,201\" style=\"fill: #f5f7fa\"></polygon>\n</g>\n</g>\n</g>\n</g>\n"}, {"name": "Watchdog Willa", "short": "Willa", "col": "#7be38c", "quote": "Early warnings, zero surprises.", "svg": "\n<defs>\n<clipPath id=\"hxWilla__S__\"><polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\"></polygon></clipPath>\n</defs>\n<polygon points=\"120,8 217,64 217,176 120,232 23,176 23,64\" style=\"fill: #0f1218; stroke: #7be38c; stroke-width: 2\"></polygon>\n<g clip-path=\"url(#hxWilla__S__)\">\n<path d=\"M34 240 Q42 198 120 194 Q198 198 206 240 Z\" style=\"fill: #1a2130\"></path>\n<g class=\"av-float\">\n<line x1=\"120\" y1=\"66\" x2=\"120\" y2=\"40\" style=\"stroke: #3b475e; stroke-width: 4; stroke-linecap: round\"></line>\n<circle class=\"av-beacon\" cx=\"120\" cy=\"34\" r=\"7\" style=\"fill: #ffb547\"></circle>\n<path d=\"M74 78 Q38 88 44 146 Q60 152 74 122 Z\" style=\"fill: #3b475e; stroke: #4a5873; stroke-width: 2; stroke-linejoin: round\"></path>\n<g class=\"av-ear\">\n<path d=\"M164 78 L184 30 L190 86 Z\" style=\"fill: #3b475e; stroke: #4a5873; stroke-width: 2; stroke-linejoin: round\"></path>\n<path d=\"M172 74 L183 46 L185 78 Z\" style=\"fill: #7be38c; opacity: 0.3\"></path>\n</g>\n<rect x=\"64\" y=\"64\" width=\"112\" height=\"108\" rx=\"42\" style=\"fill: #2a3447; stroke: #3b475e; stroke-width: 2\"></rect>\n<g class=\"av-blink\">\n<circle cx=\"98\" cy=\"112\" r=\"11\" style=\"fill: #7be38c\"></circle>\n<circle cx=\"142\" cy=\"112\" r=\"11\" style=\"fill: #7be38c\"></circle>\n<circle cx=\"101\" cy=\"109\" r=\"3\" style=\"fill: #f5f7fa\"></circle>\n<circle cx=\"145\" cy=\"109\" r=\"3\" style=\"fill: #f5f7fa\"></circle>\n</g>\n<ellipse cx=\"120\" cy=\"148\" rx=\"34\" ry=\"24\" style=\"fill: #3b475e\"></ellipse>\n<ellipse cx=\"120\" cy=\"136\" rx=\"10\" ry=\"7\" style=\"fill: #07090d\"></ellipse>\n<path d=\"M120 143 V150 M106 153 Q120 163 134 153\" style=\"fill: none; stroke: #f5f7fa; stroke-width: 2.5; stroke-linecap: round\"></path>\n<path d=\"M114 157 Q120 172 126 157 Z\" style=\"fill: #ff8fa3\"></path>\n<rect x=\"80\" y=\"176\" width=\"80\" height=\"11\" rx=\"5.5\" style=\"fill: #7be38c\"></rect>\n<polygon points=\"120,186 130,192 130,204 120,210 110,204 110,192\" style=\"fill: #0f1218; stroke: #3ee6c4; stroke-width: 2.5\"></polygon>\n</g>\n</g>\n"}];
+const P = [
+ {s:"Intake",t:"Intake and demand orchestration",r:"Bo captures internal demand, validates each request upfront, checks for rogue spend and routes it to the right category path.",i:"No more manual form-filling for stakeholders.",
+  k:["Validating: 40 boxes nitrile gloves, Plant 2","Blocked: laptop on a personal card → IT catalog","Routed: $54K agency retainer → sourcing event"]},
+ {s:"Spend analysis",t:"Spend analysis and opportunity identification",r:"Lynx ingests and cleans enterprise spend data with ML and NLP to spot consolidation, tail-spend savings and contract leakage.",i:"Weeks of spreadsheets become a live dashboard.",
+  k:["Merged 2,946 vendor records into 1,812","Classified 97.4% of $48.6M to UNSPSC","Alert: 22% of MRO bought off-contract"]},
+ {s:"Market intel",t:"Market intelligence and supplier discovery",r:"Rosie forecasts commodity prices, volatility and capacity, and scans global supplier databases for the right partners.",i:"90–95% accuracy in risk and contract alignment.",
+  k:["Resin outlook Mar '27: $0.98/lb ±0.07","Scanned 48,212 suppliers against criteria","Shortlisted 5 within 500 miles"]},
+ {s:"RFx & bids",t:"Autonomous RFx and bid evaluation",r:"Gus builds the RFP in minutes, issues it, and compares bids on cost, quality, ESG and risk.",i:"Up to 80% less RFP preparation time.",
+  k:["RFP-2026-118 drafted in 4 min 12 s","5 of 5 bids received and normalized","Recommend award: Sierra Packaging, 8.6 / 10"]},
+ {s:"Contracts",t:"Contract management and negotiation support",r:"Rex redlines contracts, extracts key clauses and closes tail-spend deals within your guardrails.",i:"Sourcing cycles up to 60% shorter.",
+  k:["Redlined §7.1 evergreen auto-renewal","42 clauses extracted, 3 risks sent to legal","Closed Valley Labels renewal at −6%"]},
+ {s:"Supplier performance",t:"Post-award execution and supplier performance",r:"Willa monitors supplier health, financial stability, delivery and ESG compliance in real time.",i:"From firefighting to proactive resilience.",
+  k:["Streaming signals for 214 suppliers","Early warning: credit downgrade at a film supplier","Shift 30% volume to backup, approved"]},
+];
+const D = 3.8, CX = 220, CY = 220, R = 150;
+const pos = i => { const a = (-90 + i*60)*Math.PI/180; return {x:CX+R*Math.cos(a), y:CY+R*Math.sin(a)}; };
+const hexPts = r => [0,1,2,3,4,5].map(i => { const a = (-90 + i*60)*Math.PI/180; return `${(CX+r*Math.cos(a)).toFixed(2)},${(CY+r*Math.sin(a)).toFixed(2)}`; }).join(" ");
+const hexPath = "M" + [0,1,2,3,4,5].map(i => { const q = pos(i); return `${q.x.toFixed(2)} ${q.y.toFixed(2)}`; }).join(" L") + " Z";
+const onHex = u => { const s = Math.min(5.9999, u*6), k = Math.floor(s), f = s - k, a = pos(k), b = pos((k+1)%6); return {x:a.x+(b.x-a.x)*f, y:a.y+(b.y-a.y)*f}; };
+const avatar = (i, size, sfx, x, y) => `<svg ${x!=null?`x="${x}" y="${y}" `:""}width="${size}" height="${size}" viewBox="0 0 240 240" role="img" aria-label="${AG[i].name}">${AG[i].svg.split("__S__").join(sfx)}</svg>`;
+let nodes = [], badges = [], halos = [], segs = [], pkt, cards = [], cur = -1, tick = -1;
+const f = {};
+const LOGS = [];
+P.forEach((p,i) => LOGS.push([i*D+0.3, AG[i].name, p.k[2], i===5?"h":""]));
+LOGS.push([6*D+0.1, "Loop", "Willa hands performance data back to Bo"]);
+const ph = t => Math.min(5, Math.floor(t/D));
+runScene({
+  cycle: 29.5, scale: 120, file: "neurachain-hex-squad-overview", logs: LOGS,
+  exports: [{l:"PDF brochure",x:"pdf",n:"meet the Hex Squad"},{l:"Slide deck",x:"pptx",n:"one slide per agent"},{l:"Excel workbook",x:"xlsx",n:"sample metrics"}],
+  kpis: [
+    {lab:"Agents on duty", note:"the Hex Squad", val:t=>`${Math.min(6, ph(t)+1)} / 6`},
+    {lab:"RFP prep time", note:"up to, vs manual", val:t=>t<3*D?"—":"−"+Math.round(80*ease(prog(t,3*D,3*D+1.5)))+"%"},
+    {lab:"Sourcing cycle", note:"up to, end to end", val:t=>t<4*D?"—":"−"+Math.round(60*ease(prog(t,4*D,4*D+1.5)))+"%"},
+    {lab:"Risk alignment", note:"risk and contract fit", val:t=>t>=2*D+0.8 ? "90–95%" : "—"},
+  ],
+  build(){
+    const svg = document.getElementById("ring"), ns = "http://www.w3.org/2000/svg";
+    const mk = (tag, a, txt) => { const e = document.createElementNS(ns, tag); for (const k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; svg.appendChild(e); return e; };
+    mk("path",{d:hexPath,class:"track","stroke-linejoin":"round"});
+    for (let k = 0; k < 6; k++){
+      const a = pos(k), b = pos((k+1)%6);
+      segs.push(mk("line",{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:"seg",style:`stroke:${AG[k].col}`,"stroke-dasharray":`0 ${R}`}));
+    }
+    mk("polygon",{points:hexPts(80),class:"hub","stroke-linejoin":"round"});
+    mk("text",{x:CX,y:CY-6,"text-anchor":"middle",class:"hubt"},"The Hex Squad");
+    mk("text",{x:CX,y:CY+12,"text-anchor":"middle",class:"hubs"},"six AI agents");
+    mk("text",{x:CX,y:CY+26,"text-anchor":"middle",class:"hubs"},"human in the loop");
+    pkt = mk("circle",{r:5,class:"pkt"});
+    AG.forEach((g,i) => {
+      const q = pos(i);
+      halos.push(mk("circle",{cx:q.x,cy:q.y,r:38,class:"halo",style:`stroke:${g.col}`}));
+      nodes.push(mk("circle",{cx:q.x,cy:q.y,r:33,class:"anode"}));
+      const holder = mk("g",{});
+      holder.innerHTML = avatar(i, 62, "r"+i, q.x-31, q.y-31);
+      const bx = q.x + 25, by = q.y - 25;
+      badges.push(mk("circle",{cx:bx,cy:by,r:9,class:"badge",style:`stroke:${g.col}`}));
+      mk("text",{x:bx,y:by+3.6,"text-anchor":"middle",class:"bnum",style:`fill:${g.col}`},String(i+1));
+      const top = i === 0;
+      mk("text",{x:q.x,y: top ? q.y-56 : q.y+52,"text-anchor":"middle",class:"lbl"},g.name);
+      mk("text",{x:q.x,y: top ? q.y-42 : q.y+66,"text-anchor":"middle",class:"lrole",style:`fill:${g.col}`},P[i].s);
+    });
+    ["fnum","ftitle","frole","ftick","fimp","flink","fav","fwho","focus"].forEach(id => f[id] = document.getElementById(id));
+    const cw = document.getElementById("cards");
+    P.forEach((p,i) => {
+      const a = el("a","pc",`<span class="pc-top">${avatar(i, 40, "c"+i)}<span><span class="n">Phase ${i+1}</span><span class="pc-name">${AG[i].name}</span></span></span><span class="t">${p.t}</span><span class="i">${p.i}</span><span class="b"><i></i></span><span class="go">Meet ${AG[i].short} →</span>`);
+      a.style.setProperty("--ac", AG[i].col);
+      a.href = LINKS[i+1] || "#"; a.target = "_blank"; a.rel = "noopener";
+      cw.appendChild(a); cards.push({a, b:a.querySelector(".b i")});
+    });
+  },
+  reset(){ cur = -1; tick = -1; },
+  render(t, now){
+    const i = ph(t), total = Math.min(1, t/(6*D));
+    segs.forEach((s,k) => { const u = Math.max(0, Math.min(1, total*6 - k)); s.setAttribute("stroke-dasharray", `${(R*u).toFixed(2)} ${R}`); });
+    const pq = onHex(total);
+    pkt.setAttribute("cx", pq.x); pkt.setAttribute("cy", pq.y);
+    pkt.style.fill = AG[i].col;
+    pkt.style.opacity = total >= 1 ? 0 : 1;
+    nodes.forEach((n,k) => {
+      const act = k===i && total < 1, done = k < i || total >= 1;
+      n.style.stroke = (act || done) ? AG[k].col : "";
+      n.style.strokeWidth = act ? 3 : 2;
+      const pulse = act ? (Math.sin(now/260)+1)/2 : 0;
+      halos[k].style.opacity = act ? 0.25 + 0.5*pulse : 0;
+      halos[k].setAttribute("r", 37 + 6*pulse);
+      badges[k].style.fill = act ? AG[k].col : "";
+      cards[k].a.classList.toggle("act", act);
+      cards[k].b.style.width = (prog(t, k*D, (k+1)*D)*100)+"%";
+    });
+    if (i !== cur){
+      cur = i; const p = P[i], g = AG[i];
+      f.focus.style.setProperty("--fa", g.col);
+      f.fav.innerHTML = `${avatar(i, 84, "f"+i)}<div><div class="fa-n">${g.name}</div><div class="fa-q">“${g.quote}”</div></div>`;
+      f.fnum.textContent = `Phase ${i+1} of 6`;
+      f.ftitle.textContent = p.t; f.frole.textContent = p.r; f.fimp.textContent = p.i;
+      f.fwho.textContent = `${g.short} right now`;
+      f.flink.textContent = `Meet ${g.name} →`;
+      f.flink.href = LINKS[i+1] || "#";
+      tick = -1;
+    }
+    const k = Math.min(2, Math.floor((t - i*D)/(D/3)));
+    if (k !== tick){
+      tick = k;
+      f.ftick.innerHTML = "";
+      P[i].k.slice(0, k+1).forEach((line,j) => f.ftick.appendChild(el("div", j<k ? "old" : "", line)));
+    }
+  }
+});
+})();
+
+</script>
+</body>
+</html>

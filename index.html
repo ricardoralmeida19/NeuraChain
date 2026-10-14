@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Enterprise-grade manufacturing and operations intelligence for U.S. manufacturers, utilities, infrastructure and data center builders. A validated, repeatable methodology from strategic sourcing to an AI platform.">
+<meta name="theme-color" content="#07090d">
+<link rel="canonical" href="https://www.neurachainsolutions.com/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NeuraChain Solutions">
+<meta property="og:url" content="https://www.neurachainsolutions.com/">
+<meta property="og:description" content="Enterprise-grade manufacturing and operations intelligence for U.S. manufacturers, utilities, infrastructure and data center builders. A validated, repeatable methodology from strategic sourcing to an AI platform.">
+<meta property="og:image" content="https://www.neurachainsolutions.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="NeuraChain Solutions · Operations intelligence for U.S. industry">
+<title>NeuraChain Solutions · Operations intelligence for U.S. industry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800;900&family=Geist+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: full-bleed hexagon video hero that fades on scroll → bento grid of five services → hex-node process track → reasons + who-we-serve → CTA. Single dark look by design (brand is ink + mint). */
+:root{
+  --ink:#07090d; --panel:#0d1117; --panel2:#11161e; --line:#1b2330; --fg:#f5f7fa; --muted:#93a0b2; --dim:#5f6b7c;
+  --mint:#3ee6c4; --amber:#ffb547; --sky:#6aa7ff; --violet:#b49cff; --coral:#ff6b5a; --green:#7be38c;
+  --sans:"Geist",ui-sans-serif,system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--fg);font:400 17px/1.55 var(--sans)}
+a{color:inherit}
+.bgv{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;will-change:opacity,transform,filter}
+.bgv video,.bgv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bgv::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,9,13,.4),rgba(7,9,13,.1) 40%,rgba(7,9,13,.6) 85%,var(--ink))}
+.wrap{position:relative;z-index:1;padding-inline:clamp(16px,5vw,72px)}
+.inner{max-width:1200px;margin:0 auto}
+nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:22px}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none}.brand svg{width:54px;height:54px;flex:none;filter:drop-shadow(0 0 12px rgba(62,230,196,.35))}.brand .wm{display:flex;flex-direction:column;line-height:1}.brand .wm b{font:800 28px/1 var(--sans);letter-spacing:-.035em;color:var(--fg)}.brand .wm span{margin-top:6px;font:600 11.5px/1 var(--mono);letter-spacing:.42em;text-transform:uppercase;color:var(--mint)}
+.links{display:flex;gap:28px;font-size:15px;color:var(--muted)}
+.links a{text-decoration:none}.links a:hover{color:var(--fg)}
+.pill{font:500 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;border:1px solid rgba(62,230,196,.45);border-radius:99px;text-decoration:none;color:var(--mint);white-space:nowrap}
+a:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+.hero{min-height:min(94vh,1000px);display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);column-gap:clamp(24px,3vw,48px);align-items:center;align-content:center;padding-block:24px 84px;max-width:1240px;margin:0 auto;will-change:opacity,transform}
+.hcopy{min-width:0}
+.hero h1{font-size:clamp(36px,4.9vw,70px)}
+.hero .sub{margin-left:0}
+.hero .ctas{justify-content:flex-start}
+.ticker{grid-column:1 / -1;justify-self:center}
+.lead{position:relative;justify-self:center;align-self:end;width:min(100%,360px)}
+.lead img{position:relative;display:block;width:100%;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55)) drop-shadow(0 0 28px rgba(62,230,196,.22));animation:hover 6s ease-in-out infinite}
+.lead-glow{position:absolute;left:6%;right:-14%;bottom:-20px;height:70px;border-radius:50%;background:radial-gradient(closest-side,rgba(62,230,196,.45),rgba(62,230,196,0));}
+.lead-glow::after{content:"";position:absolute;inset:20px 9%;border:2px solid rgba(62,230,196,.55);border-radius:50%}
+@keyframes hover{50%{transform:translateY(-8px)}}
+.eye{font:500 13px/1.4 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--mint)}
+h1{margin:20px 0 0;font:800 clamp(38px,6.4vw,80px)/1.0 var(--sans);letter-spacing:-.045em;text-wrap:balance}
+h1 .l2{display:block;margin-top:14px;font-size:.52em;line-height:1.12;letter-spacing:-.03em;color:var(--mint);font-weight:700}
+.sub{margin:24px auto 0;max-width:64ch;font-size:clamp(16px,1.5vw,19px);color:#c4ccd8;text-wrap:balance}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:32px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 22px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none}
+.btn.pri{background:var(--mint);color:var(--ink)}
+.btn.sec{border:1px solid var(--line);background:rgba(14,18,24,.6);backdrop-filter:blur(8px)}
+.ticker{width:min(1080px,100%);margin-top:48px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.tk-track{display:flex;width:max-content;animation:tk 48s linear infinite}
+.ticker:hover .tk-track{animation-play-state:paused}
+.tk{display:flex;gap:12px;padding-right:12px}
+.tk span{display:flex;align-items:center;gap:9px;white-space:nowrap;padding:9px 15px;border:1px solid var(--line);border-radius:99px;background:rgba(13,17,23,.65);backdrop-filter:blur(6px);font:500 12.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#c4ccd8}
+.tk span::before{content:"";width:7px;height:7px;border:1.5px solid var(--c);border-radius:50%}
+@keyframes tk{to{transform:translateX(-50%)}}
+
+.solid{position:relative;z-index:1;background:var(--ink)}
+section{padding-block:104px}
+.k{font:500 12.5px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+h2{margin:14px 0 0;font:800 clamp(30px,4.2vw,50px)/1.05 var(--sans);letter-spacing:-.035em;text-wrap:balance;max-width:22ch}
+.lede{margin-top:16px;max-width:62ch;color:var(--muted)}
+
+/* services bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;margin-top:44px}
+.card{position:relative;display:flex;flex-direction:column;min-width:0;padding:26px 24px 22px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,var(--panel2),var(--panel));text-decoration:none;color:inherit;transition:border-color .2s,transform .2s;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--c);opacity:.8}
+.card:has(.go:not(.soon):hover){border-color:color-mix(in srgb,var(--c) 55%,var(--line));transform:translateY(-2px)}
+.c1{grid-column:span 6}.c2,.c3,.c4,.c5{grid-column:span 3}
+.c5 .body{display:block}.c5 .dl[style]{margin-top:18px!important}
+.c1grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}.c1grid .dl{margin-top:16px}
+.league{display:block;margin-top:22px;border-radius:14px;overflow:hidden;border:1px solid var(--line);transition:border-color .2s,transform .2s}.league img{display:block;width:100%;height:auto}.league:hover{border-color:color-mix(in srgb,var(--mint) 55%,var(--line));transform:translateY(-2px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.num{font:700 13px/1 var(--mono);letter-spacing:.12em;color:var(--c)}
+.tag{font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 9px;border-radius:99px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.now:hover{background:var(--mint);color:var(--ink)}
+.go:not(.soon){text-decoration:none}.go:not(.soon):hover{text-decoration:underline}
+.tag.now{text-decoration:none;border-color:color-mix(in srgb,var(--mint) 45%,transparent);color:var(--mint)}
+.card h3{margin:16px 0 8px;font:700 22px/1.2 var(--sans);letter-spacing:-.02em}
+.card p{margin:0;color:var(--muted);font-size:15.5px}
+.dl{margin-top:18px;font:600 11.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.card .dl+ul{margin-top:10px}
+.start{margin-top:16px;padding:11px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--c) 40%,transparent);background:color-mix(in srgb,var(--c) 7%,transparent);font-size:14px;color:#c4ccd8}
+.c2 .start{margin-top:auto}.c2 .go{margin-top:0}
+.start span{display:inline-block;margin-right:10px;font:700 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.start i{font-style:normal;color:var(--c);padding-inline:4px}
+.card .tl{margin:-2px 0 10px;font:600 15.5px/1.35 var(--sans);color:var(--c)}
+.card ul{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:8px;font-size:14.5px;color:#c4ccd8}
+.card li{display:flex;gap:10px}
+.card li::before{content:"";flex:none;width:6px;height:6px;margin-top:8px;border-radius:2px;background:var(--c)}
+.util{margin-top:16px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px dashed var(--line);font-size:14px;color:var(--muted)}
+.util b{font:600 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--sky);display:block;margin-bottom:6px}
+.go{margin-top:auto;padding-top:18px;font:500 13px/1 var(--mono);letter-spacing:.06em;color:var(--c)}
+.go.soon{color:var(--dim)}
+.squad{display:flex;align-items:flex-end;gap:2px;margin-top:16px;height:78px}
+.squad img{height:76px;width:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5));transition:transform .2s}
+.card:has(.go:hover) .squad img{transform:translateY(-3px)}
+.c1 .body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.tier{padding:14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);min-width:0}
+.tier b{display:block;font:700 15px/1.2 var(--sans)}
+.tier span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+
+/* how it works */
+.track{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;margin-top:56px}
+.track::before{content:"";position:absolute;left:28px;right:calc((100% - 72px)/5 - 28px);top:27px;height:2px;background:linear-gradient(90deg,var(--mint),var(--amber),var(--sky),var(--violet),var(--green))}
+.step{position:relative;min-width:0}
+.hex{position:relative;width:56px;height:56px;display:grid;place-items:center}
+.hex svg{position:absolute;inset:0}
+.hex span{position:relative;font:700 15px/1 var(--mono);color:var(--c)}
+.step h3{margin:18px 0 6px;font:700 19px/1.25 var(--sans);letter-spacing:-.015em}
+.step .when{font:500 11.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.step p{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.impact{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin-top:48px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--line)}
+.impact div{background:var(--panel);padding:22px;min-width:0}
+.impact b{display:block;font:700 17px/1.25 var(--sans);color:var(--mint)}
+.impact span{display:block;margin-top:8px;font-size:14.5px;color:var(--muted)}
+.note{margin-top:28px;padding:18px 22px;border-left:3px solid var(--mint);background:var(--panel);border-radius:0 12px 12px 0;color:#c4ccd8;max-width:80ch}
+.note b{color:var(--fg)}
+
+/* why */
+.quote{margin-top:28px;max-width:46ch;font:600 clamp(20px,2.3vw,27px)/1.35 var(--sans);letter-spacing:-.015em;color:var(--fg)}
+.quote em{font-style:normal;color:var(--mint)}
+.reasons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:44px}
+.reason{padding:24px 22px;border:1px solid var(--line);border-radius:16px;background:var(--panel);min-width:0}
+.reason .n{font:700 28px/1 var(--mono);color:var(--mint)}
+.reason h3{margin:14px 0 8px;font:700 19px/1.25 var(--sans)}
+.reason p{margin:0;font-size:15px;color:var(--muted)}
+.serve{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
+.who{padding:24px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(62,230,196,.06),transparent 60%),var(--panel);min-width:0}
+.who.u{background:linear-gradient(135deg,rgba(106,167,255,.08),transparent 60%),var(--panel)}
+.who.d{background:linear-gradient(135deg,rgba(180,156,255,.09),transparent 60%),var(--panel)}
+.who .k{color:var(--mint)}.who.u .k{color:var(--sky)}.who.d .k{color:var(--violet)}
+.who h3{margin:12px 0 10px;font:700 21px/1.25 var(--sans)}
+.who p{margin:0;color:var(--muted);font-size:15.5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips span{font:500 12px/1 var(--mono);padding:7px 10px;border-radius:99px;border:1px solid var(--line);color:#c4ccd8}
+
+/* cta */
+.cta{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center;padding:40px;border-radius:22px;border:1px solid rgba(62,230,196,.3);background:radial-gradient(600px 260px at 0% 0%,rgba(62,230,196,.14),transparent 70%),var(--panel)}
+.cta h2{margin:0}
+.cta p{color:var(--muted);margin:14px 0 0}
+.contact{font:500 14px/1.7 var(--mono);color:#c4ccd8}
+.contact b{color:var(--fg);font-weight:700}
+footer{border-top:1px solid var(--line);padding-block:30px;font:500 12px/1.6 var(--mono);letter-spacing:.08em;color:var(--dim);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+
+@media (max-width:980px){.c1,.c5{grid-column:span 6}.c2,.c3,.c4{grid-column:span 6}.c1 .body,.c5 .body{grid-template-columns:minmax(0,1fr)}.reasons{grid-template-columns:repeat(2,minmax(0,1fr))}.track{grid-template-columns:minmax(0,1fr);gap:28px}.track::before{left:27px;right:auto;top:28px;bottom:28px;width:2px;height:auto;background:linear-gradient(180deg,var(--mint),var(--amber),var(--sky),var(--violet),var(--green))}.step{display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:18px}.step .hex{grid-row:span 4}.step h3{margin-top:4px}.cta{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr);text-align:center;row-gap:8px}.lead{width:min(52vw,220px);align-self:center;order:-1}.hero .sub{margin-left:auto}.hero .ctas{justify-content:center}}
+@media (max-width:980px){.serve{grid-template-columns:minmax(0,1fr)}.impact{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.pill{font-size:11px;padding:9px 11px;letter-spacing:.05em}.brand{gap:10px}.brand svg{width:40px;height:40px}.brand .wm b{font-size:21px}.brand .wm span{font-size:9.5px;letter-spacing:.34em;margin-top:5px}.impact{grid-template-columns:minmax(0,1fr)}.links{display:none}.serve,.reasons,.tiers{grid-template-columns:minmax(0,1fr)}.cta{padding:26px}section{padding-block:72px}}
+@media (prefers-reduced-motion:reduce){.lead img{animation:none}.tk-track{animation:none}.bgv video{display:none}a.card,.squad img{transition:none}}
+@media (max-width:440px){.pill .pd{display:none}}
+
+/* scroll-linked section handoff: each section fades/rises in, then fades, blurs and drifts up as the next takes over */
+.amb{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(55% 45% at 82% 18%,rgba(var(--ac,62,230,196),.11),transparent 70%),radial-gradient(50% 45% at 8% 88%,rgba(var(--ac2,106,167,255),.07),transparent 70%)}
+.solid>section,.solid>footer{position:relative;z-index:1}
+.solid>section.fx{will-change:opacity,transform,filter}
+
+.hd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center}
+.fig{display:block;height:180px;width:auto;max-width:190px;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55)) drop-shadow(0 0 22px color-mix(in srgb,var(--c) 22%,transparent));transition:transform .3s}
+.c4 .fig{height:150px;max-width:200px}
+.card:hover .fig{transform:translateY(-4px) rotate(-1.5deg)}
+@media (max-width:720px){.fig{height:120px;max-width:120px}.c4 .fig{height:96px;max-width:126px}.hd{gap:12px}}
+
+.dn{display:inline-block;font-size:17px;line-height:1;animation:bounce 1.6s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(-2px)}50%{transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){.dn{animation:none}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+@media (max-width:900px){.c1grid{grid-template-columns:minmax(0,1fr);gap:0}}
+</style>
+</head>
+<body>
+<div class="bgv" id="bgv" aria-hidden="true">
+  <img src="assets/poster.jpg" alt="">
+  <video id="vid" autoplay muted loop playsinline preload="auto" poster="assets/poster.jpg"><source src="assets/hero.mp4" type="video/mp4"></video>
+</div>
+
+<div class="wrap">
+  <div class="inner">
+    <nav>
+      <a class="brand" href="#top" id="top">
+        <svg width="54" height="54" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"><path d="M99.8 37L60 14L20.2 37M20.2 83L60 106L99.8 83" stroke="#3ee6c4" opacity=".55"/><path d="M20.2 83V37L99.8 83V37" stroke="#3ee6c4"/></g><g fill="#07090d" stroke="#3ee6c4" stroke-width="5"><circle cx="20.2" cy="83" r="7"/><circle cx="20.2" cy="37" r="7"/><circle cx="99.8" cy="83" r="7"/><circle cx="99.8" cy="37" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="106" r="7"/></g></svg>
+        <span class="wm"><b>NeuraChain</b><span>Solutions</span></span>
+      </a>
+      <div class="links"><a href="#services">Services</a><a href="#how">How it works</a><a href="#why">Why NeuraChain</a><a href="about.html">About</a><a href="#contact">Contact</a></div>
+      <a class="pill book" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a <span class="pd">discovery </span>call</a>
+    </nav>
+  </div>
+
+  <header class="hero" id="hero">
+    <div class="lead" aria-hidden="true"><div class="lead-glow"></div><img src="assets/leader.webp" alt="" width="466" height="760"></div>
+    <div class="hcopy">
+    <div class="eye">Operations intelligence for U.S. industry &amp; infrastructure · Nationwide</div>
+    <h1>Enterprise-grade manufacturing intelligence.<span class="l2">Built for every U.S. factory, utility and data center.</span></h1>
+    <p class="sub">Hands-on consulting and an AI platform built on a validated, repeatable methodology that has already transformed supply chains and factory floors at scale. For manufacturers with 10 to 500 employees, electric and water utilities, and the infrastructure and data center builders adding capacity across the country.</p>
+    <div class="ctas"><a class="btn pri book" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a discovery call</a><a class="btn sec" href="#services">Explore our services <span class="dn" aria-hidden="true">↓</span></a></div>
+    </div>
+    <div class="ticker" aria-label="What we deliver: Strategic sourcing, Reshoring, CAPEX optimization, LEAN, Kanban, Value stream mapping, Kaizen, Supply chain resilience, S&OP, Should-be cost modeling, Supplier risk, Smart factory, IoT sensors, Predictive maintenance, Digital twin, AI platform, Value engineering & DFM, Data center CAPEX, Long-lead equipment, Contract negotiation"><div class="tk-track" aria-hidden="true"><div class="tk"><span style="--c:var(--mint)">Strategic sourcing</span><span style="--c:var(--amber)">Reshoring</span><span style="--c:var(--sky)">CAPEX optimization</span><span style="--c:var(--violet)">LEAN</span><span style="--c:var(--coral)">Kanban</span><span style="--c:var(--green)">Value stream mapping</span><span style="--c:var(--mint)">Kaizen</span><span style="--c:var(--amber)">Supply chain resilience</span><span style="--c:var(--sky)">S&amp;OP</span><span style="--c:var(--violet)">Should-be cost modeling</span><span style="--c:var(--coral)">Supplier risk</span><span style="--c:var(--green)">Smart factory</span><span style="--c:var(--mint)">IoT sensors</span><span style="--c:var(--amber)">Predictive maintenance</span><span style="--c:var(--sky)">Digital twin</span><span style="--c:var(--violet)">AI platform</span><span style="--c:var(--coral)">Value engineering &amp; DFM</span><span style="--c:var(--amber)">Data center CAPEX</span><span style="--c:var(--sky)">Long-lead equipment</span><span style="--c:var(--green)">Contract negotiation</span></div><div class="tk"><span style="--c:var(--mint)">Strategic sourcing</span><span style="--c:var(--amber)">Reshoring</span><span style="--c:var(--sky)">CAPEX optimization</span><span style="--c:var(--violet)">LEAN</span><span style="--c:var(--coral)">Kanban</span><span style="--c:var(--green)">Value stream mapping</span><span style="--c:var(--mint)">Kaizen</span><span style="--c:var(--amber)">Supply chain resilience</span><span style="--c:var(--sky)">S&amp;OP</span><span style="--c:var(--violet)">Should-be cost modeling</span><span style="--c:var(--coral)">Supplier risk</span><span style="--c:var(--green)">Smart factory</span><span style="--c:var(--mint)">IoT sensors</span><span style="--c:var(--amber)">Predictive maintenance</span><span style="--c:var(--sky)">Digital twin</span><span style="--c:var(--violet)">AI platform</span><span style="--c:var(--coral)">Value engineering &amp; DFM</span><span style="--c:var(--amber)">Data center CAPEX</span><span style="--c:var(--sky)">Long-lead equipment</span><span style="--c:var(--green)">Contract negotiation</span></div></div></div>
+  </header>
+</div>
+
+<div class="solid wrap">
+  <div class="amb" id="amb" aria-hidden="true"></div>
+  <div class="inner">
+
+  <section id="services">
+    <div class="k">What we do</div>
+    <h2>Five services. One partner from first savings to AI.</h2>
+    <p class="lede">Our phased model begins with Strategic Sourcing and LEAN Optimization, the two highest-ROI entry points for most manufacturers. Each service also works on its own, and every engagement starts by collecting your data so you see where you stand and what to fix first.</p>
+
+    <div class="bento">
+      <div class="card c1" style="--c:var(--mint)">
+        <div class="top"><span class="num">01 · START HERE</span><a class="tag now book" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a discovery call →</a></div>
+        <div class="c1grid">
+          <div>
+            <h3>Strategic Sourcing &amp; Supply Chain</h3>
+            <div class="tl">Immediate cost reduction through supplier optimization</div>
+            <p>We audit your entire supplier base and negotiate contracts that deliver measurable savings within the first 90 days, then build resilient multi-source strategies that protect production from disruptions while lowering total cost of ownership.</p>
+            <div class="start"><span>Start free</span>AI preliminary assessment <i>→</i> 90-min discovery call <i>→</i> on-site audit</div>
+          </div>
+          <div>
+            <div class="dl">Key deliverables</div><ul><li>Complete supplier spend analysis and scorecard</li><li>Market intelligence and strategy development</li><li>RFx process for top commodities</li><li>Contract renegotiation with documented savings</li><li>Contract management</li><li>S&amp;OP process design</li><li>Risk management framework</li></ul>
+            <div class="util"><b>For utilities, infrastructure &amp; data centers</b>Long-lead switchgear, transformers, generators, cooling equipment and grid materials, sourced and tracked so supply risk never delays energization or go-live.</div>
+          </div>
+        </div>
+        <a class="league" href="hex-squad/"><img src="assets/league.webp" alt="The Hex Squad: six AI agents, one per sourcing step (intake, spend, market, RFx, contracts, performance), with Watchdog Willa handing the data back to Bouncer Bo to start the next cycle" width="1600" height="658" loading="lazy"></a>
+        <a class="go" href="hex-squad/">Meet the six AI agents behind each sourcing phase →</a>
+      </div>
+
+      <div class="card c2" style="--c:var(--amber)">
+        <div class="top"><span class="num">02 · START HERE</span><a class="tag now book" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a discovery call →</a></div>
+        <div class="hd"><div><h3>LEAN Process Optimization</h3>
+        <div class="tl">Eliminate waste, build flow, create continuous improvement culture</div>
+        <p>Our LEAN specialists map every step of your production process, identify waste and redesign workflows for maximum throughput, with Kaizen events and pull systems that become permanent fixtures.</p></div><img class="fig" src="assets/s2.webp" alt="LEAN hero holding a value stream map, with kanban cards" width="299" height="400" loading="lazy"></div>
+        <div class="dl">Key deliverables</div><ul><li>Value stream mapping, current and future state</li><li>Kaizen event facilitation</li><li>Pull system and Kanban implementation</li><li>5S workplace organization</li><li>Continuous improvement coaching program</li></ul>
+        <div class="util"><b>For utilities &amp; infrastructure</b>Warehouses, maintenance shops, fleet operations and construction logistics where flow and standard work cut cost and turnaround.</div>
+        <div class="start"><span>Start free</span>AI preliminary assessment <i>→</i> 90-min discovery call <i>→</i> on-site audit</div>
+        <div class="go soon">Detail page coming soon</div>
+      </div>
+
+      <div class="card c3" style="--c:var(--sky)">
+        <div class="top"><span class="num">03 · ENGINEERING</span><a class="tag now book" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a discovery call →</a></div>
+        <div class="hd"><div><h3>Engineering &amp; Value Optimization</h3>
+        <div class="tl">Redesign the factory floor for maximum throughput</div>
+        <p>Factory layout redesign, one-operator-two-machine (1M2S) workforce strategies, DFM analysis and preventive maintenance programs.</p></div><img class="fig" src="assets/s3.webp" alt="Engineer hero with a layout blueprint beside his robot-arm buddy" width="275" height="343" loading="lazy"></div>
+        <div class="dl">Key deliverables</div><ul><li>Current-state documentation of routings and work instructions</li><li>Factory layout and material flow redesign</li><li>1M2S cell design and workforce balancing plan</li><li>DFM and value engineering review of top-cost parts</li><li>Preventive maintenance program and spare-parts plan</li><li>Sustainability opportunities in energy, scrap and materials</li></ul>
+        <div class="util"><b>For data centers &amp; critical facilities</b>Preventive maintenance and critical-spares strategy that protect uptime.</div>
+        <div class="go soon">Detail page coming soon</div>
+      </div>
+
+      <div class="card c4" style="--c:var(--violet)">
+        <div class="top"><span class="num">04 · SMART FACTORY</span><span class="tag">From Year 2</span></div>
+        <div class="hd"><div><h3>Smart Factory (Industry 4.0)</h3>
+        <div class="tl">IoT sensors, real-time analytics, automation</div>
+        <p>IoT sensors, cloud connectivity and real-time OEE dashboards on your factory floor.</p></div><img class="fig" src="assets/s4.webp" alt="Hovering IoT sensor robot linked to sensor nodes and live dashboards" width="400" height="305" loading="lazy"></div>
+        <div class="dl">Key deliverables</div><ul><li>Connectivity and data-readiness assessment</li><li>IoT sensor plan and installation on critical assets</li><li>Secure cloud pipeline from machines to dashboards</li><li>Real-time OEE and downtime dashboards</li><li>Condition monitoring with automated alerts</li><li>Automation and robotics ROI roadmap</li></ul>
+        <div class="util"><b>For utilities, infrastructure &amp; data centers</b>Condition monitoring and real-time dashboards for plants, yards, substations and critical facilities.</div>
+        <div class="go soon">Detail page coming soon</div>
+      </div>
+
+      <div class="card c5" style="--c:var(--green)">
+        <div class="top"><span class="num">05 · AI PLATFORM</span><span class="tag">Beta Year 3</span></div>
+        <div class="body"><div>
+        <div class="hd"><div><h3>NeuraChain AI Platform</h3>
+        <div class="tl">Unified data, predictive scheduling, autonomous decisions</div>
+        <p>Proprietary AI connecting ERP, MES and IoT into a unified operational intelligence layer that sits on top of the systems you already run.</p></div><img class="fig" src="assets/s5.webp" alt="AI platform hero with a glowing neural-network core" width="243" height="400" loading="lazy"></div>
+        <div class="dl">Key deliverables</div><ul><li>Integration with ERP, MES, PLM, CMMS and IoT in one data model</li><li>Should-be cost models for negotiations</li><li>Algorithmic supplier scoring and ranking</li><li>Predictive production scheduling</li><li>What-if simulation for demand shocks, tariffs and disruptions</li><li>Digital twin and closed-loop execution (Enterprise)</li></ul>
+        </div>
+        <div>
+        <div class="dl" style="margin-top:0">Three tiers</div>
+        <div class="tiers">
+          <div class="tier"><b>Core</b><span>Small shops up to 75 people, one facility</span></div>
+          <div class="tier"><b>Pro</b><span>75–250 people, cross-functional intelligence</span></div>
+          <div class="tier"><b>Enterprise</b><span>Two or more facilities, autonomous execution</span></div>
+        </div></div></div>
+        <div class="go soon">Detail page coming soon</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" style="padding-top:0">
+    <div class="k">How it works</div>
+    <h2>One validated methodology. Repeatable in any plant or project.</h2>
+    <p class="lede">The same proven, phased playbook that has scaled advanced factories, applied step by step to your operation. Start where the savings are fastest, then build on them. Each step funds the next, and the data from each one feeds the AI platform.</p>
+    <div class="track">
+      <div class="step" style="--c:var(--mint)"><div class="hex"><svg viewBox="0 0 56 56"><polygon points="28,2 51,15 51,41 28,54 5,41 5,15" fill="#07090d" stroke="currentColor" stroke-width="2" style="color:var(--c)"/></svg><span>01</span></div><div class="when">Year 1 · Save</div><h3>Strategic sourcing</h3><p>Supplier optimization and contract renegotiation for immediate cost savings.</p></div>
+      <div class="step" style="--c:var(--amber)"><div class="hex"><svg viewBox="0 0 56 56"><polygon points="28,2 51,15 51,41 28,54 5,41 5,15" fill="#07090d" stroke="currentColor" stroke-width="2" style="color:var(--c)"/></svg><span>02</span></div><div class="when">Year 1 · Streamline</div><h3>LEAN process optimization</h3><p>Eliminate waste, build pull systems and a continuous improvement culture.</p></div>
+      <div class="step" style="--c:var(--sky)"><div class="hex"><svg viewBox="0 0 56 56"><polygon points="28,2 51,15 51,41 28,54 5,41 5,15" fill="#07090d" stroke="currentColor" stroke-width="2" style="color:var(--c)"/></svg><span>03</span></div><div class="when">Year 1 · Re-engineer</div><h3>Engineering &amp; value</h3><p>Redesign layouts and workflows, DFM analysis and preventive maintenance.</p></div>
+      <div class="step" style="--c:var(--violet)"><div class="hex"><svg viewBox="0 0 56 56"><polygon points="28,2 51,15 51,41 28,54 5,41 5,15" fill="#07090d" stroke="currentColor" stroke-width="2" style="color:var(--c)"/></svg><span>04</span></div><div class="when">Year 2 · Connect</div><h3>Smart Factory (Industry 4.0)</h3><p>IoT sensors, robotics and real-time analytics digitize the physical operation.</p></div>
+      <div class="step" style="--c:var(--green)"><div class="hex"><svg viewBox="0 0 56 56"><polygon points="28,2 51,15 51,41 28,54 5,41 5,15" fill="#07090d" stroke="currentColor" stroke-width="2" style="color:var(--c)"/></svg><span>05</span></div><div class="when">Year 3 · Automate</div><h3>NeuraChain AI platform</h3><p>Unified data, should-be cost modeling, predictive scheduling and autonomous execution.</p></div>
+    </div>
+    <div class="impact">
+      <div><b>Lower total cost</b><span>Sourcing, negotiation and value engineering cut what you pay for every part and service.</span></div>
+      <div><b>More cash on hand</b><span>Pull systems, min-max contracts and consignment free up working capital tied in inventory.</span></div>
+      <div><b>Higher throughput</b><span>LEAN, cell layouts and preventive maintenance get more out of the same people and machines.</span></div>
+      <div><b>A resilient supply base</b><span>Supplier scorecards, risk plans and reshoring options keep critical parts flowing.</span></div>
+    </div>
+    <p class="note"><b>It starts free.</b> Chat with our AI specialist for a preliminary assessment, with unlimited questions on the free consultation tier. You get tailored insights and a realistic picture of what NeuraChain can deliver for your operation. Like what you hear? Book a free 90-minute discovery call with Ricardo Almeida, then upgrade to a full on-site audit with a guaranteed savings deliverable.</p>
+  </section>
+
+  <section id="why" style="padding-top:0">
+    <div class="k">Why NeuraChain</div>
+    <h2>Why manufacturers, utilities and infrastructure builders choose NeuraChain.</h2>
+    <p class="quote">“Enterprise-grade manufacturing intelligence, built for the <em>manufacturers, utilities and infrastructure builders</em> that can't afford the resources of the world's most advanced factories.”</p>
+    <div class="reasons">
+      <div class="reason"><div class="n">1</div><h3>Immediate ROI</h3><p>Cost savings from day one through sourcing optimization. No technology investment required to start.</p></div>
+      <div class="reason"><div class="n">2</div><h3>Proven playbook</h3><p>A validated advanced-manufacturing playbook adapted for mid-size operations, not generic consulting frameworks.</p></div>
+      <div class="reason"><div class="n">3</div><h3>One partner, full journey</h3><p>From LEAN consulting to smart factory to AI platform, without switching vendors.</p></div>
+      <div class="reason"><div class="n">4</div><h3>Proprietary AI advantage</h3><p>A cross-client data network builds cost models and supplier intelligence that get sharper with every engagement.</p></div>
+    </div>
+    <div class="serve">
+      <div class="who"><div class="k">Manufacturers</div><h3>Shops and plants with 10 to 500 people</h3><p>Machining, forging, assembly and fabricated metal producers that need big-company tools at a mid-size price.</p><div class="chips"><span>Machining</span><span>Forging</span><span>Assembly</span><span>Fabricated metal</span><span>Contract manufacturing</span></div></div>
+      <div class="who u"><div class="k">Utilities</div><h3>Electric and water utilities</h3><p>Large capital programs, long-lead materials and maintenance operations where a late part or a weak supplier becomes a reliability risk.</p><div class="chips"><span>Capital projects</span><span>Grid &amp; pipe materials</span><span>MRO spares</span><span>Maintenance shops</span><span>Supplier risk</span></div></div>
+      <div class="who d"><div class="k">Infrastructure &amp; data centers</div><h3>Capital programs racing to add capacity</h3><p>Data center, energy and infrastructure builds where long-lead electrical and mechanical equipment, tight schedules and multi-site rollouts make sourcing the critical path.</p><div class="chips"><span>CAPEX programs</span><span>Switchgear &amp; transformers</span><span>Generators &amp; UPS</span><span>Cooling &amp; mechanical</span><span>Schedule risk</span><span>Critical spares</span></div></div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-top:0">
+    <div class="cta">
+      <div>
+        <div class="k">Get started</div>
+        <h2 style="margin-top:14px">Book a discovery call.</h2>
+        <p>A free 90-minute call to review your spend, processes and systems and show you where the first savings are. On site or remote, anywhere in the U.S. No commitment.</p>
+        <a class="btn pri book" style="margin-top:22px" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Pick a time on the calendar →</a>
+      </div>
+      <div class="contact">
+        <b>Ricardo Almeida</b>, Founder &amp; Managing Director<br>
+        <span style="user-select:all;overflow-wrap:anywhere">ricardo.almeida@neurachainsolutions.com</span><br>
+        (213) 477-3289<br>
+        Headquarters: ArtHaus Works · 2744 East 11th Street<br>
+        Oakland, CA 94601
+      </div>
+    </div>
+  </section>
+
+  <footer><span>© 2026 NeuraChain Solutions, LLC · Headquartered in Oakland, California</span><span>Operations intelligence for U.S. factories, utilities and data centers</span></footer>
+  </div>
+</div>
+
+<script>
+(() => {
+  const bg = document.getElementById("bgv"), hero = document.getElementById("hero"), vid = document.getElementById("vid");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let ticking = false;
+  function update() {
+    ticking = false;
+    const p = Math.min(1, Math.max(0, scrollY / (innerHeight * 0.85))), e = p * p * (3 - 2 * p);
+    bg.style.opacity = String(1 - e);
+    if (!reduce) { bg.style.transform = `scale(${1 + 0.08 * e}) translateY(${-40 * e}px)`; bg.style.filter = `blur(${8 * e}px)`; hero.style.transform = `translateY(${-60 * e}px)`; }
+    hero.style.opacity = String(1 - Math.min(1, e * 1.3));
+    if (p >= 1 && !vid.paused) vid.pause(); else if (p < 1 && vid.paused && !reduce) vid.play().catch(() => {});
+  }
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener("resize", update); update();
+})();
+</script>
+<script>
+(() => {
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const secs = ["services","how","why","contact"].map(id => document.getElementById(id));
+  const amb = document.getElementById("amb");
+  // accent per section [primary, secondary] — mint, sky, violet, mint
+  const acc = {services:[[62,230,196],[106,167,255]], how:[[106,167,255],[180,156,255]], why:[[180,156,255],[255,181,71]], contact:[[62,230,196],[255,181,71]]};
+  const ss = t => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+  secs.forEach(s => s.classList.add("fx"));
+  let ticking = false;
+  function update() {
+    ticking = false;
+    const H = innerHeight;
+    const w = [];
+    secs.forEach(s => {
+      const r = s.getBoundingClientRect();
+      const inn = ss((H - r.top) / (H * 0.45));            // top enters lower 45% of the viewport
+      const out = ss((H * 0.5 - r.bottom) / (H * 0.5));    // bottom leaves the upper half
+      const op = Math.min(inn, 1 - out);
+      s.style.opacity = op.toFixed(3);
+      if (!reduce) {
+        const y = (1 - inn) * 56 - out * 60, b = (1 - inn) * 5 + out * 8;
+        s.style.transform = Math.abs(y) < .5 ? "" : `translateY(${y.toFixed(1)}px)`;
+        s.style.filter = b < .2 ? "" : `blur(${b.toFixed(1)}px)`;
+      }
+      w.push([s.id, Math.max(0, op)]);
+    });
+    // ambient wash: blend accents by each section's visibility
+    let tot = 0, p = [0,0,0], q = [0,0,0];
+    w.forEach(([id, o]) => { tot += o; acc[id][0].forEach((v,i)=>p[i]+=v*o); acc[id][1].forEach((v,i)=>q[i]+=v*o); });
+    if (tot > 0) {
+      amb.style.setProperty("--ac", p.map(v => Math.round(v / tot)).join(","));
+      amb.style.setProperty("--ac2", q.map(v => Math.round(v / tot)).join(","));
+    }
+    const sTop = secs[0].getBoundingClientRect().top;
+    amb.style.opacity = sTop < H * 0.6 ? "1" : "0";
+  }
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener("resize", update); update();
+})();
+</script>
+</body>
+</html>

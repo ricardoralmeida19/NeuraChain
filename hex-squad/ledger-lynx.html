@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="NeuraChain Hex Squad agent: an illustrative simulation of one strategic sourcing phase.">
+<meta name="theme-color" content="#07090d">
+<link rel="canonical" href="https://www.neurachainsolutions.com/hex-squad/ledger-lynx">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NeuraChain Solutions">
+<meta property="og:url" content="https://www.neurachainsolutions.com/hex-squad/ledger-lynx">
+<meta property="og:description" content="NeuraChain Hex Squad agent: an illustrative simulation of one strategic sourcing phase.">
+<meta property="og:image" content="https://www.neurachainsolutions.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Ledger Lynx · Phase 2">
+<title>Ledger Lynx · Phase 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=Geist:wght@600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>/* Layout: control-room board. Header, then a stage (the animated scene) with a side rail of KPIs and the agent log, then an impact strip. One dark look by choice, shared by all seven pages. */
+:root{
+  --ink:#0d1726; --panel:#132136; --raise:#1a2b44; --line:#22344f; --fg:#e7edf5; --muted:#8a9bb3;
+  --brass:#e3a54a; --teal:#5cc2b3; --coral:#e86f5a; --sky:#6aa7e0; --idle:#3a4d6b;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--fg);font-family:var(--display);margin:0;font-size:14px}
+a{color:var(--teal)}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:22px 34px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px}
+.hgroup{min-width:0;flex:1 1 520px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+h1{font-size:clamp(23px,3.3vw,36px);font-weight:800;margin:5px 0 0;letter-spacing:-.015em;line-height:1.08;text-wrap:balance}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.5;margin:8px 0 0;max-width:72ch}
+.sub b{color:var(--fg);font-weight:600}
+.controls{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12px}
+.clock{color:var(--muted);font-variant-numeric:tabular-nums;min-width:9ch;text-align:right}
+button{font:600 12px var(--mono);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--brass)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+.board{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}
+.stage-card{position:relative;border:1px solid var(--line);border-radius:12px;min-width:0;display:flex;flex-direction:column;
+  background:radial-gradient(circle at 1px 1px,#1a2a42 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);background:rgba(19,33,54,.9);border-radius:12px 12px 0 0;flex-wrap:wrap}
+.st-lab{font-weight:600;font-size:14px}
+.st-sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+.stage{position:relative;padding:16px;flex:1;min-height:440px;min-width:0}
+
+/* export */
+.export{position:relative}
+.xbtn{display:inline-flex;align-items:center;gap:8px;background:var(--brass);color:var(--ink);border-color:var(--brass);padding:8px 13px;position:relative;overflow:hidden;min-width:150px;justify-content:center}
+.xbtn:hover{background:#efb862;border-color:#efb862}
+.xbtn svg{flex:none}
+.xbtn::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);background:var(--ink);opacity:.55}
+.xbtn.done{background:var(--teal);border-color:var(--teal)}
+.xmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:20;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:5px;min-width:228px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.xmenu button{display:flex;flex-direction:column;width:100%;gap:2px;background:transparent;border:0;border-radius:5px;padding:8px 9px;font-weight:400;text-align:left}
+.xmenu button:hover,.xmenu button.hot{background:var(--line)}
+.xmenu small{color:var(--muted);font-size:10.5px}
+[hidden]{display:none!important}
+.toast{position:absolute;left:14px;right:14px;bottom:14px;z-index:15;background:var(--raise);border:1px solid var(--teal);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 28px rgba(0,0,0,.4)}
+.toast b{color:var(--teal)}
+.cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:30;pointer-events:none;opacity:0;will-change:transform}
+.cursor svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.cursor .rip{position:absolute;left:-12px;top:-12px;width:26px;height:26px;border-radius:50%;border:2px solid var(--brass);opacity:0}
+.cursor.click .rip{animation:rip .45s ease-out}
+@keyframes rip{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(1.6)}}
+
+/* side rail */
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{background:var(--panel);padding:11px 12px;min-width:0}
+.kpi .lab{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap}
+.kpi .note{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.lh{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.logc{flex:1;display:flex;flex-direction:column;min-height:220px}
+.log{font-family:var(--mono);font-size:11px;line-height:1.5;flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:5px}
+.log div{animation:in .35s ease-out}
+.log .ts{color:var(--muted)} .log .who{color:var(--teal)} .log .who.h{color:var(--brass)} .log .who.w{color:var(--coral)}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+
+.impact{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:10px;padding:13px 16px}
+.il{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.impact p{margin:0;font-size:15px;line-height:1.45}
+.steps{display:flex;gap:5px}
+.steps span{font:600 11px var(--mono);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--muted)}
+.steps span.cur{background:var(--teal);border-color:var(--teal);color:var(--ink)}
+.foot{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+
+/* shared scene bits */
+.colh{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.chip{display:inline-block;font:600 9.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;border:1px solid var(--idle);color:var(--muted);white-space:nowrap}
+.chip.ok{border-color:transparent;background:rgba(92,194,179,.16);color:var(--teal)}
+.chip.warn{border-color:var(--brass);color:var(--brass)}
+.chip.bad{border-color:transparent;background:rgba(232,111,90,.18);color:var(--coral)}
+.chip.info{border-color:var(--sky);color:var(--sky)}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.fade{opacity:0;transform:translateY(6px);transition:opacity .45s,transform .45s}
+.fade.on{opacity:1;transform:none}
+
+@media (max-width:1020px){
+  .board{grid-template-columns:1fr}
+  .side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .logc{min-height:180px}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .side{grid-template-columns:1fr}
+  .impact{grid-template-columns:1fr}
+  .stage{padding:12px}
+  .xbtn{min-width:0}
+}
+@media (prefers-reduced-motion:reduce){ .log div{animation:none} .fade{transition:none} }
+
+/* NeuraChain A6.1 brand bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;align-items:center;gap:11px;color:var(--fg);text-decoration:none;border-radius:8px}
+.brand svg{width:40px;height:40px;flex:none;overflow:visible}
+.brand .wm{font-family:"Geist",var(--display);font-size:25px;font-weight:600;letter-spacing:-.045em;line-height:1}
+a.brand:hover .wm{color:#ffffff}
+.tb-tag{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.lgLine{fill:none;stroke:#f5f7fa;stroke-width:7.5;stroke-linecap:round;stroke-linejoin:round}
+.lgFl{fill:none;stroke:#3ee6c4;stroke-width:7.5;stroke-linecap:round;stroke-linejoin:round;opacity:0;filter:drop-shadow(0 0 3px rgba(62,230,196,.9))}
+.lgV{fill:var(--ink);stroke:#3ee6c4;stroke-width:3.4}
+.lgR{fill:none;stroke:#ffb547;stroke-width:1.6;opacity:0}
+.lgH{fill:#ffb547;opacity:0;filter:drop-shadow(0 0 3px #ffb547)}
+@media (max-width:420px){.tb-tag{display:none}}
+
+.s2{display:flex;flex-direction:column;gap:18px}
+.tbl{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:rgba(7,9,13,.9)}
+.tr{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 110px;gap:12px;padding:8px 12px;border-top:1px solid var(--line);align-items:center;position:relative;transition:background .3s}
+.tr.th{border-top:0;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--panel)}
+.tr .r{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12px}
+.tr .v{min-width:0}
+.tr .raw{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr .clean{font-size:13px;font-weight:600;display:none}
+.tr.done .clean{display:block}
+.tr.done .raw{font-size:10px;text-decoration:line-through;text-decoration-color:var(--idle)}
+.tr.scan{background:linear-gradient(90deg,rgba(92,194,179,.0),rgba(92,194,179,.16) var(--x,50%),rgba(92,194,179,0))}
+.tr .cat{font-family:var(--mono);font-size:11px;color:var(--idle)}
+.tr.done .cat{color:var(--fg)}
+.tr .cat i{font-style:normal;display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:var(--c,var(--idle))}
+.tr .cat small{color:var(--muted);margin-left:5px}
+.s2b{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}
+.pane{min-width:0}
+.cube{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;grid-template-columns:minmax(0,150px) 1fr 54px;gap:10px;align-items:center;font-size:12px}
+.row .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{height:13px;background:var(--panel);border-radius:3px;overflow:hidden;position:relative}
+.track i{position:absolute;inset:0 auto 0 0;width:0;border-radius:3px}
+.track em{position:absolute;top:0;bottom:0;width:0;background:repeating-linear-gradient(135deg,rgba(232,111,90,.9) 0 3px,transparent 3px 6px)}
+.row .amt{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;font-size:11.5px}
+.alerts{display:flex;flex-direction:column;gap:8px}
+.al{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:7px;padding:9px 11px}
+.al .h{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;font-weight:600}
+.al .h b{font-family:var(--mono);color:var(--brass);font-variant-numeric:tabular-nums}
+.al .d{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+.al.ph{border-left-color:var(--line);color:var(--muted);font-size:12px}
+@media (max-width:760px){ .s2b{grid-template-columns:1fr} .tr{grid-template-columns:minmax(0,1fr) 84px} .tr .cat{grid-column:1/-1;order:3} .tr.th span:nth-child(2){display:none} .row{grid-template-columns:minmax(0,110px) 1fr 50px} }
+
+/* Hex Squad theme: logo palette + the phase agent's signature color */
+:root{
+  --ink:#07090d; --panel:#0f1218; --raise:#161b24; --line:#1f2632; --fg:#f5f7fa; --muted:#8a93a2;
+  --teal:#3ee6c4; --brass:#ffb547; --sky:#6aa7ff; --coral:#ff6b5a; --idle:#323b4a;
+  --display:"Geist","Helvetica Neue",Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --accent:#ffb547; --acc-rgb:255,181,71;
+}
+h1{letter-spacing:-.035em}
+.eyebrow{color:var(--accent)}
+.stage-card{border-color:rgba(var(--acc-rgb),.3);background:radial-gradient(circle at 1px 1px,#151b25 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{background:rgba(15,18,24,.92)}
+.kpis{border-color:rgba(var(--acc-rgb),.25)}
+.impact{border-left-color:var(--accent)}
+.impact .il{color:var(--accent)}
+.steps span.cur{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.log .who{color:var(--accent)}
+.agent-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px 18px;margin-bottom:18px;padding:12px 16px 12px 12px;border:1px solid rgba(var(--acc-rgb),.28);border-radius:14px;background:radial-gradient(220px 140px at 70px 50%,rgba(var(--acc-rgb),.15),transparent 75%),var(--panel)}
+.agent-strip > svg{grid-row:span 2}
+.as-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.as-n{font-size:28px;font-weight:600;letter-spacing:-.04em;line-height:1.1;margin-top:3px;color:var(--fg)}
+.as-q{font-size:14px;font-style:italic;color:var(--accent);margin-top:4px}
+.as-traits{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.as-traits span{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:99px;border:1px solid rgba(var(--acc-rgb),.45);color:var(--accent)}
+.as-next{grid-column:2 / -1;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
+.as-next b{color:var(--fg);font-weight:500}
+@media (max-width:700px){.agent-strip{grid-template-columns:auto minmax(0,1fr)}.as-traits{grid-column:1 / -1;justify-content:flex-start}.as-next{grid-column:1 / -1;text-align:left}.agent-strip > svg{grid-row:auto;width:84px;height:84px}}
+
+.av-float{animation:avFloat 4s ease-in-out infinite}
+.av-blink{transform-box:fill-box;transform-origin:center;animation:avBlink 5.2s infinite}
+.av-twitch{transform-box:fill-box;transform-origin:50% 100%;animation:avTwitch 3.4s ease-in-out infinite}
+@keyframes avFloat{50%{transform:translateY(-3px)}}
+@keyframes avBlink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+@keyframes avTwitch{0%,84%,100%{transform:rotate(0)}88%{transform:rotate(-8deg)}92%{transform:rotate(4deg)}}
+@media (prefers-reduced-motion:reduce){.av-float,.av-blink,.av-twitch{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar">
+  <a class="brand" href="index.html" aria-label="NeuraChain home">
+    <svg id="nclogo" viewBox="0 0 120 120" width="40" height="40" aria-hidden="true"><g class="lgAll">
+      <path class="lgC lgLine" d="M99.8 37 L60 14 L20.2 37 L20.2 83 L60 106 L99.8 83"/>
+      <path class="lgN lgLine" d="M20.2 83 L20.2 37 L99.8 83 L99.8 37"/>
+      <path class="lgNF lgFl" d="M20.2 83 L20.2 37 L99.8 83 L99.8 37"/>
+      <path class="lgCF lgFl" d="M99.8 37 L60 14 L20.2 37 L20.2 83 L60 106 L99.8 83"/>
+      <circle class="lgV" cx="60" cy="14" r="8"/><circle class="lgV" cx="99.8" cy="37" r="8"/><circle class="lgV" cx="99.8" cy="83" r="8"/>
+      <circle class="lgV" cx="60" cy="106" r="8"/><circle class="lgV" cx="20.2" cy="83" r="8"/><circle class="lgV" cx="20.2" cy="37" r="8"/>
+      <circle class="lgR" cx="99.8" cy="83" r="8"/><circle class="lgH" cx="99.8" cy="83" r="4.6"/>
+    </g></svg>
+    <span class="wm">neurachain</span>
+  </a>
+  <span class="tb-tag">manufacturing intelligence</span>
+</div>
+<header>
+  <div class="hgroup"><div class="eyebrow">NeuraChain Solutions · Phase 2 of 6 · Ledger Lynx</div><h1>Spend analysis and opportunity identification</h1><p class="sub"><b>Ledger Lynx</b>, your spend analysis agent. Machine learning and natural language processing continuously ingest and clean enterprise spend data to spot consolidation opportunities, tail-spend savings and contract leakage.</p></div>
+  <div class="controls"><span class="clock" id="clock">T+00:00</span><button id="toggle" type="button">Pause</button><button id="replay" type="button">Replay</button></div>
+</header>
+<div class="board" id="board">
+  <section class="stage-card">
+    <div class="stage-head">
+      <div><div class="st-lab">Spend cleansing and classification</div><div class="st-sub">12 months of AP, P-card and PO data · $48.6M · sample</div></div>
+      <div class="export"><button class="xbtn" id="xbtn" type="button" aria-haspopup="menu" aria-expanded="false"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13h10"/></svg><span class="xl">Export details</span></button><div class="xmenu" id="xmenu" role="menu" hidden></div></div>
+    </div>
+    <div class="stage" id="stage"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<div class="agent-strip">
+  <svg width="112" height="112" viewBox="0 0 240 240" role="img" aria-label="Ledger Lynx avatar: a robot lynx with tufted ears, amber eyes and a ledger-grid monocle" class="">
+<defs>
+<clipPath id="hxLynxs"><polygon points="120,8 217,64 217,176 120,232 23,176 23,64"></polygon></clipPath>
+</defs>
+<polygon points="120,8 217,64 217,176 120,232 23,176 23,64" style="fill: #0f1218; stroke: #ffb547; stroke-width: 2"></polygon>
+<g clip-path="url(#hxLynxs)">
+<path d="M34 240 Q42 196 120 192 Q198 196 206 240 Z" style="fill: #1a2130"></path>
+<path d="M92 196 L120 214 L148 196" style="fill: none; stroke: #ffb547; stroke-width: 3; stroke-linejoin: round"></path>
+<g class="av-float">
+<g class="av-twitch">
+<polygon points="62,104 74,40 112,80" style="fill: #2a3447; stroke: #3b475e; stroke-width: 2; stroke-linejoin: round"></polygon>
+<polygon points="72,94 78,56 100,80" style="fill: #ffb547; opacity: 0.35"></polygon>
+<path d="M74 40 l-5 -15 M74 40 l3 -14" style="stroke: #ffb547; stroke-width: 3; stroke-linecap: round"></path>
+</g>
+<polygon points="178,104 166,40 128,80" style="fill: #2a3447; stroke: #3b475e; stroke-width: 2; stroke-linejoin: round"></polygon>
+<polygon points="168,94 162,56 140,80" style="fill: #ffb547; opacity: 0.35"></polygon>
+<path d="M166 40 l5 -15 M166 40 l-3 -14" style="stroke: #ffb547; stroke-width: 3; stroke-linecap: round"></path>
+<path d="M60 138 L40 146 L60 150 M180 138 L200 146 L180 150" style="fill: #2a3447; stroke: #3b475e; stroke-width: 2; stroke-linejoin: round"></path>
+<ellipse cx="120" cy="126" rx="62" ry="56" style="fill: #2a3447; stroke: #3b475e; stroke-width: 2"></ellipse>
+<path d="M120 76 L114 92 L120 104 L126 92 Z" style="fill: #3b475e"></path>
+<g class="av-blink">
+<path d="M78 118 Q96 100 114 118 Q96 130 78 118 Z" style="fill: #ffb547"></path>
+<rect x="94" y="107" width="4" height="22" rx="2" style="fill: #07090d"></rect>
+<path d="M126 118 Q144 100 162 118 Q144 130 126 118 Z" style="fill: #ffb547"></path>
+<rect x="142" y="107" width="4" height="22" rx="2" style="fill: #07090d"></rect>
+</g>
+<circle cx="144" cy="118" r="23" style="fill: none; stroke: #3ee6c4; stroke-width: 3"></circle>
+<path d="M124 110 H164 M124 126 H164 M136 97 V139 M152 97 V139" style="stroke: #3ee6c4; stroke-width: 1; opacity: 0.4"></path>
+<path d="M166 124 q16 22 4 48" style="fill: none; stroke: #3ee6c4; stroke-width: 2; stroke-dasharray: 2 3"></path>
+<path d="M112 142 L128 142 L120 151 Z" style="fill: #3ee6c4"></path>
+<path d="M107 158 Q114 165 120 158 Q126 165 133 158" style="fill: none; stroke: #f5f7fa; stroke-width: 2.5; stroke-linecap: round"></path>
+<path d="M96 152 H62 M96 158 L64 168 M144 152 H178 M144 158 L176 168" style="stroke: #f5f7fa; stroke-width: 1.5; opacity: 0.5; stroke-dasharray: 4 3"></path>
+</g>
+</g>
+</svg>
+  <div class="as-txt"><div class="as-k">Agent 02 · The Hex Squad</div><div class="as-n">Ledger Lynx</div><div class="as-q">“Nothing slips past these eyes.”</div></div>
+  <div class="as-traits"><span>Sharp-eyed</span><span>Patient</span><span>Quietly competitive</span></div>
+  <div class="as-next">Hands off to <b>Radar Rosie</b> →</div>
+</div>
+<div class="s2">
+  <div class="ledger">
+    <div class="colh">AP ledger lines · raw → cleaned and classified</div>
+    <div class="tbl" id="tbl">
+      <div class="tr th"><span>Supplier</span><span>Category (UNSPSC)</span><span class="r">Amount</span></div>
+    </div>
+  </div>
+  <div class="s2b">
+    <div class="pane"><div class="colh">Spend by category · striped = off-contract</div><div class="cube" id="cube"></div></div>
+    <div class="pane"><div class="colh">Automated savings alerts</div><div class="alerts" id="alerts"></div></div>
+  </div>
+</div>
+</div>
+    <div class="toast" id="toast" role="status" hidden></div>
+  </section>
+  <aside class="side"><div class="kpis" id="kpis"></div><div class="card logc"><div class="lh">Agent log</div><div class="log" id="log"></div></div></aside>
+  <div class="cursor" id="cursor" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 2l14 8.2-6.1 1.3L8.2 18z" fill="#e7edf5" stroke="#0d1726" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="rip"></span></div>
+</div>
+<section class="impact"><div class="il">Impact</div><p>Weeks of spreadsheet wrangling become a live dashboard with automated savings alerts.</p><nav class="steps" aria-label="Phases"><span class="">1</span><span class="cur">2</span><span class="">3</span><span class="">4</span><span class="">5</span><span class="">6</span></nav></section>
+<div class="foot">Illustrative simulation with sample data. The export button previews the live product.</div>
+</div>
+<script>
+const clamp = x => Math.max(0, Math.min(1, x));
+const ease = x => 1 - Math.pow(1 - clamp(x), 3);
+const prog = (t, s, e) => clamp((t - s) / (e - s));
+const fmt = n => Math.round(n).toLocaleString("en-US");
+const el = (tag, cls, html) => { const d = document.createElement(tag); if (cls) d.className = cls; if (html != null) d.innerHTML = html; return d; };
+
+function runScene(cfg){
+  const C = cfg.cycle, X = C - 6.5;
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const board = $("board"), xbtn = $("xbtn"), xmenu = $("xmenu"), toast = $("toast"), cursor = $("cursor"), stage = $("stage");
+  const xlabel = xbtn.querySelector(".xl");
+  const XL = xlabel.textContent;
+
+  // KPIs
+  const kw = $("kpis");
+  const kels = cfg.kpis.map(k => { const d = el("div","kpi",`<div class="lab">${k.lab}</div><div class="val"></div><div class="note"></div>`); kw.appendChild(d); return {k, v:d.querySelector(".val"), n:d.querySelector(".note")}; });
+
+  // log
+  const logEl = $("log"); let li = 0;
+  const scale = cfg.scale || 40;
+  const stamp = t => { const s = Math.floor(t*scale); return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`; };
+  function addLog(t, who, msg, kind){
+    const d = el("div", null, `<span class="ts">[${stamp(t)}]</span> <span class="who ${kind||""}">${who}</span> ${msg}`);
+    logEl.appendChild(d);
+    while (logEl.children.length > 8) logEl.firstChild.remove();
+  }
+
+  // export menu
+  const FMT = cfg.exports || [{l:"PDF report",x:"pdf",n:"summary + detail"},{l:"Excel workbook",x:"xlsx",n:"all tables"},{l:"CSV data",x:"csv",n:"raw rows"}];
+  FMT.forEach((f,i) => { const b = el("button", null, `<span>${f.l}</span><small>.${f.x} · ${f.n}</small>`); b.type="button"; b.setAttribute("role","menuitem"); b.dataset.i = i; xmenu.appendChild(b); });
+  let manualUntil = 0, manualPrep = null;
+  const menuOpen = o => { xmenu.hidden = !o; xbtn.setAttribute("aria-expanded", o); };
+  function showToast(html){ toast.innerHTML = html; toast.hidden = false; }
+  xbtn.addEventListener("click", () => { manualUntil = performance.now() + 9000; hideCursor(); menuOpen(xmenu.hidden); });
+  xmenu.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const f = FMT[+b.dataset.i]; menuOpen(false);
+    manualUntil = performance.now() + 9000;
+    manualPrep = {start: performance.now(), f};
+  });
+  document.addEventListener("click", e => { if (!e.target.closest(".export")) menuOpen(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") menuOpen(false); });
+  const file = f => `${cfg.file}.${f.x}`;
+  function setPrep(p, done){
+    xbtn.style.setProperty("--p", (p*100)+"%");
+    xbtn.classList.toggle("done", !!done);
+    xlabel.textContent = done ? "Exported" : p > 0 ? `Preparing ${Math.round(p*100)}%` : XL;
+  }
+
+  // cursor
+  function rel(node){ const b = board.getBoundingClientRect(), r = node.getBoundingClientRect(); return {x:r.left-b.left+r.width*0.55, y:r.top-b.top+r.height*0.6}; }
+  function placeCursor(p, o){ cursor.style.transform = `translate(${p.x}px,${p.y}px)`; cursor.style.opacity = o; }
+  function hideCursor(){ cursor.style.opacity = 0; }
+  let clicked = {};
+  function click(key){ if (clicked[key]) return; clicked[key] = true; cursor.classList.remove("click"); void cursor.offsetWidth; cursor.classList.add("click"); }
+  const lerp = (a,b,u) => ({x:a.x+(b.x-a.x)*u, y:a.y+(b.y-a.y)*u});
+
+  function demo(t){
+    const now = performance.now();
+    if (manualPrep){
+      const p = clamp((now - manualPrep.start)/1400);
+      setPrep(p, p >= 1);
+      if (p >= 1 && toast.hidden) showToast(`<b>Preview</b><span>On the live site this downloads <span class="mono">${file(manualPrep.f)}</span></span>`);
+      if (now - manualPrep.start > 5200){ manualPrep = null; toast.hidden = true; setPrep(0); }
+      return;
+    }
+    if (now < manualUntil) return;
+    const u = t - X;
+    if (u < 0){ hideCursor(); if (!xmenu.hidden && Object.keys(clicked).length) menuOpen(false); clicked = {}; setPrep(0); toast.hidden = true; xmenu.querySelectorAll("button").forEach(b=>b.classList.remove("hot")); return; }
+    const sr = stage.getBoundingClientRect(), br = board.getBoundingClientRect();
+    const start = {x: sr.left-br.left+sr.width*0.45, y: sr.top-br.top+sr.height*0.55};
+    const bp = rel(xbtn);
+    if (u < 1.6){ placeCursor(lerp(start, bp, ease((u-0.3)/1.3)), Math.min(1, u/0.4)); }
+    else if (u < 1.8){ placeCursor(bp, 1); click("a"); menuOpen(true); }
+    else if (u < 2.6){
+      menuOpen(true);
+      const item = xmenu.querySelector("button"); item.classList.add("hot");
+      placeCursor(lerp(bp, rel(item), ease((u-1.8)/0.7)), 1);
+    }
+    else if (u < 4.1){
+      const item = xmenu.querySelector("button");
+      if (!clicked.b){ placeCursor(rel(item), 1); click("b"); }
+      if (u > 2.75){ menuOpen(false); item.classList.remove("hot"); }
+      setPrep(prog(u, 2.75, 4.0));
+      cursor.style.opacity = 1 - prog(u, 3.4, 4.1);
+    }
+    else {
+      hideCursor(); setPrep(1, true);
+      if (toast.hidden) showToast(`<b>✓ Ready</b><span class="mono">${file(FMT[0])}</span><span class="muted">· ${FMT[0].n}</span>`);
+    }
+  }
+
+  // loop
+  cfg.build && cfg.build();
+  let playing = !reduce, t0 = performance.now(), held = 0, last = -1;
+  function reset(){ logEl.innerHTML = ""; li = 0; cfg.reset && cfg.reset(); }
+  function step(t, now){
+    $("clock").textContent = "T+" + stamp(Math.min(t, X));
+    const ts = Math.min(t, X);
+    kels.forEach(o => { const v = o.k.val(ts); if (o.v.textContent !== v) o.v.textContent = v; const n = typeof o.k.note === "function" ? o.k.note(ts) : o.k.note; if (o.n.textContent !== n) o.n.textContent = n; });
+    while (li < cfg.logs.length && cfg.logs[li][0] <= ts){ const L = cfg.logs[li]; addLog(L[0], L[1], L[2], L[3]); li++; }
+    cfg.render(ts, now);
+    demo(t);
+  }
+  function frame(now){
+    if (playing){
+      const t = Math.max(0, (now - t0)/1000) % C;
+      if (t < last) reset();
+      last = t; held = t;
+      step(t, now);
+    }
+    requestAnimationFrame(frame);
+  }
+  const tg = $("toggle");
+  tg.onclick = () => { playing = !playing; if (playing) t0 = performance.now() - held*1000; tg.textContent = playing ? "Pause" : "Play"; };
+  $("replay").onclick = () => { reset(); last = -1; t0 = performance.now(); held = 0; playing = true; tg.textContent = "Pause"; };
+  if (reduce){ held = X; step(X - 0.01, performance.now()); hideCursor(); tg.textContent = "Play"; }
+  else step(0, performance.now());
+  requestAnimationFrame(frame);
+}
+
+(() => {
+  const svg = document.getElementById("nclogo");
+  if (!svg) return;
+  const $ = s => svg.querySelector(s);
+  const G = $(".lgAll"), N = $(".lgN"), C = $(".lgC"), NF = $(".lgNF"), CF = $(".lgCF"), H = $(".lgH"), RG = $(".lgR");
+  const V = [...svg.querySelectorAll(".lgV")];
+  const P = [[20.2,83],[20.2,37],[99.8,83],[99.8,37],[60,14],[20.2,37],[20.2,83],[60,106],[99.8,83]];
+  const seg = [], cum = [0]; let total = 0;
+  for (let i = 1; i < P.length; i++) { const L = Math.hypot(P[i][0]-P[i-1][0], P[i][1]-P[i-1][1]); seg.push(L); total += L; cum.push(total); }
+  const LN = cum[3], LC = total - LN;
+  N.setAttribute("stroke-dasharray", `${LN} ${LN + 2}`);
+  C.setAttribute("stroke-dasharray", `${LC} ${LC + 2}`);
+  const T0 = 0.3, T1 = 4.2, ANIM = 7.4, PERIOD = 20;
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const at = d => {
+    for (let k = 0; k < seg.length; k++) if (d <= cum[k+1] || k === seg.length - 1) {
+      const u = clamp((d - cum[k]) / seg[k]);
+      return [P[k][0] + (P[k+1][0]-P[k][0]) * u, P[k][1] + (P[k+1][1]-P[k][1]) * u];
+    }
+  };
+  const tOf = d => T0 + d / total * (T1 - T0);
+  const pulse = x => (x >= 0 && x <= 0.35) ? Math.sin(Math.PI * x / 0.35) : 0;
+  // vertex order in markup: top, upper-right, lower-right, bottom, lower-left, upper-left
+  const VP = [[60,14],[99.8,37],[99.8,83],[60,106],[20.2,83],[20.2,37]];
+  const hits = [[cum[4]],[cum[3]],[cum[2],cum[8]],[cum[7]],[cum[0],cum[6]],[cum[1],cum[5]]];
+  const blink = (t, s) => { const r = t - s; return (r >= 0 && r < 0.66 && Math.floor(r / 0.11) % 2 === 0) ? 1 : 0; };
+
+  function draw(t) {
+    const d = clamp((t - T0) / (T1 - T0)) * total;
+    N.setAttribute("stroke-dashoffset", LN - Math.min(d, LN));
+    C.setAttribute("stroke-dashoffset", LC - Math.max(0, d - LN));
+    const dim = t >= 5.05 && t < 6.65;
+    N.style.opacity = C.style.opacity = dim ? 0.14 : 1;
+    NF.style.opacity = blink(t, 5.15); CF.style.opacity = blink(t, 5.9);
+    V.forEach((v, i) => {
+      let s = 1; hits[i].forEach(h => { s += 0.45 * pulse(t - tOf(h)); });
+      v.setAttribute("transform", `translate(${VP[i][0]} ${VP[i][1]}) scale(${s.toFixed(3)}) translate(${-VP[i][0]} ${-VP[i][1]})`);
+    });
+    const h = at(d);
+    H.setAttribute("cx", h[0]); H.setAttribute("cy", h[1]);
+    let hOp = 0, hR = 4.6, rR = 8, rOp = 0;
+    if (t >= T0 && t < T1) hOp = 1;
+    else if (t >= T1 && t < 5.0) {
+      const e = (t - T1) / (5.0 - T1), w = Math.abs(Math.sin(e * Math.PI * 2));
+      hR = 4.6 + 3.2 * w; hOp = 1 - e; rR = 8 + 22 * e; rOp = 0.9 * (1 - e);
+    }
+    H.setAttribute("r", hR); H.style.opacity = hOp;
+    RG.setAttribute("cx", h[0]); RG.setAttribute("cy", h[1]); RG.setAttribute("r", rR); RG.style.opacity = rOp;
+    const g = (t >= 6.65 && t < 7.35) ? Math.sin(Math.PI * (t - 6.65) / 0.7) : 0;
+    G.style.filter = g > 0 ? `drop-shadow(0 0 ${(6 * g).toFixed(1)}px rgba(62,230,196,${(0.8 * g).toFixed(2)}))` : "none";
+  }
+  function frame(t) {
+    // t runs 0..PERIOD: the full A6.1 sequence, then the finished logo holds until the next run
+    let op = 1;
+    if (t < 0.3) op = t / 0.3;
+    else if (t > PERIOD - 0.4) op = (PERIOD - t) / 0.4;
+    G.style.opacity = op;
+    draw(Math.min(t, ANIM));
+  }
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { G.style.opacity = 1; draw(ANIM); return; }
+  let t0 = performance.now();
+  svg.closest(".brand").addEventListener("mouseenter", () => {
+    const t = ((performance.now() - t0) / 1000) % PERIOD;
+    if (t > ANIM) t0 = performance.now();
+  });
+  const loop = now => { frame(((now - t0) / 1000) % PERIOD); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+})();
+
+const LINKS = {"1": "bouncer-bo.html", "2": "ledger-lynx.html", "3": "radar-rosie.html", "4": "gavel-gus.html", "5": "redline-rex.html", "6": "watchdog-willa.html", "home": "index.html"};
+(() => {
+const ROWS = [
+ ["ACME IND. SUPPLY #22","Acme Industrial Supply","MRO & components","31000000",4812.50,"#e3a54a"],
+ ["ULINE INC 2231","Uline","Packaging","24120000",2940.00,"#b99be6"],
+ ["PAC COAST FRT LLC","Pacific Coast Freight","Freight & logistics","78100000",11206.18,"#6aa7e0"],
+ ["GRAINGER-4471","W.W. Grainger","MRO & components","31000000",1377.40,"#e3a54a"],
+ ["SIERRA POLYMERS INV 9","Sierra Polymers","Resins & raw materials","13110000",48600.00,"#5cc2b3"],
+ ["AMZN MKTP US*2K4QX","Amazon Business","MRO · off-contract","31000000",389.99,"#e86f5a"],
+];
+const CATS = [
+ ["Resins & raw materials",14.2,.06,"#5cc2b3"],["Freight & logistics",8.1,.15,"#6aa7e0"],["Packaging",7.9,.12,"#b99be6"],
+ ["MRO & components",6.4,.22,"#e3a54a"],["Contract labor",5.3,.09,"#d98bb0"],["Software",3.6,.04,"#9cc77a"],["Facilities",3.1,.18,"#cfb07a"]];
+const ALERTS = [
+ {at:13,t:"Consolidation",s:612,d:"14 packaging suppliers; the top 3 already hold 61% of spend."},
+ {at:15.5,t:"Tail spend",s:240,d:"1,284 suppliers under $10K each. Move to catalog and P-card."},
+ {at:18,t:"Contract leakage",s:380,d:"22% of MRO bought off-contract despite a Grainger agreement."},
+];
+const R0 = 1, RD = 1.25;
+const MAX = 14.2;
+let rows = [], bars = [], alerts, shown = -1;
+const money = k => k >= 1000 ? `$${(k/1000).toFixed(2)}M` : `$${Math.round(k)}K`;
+const sav = t => ALERTS.reduce((a,x) => a + x.s*ease((t-x.at)/1.2), 0);
+const LOGS = [
+ [0.4,"Lynx · ingest","Pulled 131,977 AP lines, 2,114 P-card transactions, 42,550 PO lines"],
+ [2.6,"Lynx · cleanse","Normalizing vendor names against tax IDs and remit-to addresses"],
+ [5.4,"Lynx · classify","NLP mapping line descriptions to UNSPSC families"],
+ [8.9,"Lynx · cleanse","2,946 supplier records merged into 1,812"],
+ [11.2,"Lynx · classify","97.4% of spend classified, 2.6% queued for human review"],
+ [13,"Lynx · analyze","Alert: packaging consolidation, est. $612K"],
+ [15.5,"Lynx · analyze","Alert: tail spend, est. $240K"],
+ [18,"Lynx · analyze","Alert: MRO contract leakage, est. $380K","w"],
+ [19.5,"Lynx · analyze","Dashboard refreshed. Next refresh on tonight's AP load"],
+];
+runScene({
+  cycle: 27, scale: 60, file: "neurachain-phase2-lynx-spend-analysis", logs: LOGS,
+  kpis: [
+    {lab:"Records cleaned", note:"AP + P-card + PO", val:t=>fmt(184302*ease(prog(t,.4,10)))},
+    {lab:"Suppliers", note:t=>t>10?"after dedupe (−38%)":"raw vendor master", val:t=>fmt(2946-1134*ease(prog(t,2.6,10)))},
+    {lab:"Spend classified", note:"to UNSPSC family", val:t=>(97.4*ease(prog(t,5,12))).toFixed(1)+"%"},
+    {lab:"Savings flagged", note:"of $48.6M analyzed", val:t=>money(sav(t))},
+  ],
+  build(){
+    const tb = document.getElementById("tbl");
+    ROWS.forEach(r => {
+      const d = el("div","tr",`<div class="v"><div class="clean">${r[1]}</div><div class="raw">${r[0]}</div></div><div class="cat" style="--c:${r[5]}"><i></i><span class="cn">unclassified</span></div><div class="r">$${r[4].toLocaleString("en-US",{minimumFractionDigits:2})}</div>`);
+      tb.appendChild(d); rows.push({d, cn:d.querySelector(".cn"), r});
+    });
+    const cb = document.getElementById("cube");
+    CATS.forEach(c => { const d = el("div","row",`<div class="nm">${c[0]}</div><div class="track"><i style="background:${c[3]}"></i><em></em></div><div class="amt">$0.0M</div>`); cb.appendChild(d); bars.push({c, i:d.querySelector("i"), em:d.querySelector("em"), a:d.querySelector(".amt")}); });
+    alerts = document.getElementById("alerts");
+  },
+  reset(){ shown = -1; },
+  render(t){
+    rows.forEach((o,k) => {
+      const s = R0 + k*RD, u = (t - s)/RD;
+      const done = u >= 0.85, scan = u > 0 && !done;
+      o.d.classList.toggle("done", done); o.d.classList.toggle("scan", scan);
+      if (scan) o.d.style.setProperty("--x", (u/0.85*100).toFixed(0)+"%");
+      const txt = done ? `${o.r[2]}` : "unclassified";
+      if (o.cn.textContent !== txt){ o.cn.textContent = txt; if (done) o.cn.insertAdjacentHTML("beforeend", `<small>${o.r[3]}</small>`); }
+    });
+    const pv = prog(t, 6.5, 14), po = ease(prog(t, 11.5, 13.5));
+    bars.forEach((b,k) => {
+      const l = ease(pv*1.4 - k*0.06), w = b.c[1]/MAX*100*l, ow = w*b.c[2]*po;
+      b.i.style.width = w+"%"; b.em.style.width = ow+"%"; b.em.style.left = (w-ow)+"%";
+      const a = `$${(b.c[1]*l).toFixed(1)}M`; if (b.a.textContent !== a) b.a.textContent = a;
+    });
+    const n = ALERTS.filter(a => t >= a.at).length;
+    if (n !== shown){
+      shown = n; alerts.innerHTML = "";
+      ALERTS.slice(0,n).forEach(a => alerts.appendChild(el("div","al fade on",`<div class="h"><span>${a.t}</span><b>$${a.s}K</b></div><div class="d">${a.d}</div>`)));
+      if (n < ALERTS.length) alerts.appendChild(el("div","al ph", n===0 ? "Watching the cube for savings patterns…" : "Scanning for more…"));
+    }
+  }
+});
+})();
+
+</script>
+</body>
+</html>
