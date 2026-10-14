@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="NeuraChain Solutions is an Oakland-based manufacturing and operations intelligence consultancy serving manufacturers, utilities, infrastructure and data center builders nationwide.">
+<meta name="theme-color" content="#07090d">
+<link rel="canonical" href="https://www.neurachainsolutions.com/about">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NeuraChain Solutions">
+<meta property="og:url" content="https://www.neurachainsolutions.com/about">
+<meta property="og:description" content="NeuraChain Solutions is an Oakland-based manufacturing and operations intelligence consultancy serving manufacturers, utilities, infrastructure and data center builders nationwide.">
+<meta property="og:image" content="https://www.neurachainsolutions.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="About NeuraChain Solutions">
+<title>About NeuraChain Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;800;900&family=Geist+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: same brand shell as the landing page. Statement hero → four principle tiles → founder split (photo left, bio right) → contact band. Single dark look by design. */
+:root{
+  --ink:#07090d; --panel:#0d1117; --panel2:#11161e; --line:#1b2330; --fg:#f5f7fa; --muted:#93a0b2; --dim:#5f6b7c;
+  --mint:#3ee6c4; --amber:#ffb547; --sky:#6aa7ff; --violet:#b49cff;
+  --sans:"Geist",ui-sans-serif,system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(900px 420px at 50% -80px,rgba(62,230,196,.10),transparent 70%),radial-gradient(circle at 1px 1px,#121822 1.3px,transparent 0) 0 0/26px 26px,var(--ink);color:var(--fg);font:400 17px/1.55 var(--sans)}
+a{color:inherit}
+a:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.wrap{padding-inline:clamp(16px,5vw,72px)}
+.inner{max-width:1200px;margin:0 auto}
+nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:22px}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none}.brand svg{width:54px;height:54px;flex:none;filter:drop-shadow(0 0 12px rgba(62,230,196,.35))}.brand .wm{display:flex;flex-direction:column;line-height:1}.brand .wm b{font:800 28px/1 var(--sans);letter-spacing:-.035em;color:var(--fg)}.brand .wm span{margin-top:6px;font:600 11.5px/1 var(--mono);letter-spacing:.42em;text-transform:uppercase;color:var(--mint)}
+.links{display:flex;gap:28px;font-size:15px;color:var(--muted)}
+.links a{text-decoration:none}.links a:hover,.links a[aria-current]{color:var(--fg)}
+.pill{font:500 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;border:1px solid rgba(62,230,196,.45);border-radius:99px;text-decoration:none;color:var(--mint);white-space:nowrap}
+.k{font:500 12.5px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--amber)}
+header{padding-block:56px 64px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.95fr);gap:clamp(24px,4vw,64px);align-items:center}
+.hl{min-width:0}
+.lead{position:relative;justify-self:center;width:min(100%,340px)}
+.lead img{position:relative;display:block;width:100%;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.55)) drop-shadow(0 0 28px rgba(62,230,196,.22));animation:hover 6s ease-in-out infinite}
+.lead-glow{position:absolute;left:8%;right:8%;bottom:-14px;height:46px;border-radius:50%;background:radial-gradient(closest-side,rgba(62,230,196,.45),rgba(62,230,196,0))}
+.lead-glow::after{content:"";position:absolute;inset:14px 18%;border:2px solid rgba(62,230,196,.55);border-radius:50%}
+@keyframes hover{50%{transform:translateY(-8px)}}
+.lead.fly{width:min(100%,480px)}
+.lead.fly img{animation:soar 5s ease-in-out infinite}
+.fly-glow{position:absolute;inset:12% 6% 6% 18%;border-radius:50%;background:radial-gradient(closest-side,rgba(62,230,196,.22),rgba(62,230,196,0))}
+@keyframes soar{50%{transform:translate(-8px,-10px) rotate(-1.5deg)}}
+@media (prefers-reduced-motion:reduce){.lead img{animation:none}}
+h1{margin:18px 0 0;font:800 clamp(38px,6vw,72px)/1.02 var(--sans);letter-spacing:-.045em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--mint)}
+.intro{margin-top:26px;display:grid;gap:16px;max-width:66ch;font-size:clamp(16.5px,1.5vw,19px);color:#c4ccd8}
+.intro p{margin:0}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.tile{padding:24px 22px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,var(--panel2),var(--panel));min-width:0;position:relative;overflow:hidden}
+.tile::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--c)}
+.hx{width:44px;height:44px;display:grid;place-items:center;position:relative}
+.hx svg{position:absolute;inset:0}
+.hx b{position:relative;font:700 12px/1 var(--mono);color:var(--c)}
+.tile h2{margin:16px 0 8px;font:700 19px/1.25 var(--sans);letter-spacing:-.01em}
+.tile p{margin:0;font-size:15px;color:var(--muted)}
+section{padding-block:96px 0}
+.founder{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(24px,4vw,56px);align-items:start}
+.photo{position:relative;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#e9ebee;aspect-ratio:4/5;max-width:100%}
+.photo img{display:block;width:100%;height:100%;object-fit:cover}
+.photo::after{content:"";position:absolute;inset:auto 0 0 0;height:38%;background:linear-gradient(transparent,rgba(7,9,13,.82))}
+.cap{position:absolute;left:20px;right:20px;bottom:18px;z-index:1}
+.cap b{display:block;font:700 20px/1.2 var(--sans)}
+.cap span{display:block;margin-top:4px;font:500 12px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mint)}
+.bio h2{margin:14px 0 0;font:800 clamp(28px,3.4vw,42px)/1.08 var(--sans);letter-spacing:-.035em}
+.creds{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.creds span{font:500 12px/1 var(--mono);padding:8px 11px;border-radius:99px;border:1px solid var(--line);color:#c4ccd8;background:rgba(255,255,255,.02)}
+.bio p{margin:22px 0 0;max-width:62ch;color:#c4ccd8}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:28px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--line)}
+.facts div{background:var(--panel);padding:16px;min-width:0}
+.facts b{display:block;font:700 22px/1 var(--mono);color:var(--mint)}
+.facts span{display:block;margin-top:8px;font-size:13.5px;color:var(--muted)}
+.contact{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 22px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;background:var(--mint);color:var(--ink)}
+.mail{font:500 14px/1.4 var(--mono);color:#c4ccd8;user-select:all}
+footer{margin-top:104px;border-top:1px solid var(--line);padding-block:30px;font:500 12px/1.6 var(--mono);letter-spacing:.08em;color:var(--dim);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+@media (max-width:900px){header{grid-template-columns:minmax(0,1fr)}.lead{width:min(52vw,220px)}.lead.fly{width:min(78vw,320px)}}
+@media (max-width:980px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.founder{grid-template-columns:minmax(0,1fr)}.photo{max-width:420px}}
+@media (max-width:640px){.pill{font-size:11px;padding:9px 11px;letter-spacing:.05em}.brand{gap:10px}.brand svg{width:40px;height:40px}.brand .wm b{font-size:21px}.brand .wm span{font-size:9.5px;letter-spacing:.34em;margin-top:5px}.links{display:none}.tiles,.facts{grid-template-columns:minmax(0,1fr)}header{padding-block:44px 40px}section{padding-block:64px 0}}
+@media (max-width:440px){.pill .pd{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="inner">
+  <nav>
+    <a class="brand" href="./">
+      <svg width="54" height="54" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"><path d="M99.8 37L60 14L20.2 37M20.2 83L60 106L99.8 83" stroke="#3ee6c4" opacity=".55"/><path d="M20.2 83V37L99.8 83V37" stroke="#3ee6c4"/></g><g fill="#07090d" stroke="#3ee6c4" stroke-width="5"><circle cx="20.2" cy="83" r="7"/><circle cx="20.2" cy="37" r="7"/><circle cx="99.8" cy="83" r="7"/><circle cx="99.8" cy="37" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="106" r="7"/></g></svg>
+        <span class="wm"><b>NeuraChain</b><span>Solutions</span></span>
+    </a>
+    <div class="links"><a href="./#services">Services</a><a href="./#how">How it works</a><a href="#top" aria-current="page">About</a><a href="#founder">Founder</a></div>
+    <a class="pill" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a <span class="pd">discovery </span>call</a>
+  </nav>
+
+  <header id="top">
+    <div class="hl">
+    <div class="k">About NeuraChain</div>
+    <h1>Manufacturing intelligence, <em>built by an operator.</em></h1>
+    <div class="intro">
+      <p>NeuraChain Solutions is a manufacturing and operations intelligence consultancy headquartered in Oakland, California, built by seasoned professionals with more than 25 years of combined global supply chain and advanced manufacturing experience across five countries on three continents.</p>
+      <p>We exist because small and mid-size manufacturers, utilities, and the infrastructure and data center builders adding capacity across the U.S. face the same operational challenges as the world's most advanced factories, but have rarely had access to the same quality of expertise. NeuraChain closes that gap with a phased service model that starts with immediate, measurable results.</p>
+    </div>
+    </div>
+    <div class="lead fly" aria-hidden="true"><div class="fly-glow"></div><img src="assets/leader-fly.webp" alt="" width="720" height="663"></div>
+  </header>
+
+  <div class="tiles">
+    <div class="tile" style="--c:var(--mint)"><div class="hx"><svg viewBox="0 0 44 44"><polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="#07090d" stroke="#3ee6c4" stroke-width="2"/></svg><b>01</b></div><h2>Our approach</h2><p>Phased consulting that starts where you need help most and builds toward full digital transformation at a pace your operation can sustain.</p></div>
+    <div class="tile" style="--c:var(--amber)"><div class="hx"><svg viewBox="0 0 44 44"><polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="#07090d" stroke="#ffb547" stroke-width="2"/></svg><b>02</b></div><h2>Our experience</h2><p>25+ years across automotive, aviation, clean energy, and food and beverage, in North America, South America, Europe and Asia.</p></div>
+    <div class="tile" style="--c:var(--sky)"><div class="hx"><svg viewBox="0 0 44 44"><polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="#07090d" stroke="#6aa7ff" stroke-width="2"/></svg><b>03</b></div><h2>Our reach</h2><p>Headquartered in Oakland, CA, serving manufacturers, utilities, infrastructure and data center companies nationwide, on site and remotely.</p></div>
+    <div class="tile" style="--c:var(--violet)"><div class="hx"><svg viewBox="0 0 44 44"><polygon points="22,2 40,12 40,32 22,42 4,32 4,12" fill="#07090d" stroke="#b49cff" stroke-width="2"/></svg><b>04</b></div><h2>Our mission</h2><p>To make enterprise-grade operations intelligence accessible and affordable for every U.S. manufacturer, utility and infrastructure operator.</p></div>
+  </div>
+
+  <section id="founder">
+    <div class="founder">
+      <div class="photo">
+        <img src="assets/ricardo.webp" alt="Portrait of Ricardo Almeida" width="640" height="800">
+        <div class="cap"><b>Ricardo Almeida</b><span>Founder &amp; Managing Director</span></div>
+      </div>
+      <div class="bio">
+        <div class="k">Founder</div>
+        <h2>Ricardo Almeida</h2>
+        <div class="creds"><span>MS Global Supply Chain · USC Marshall/Viterbi</span><span>UC Berkeley Extension</span><span>Lean Six Sigma Green Belt</span></div>
+        <p>Ricardo has more than 20 years of experience in strategic sourcing, procurement, manufacturing and supply chain technology at Tesla, IBM, Enel Green Power, Restaurant Brands International and the Rio 2016 Olympic and Paralympic Games Organizing Committee.</p>
+        <p>He holds an M.S. in Global Supply Chain Management from the University of Southern California, an Entrepreneurship Diploma from UC Berkeley and a B.S. in Business Administration from Rio de Janeiro State University. He is fluent in English, Portuguese and Spanish, and serves as Vice President of Programs for the CSCMP San Francisco Roundtable.</p>
+        <div class="facts">
+          <div><b>20+</b><span>years in sourcing, procurement and manufacturing</span></div>
+          <div><b>3</b><span>languages: English, Portuguese, Spanish</span></div>
+          <div><b>VP</b><span>Programs, CSCMP San Francisco Roundtable</span></div>
+        </div>
+        <div class="contact" id="contact">
+          <a class="btn" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a discovery call →</a>
+          <span class="mail">ricardo.almeida@neurachainsolutions.com</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer><span>© 2026 NeuraChain Solutions, LLC · Headquartered in Oakland, California</span><span>Operations intelligence for U.S. factories, utilities and data centers</span></footer>
+</div></div>
+</body>
+</html>
