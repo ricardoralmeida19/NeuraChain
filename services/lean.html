@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEAN Process Optimization · NeuraChain Solutions</title>
+<meta name="description" content="See how NeuraChain maps a value stream, removes waste and turns a 23.5-day lead time into 6.2 days. Illustrative LEAN simulation.">
+<meta name="theme-color" content="#07090d">
+<link rel="canonical" href="https://www.neurachainsolutions.com/services/lean">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NeuraChain Solutions">
+<meta property="og:title" content="LEAN Process Optimization · NeuraChain Solutions">
+<meta property="og:description" content="See how NeuraChain maps a value stream, removes waste and turns a 23.5-day lead time into 6.2 days. Illustrative LEAN simulation.">
+<meta property="og:url" content="https://www.neurachainsolutions.com/services/lean">
+<meta property="og:image" content="https://www.neurachainsolutions.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: control-room board. Header, then a stage (the animated scene) with a side rail of KPIs and the agent log, then an impact strip. One dark look by choice, shared by all seven pages. */
+:root{
+  --ink:#0d1726; --panel:#132136; --raise:#1a2b44; --line:#22344f; --fg:#e7edf5; --muted:#8a9bb3;
+  --brass:#e3a54a; --teal:#5cc2b3; --coral:#e86f5a; --sky:#6aa7e0; --idle:#3a4d6b;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--fg);font-family:var(--display);margin:0;font-size:14px}
+a{color:var(--teal)}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:22px 34px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px}
+.hgroup{min-width:0;flex:1 1 520px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+h1{font-size:clamp(23px,3.3vw,36px);font-weight:800;margin:5px 0 0;letter-spacing:-.015em;line-height:1.08;text-wrap:balance}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.5;margin:8px 0 0;max-width:72ch}
+.sub b{color:var(--fg);font-weight:600}
+.controls{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12px}
+.clock{color:var(--muted);font-variant-numeric:tabular-nums;min-width:9ch;text-align:right}
+button{font:600 12px var(--mono);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--brass)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+.board{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}
+.stage-card{position:relative;border:1px solid var(--line);border-radius:12px;min-width:0;display:flex;flex-direction:column;
+  background:radial-gradient(circle at 1px 1px,#1a2a42 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);background:rgba(19,33,54,.9);border-radius:12px 12px 0 0;flex-wrap:wrap}
+.st-lab{font-weight:600;font-size:14px}
+.st-sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+.stage{position:relative;padding:16px;flex:1;min-height:440px;min-width:0}
+
+/* export */
+.export{position:relative}
+.xbtn{display:inline-flex;align-items:center;gap:8px;background:var(--brass);color:var(--ink);border-color:var(--brass);padding:8px 13px;position:relative;overflow:hidden;min-width:150px;justify-content:center}
+.xbtn:hover{background:#efb862;border-color:#efb862}
+.xbtn svg{flex:none}
+.xbtn::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);background:var(--ink);opacity:.55}
+.xbtn.done{background:var(--teal);border-color:var(--teal)}
+.xmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:20;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:5px;min-width:228px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.xmenu button{display:flex;flex-direction:column;width:100%;gap:2px;background:transparent;border:0;border-radius:5px;padding:8px 9px;font-weight:400;text-align:left}
+.xmenu button:hover,.xmenu button.hot{background:var(--line)}
+.xmenu small{color:var(--muted);font-size:10.5px}
+[hidden]{display:none!important}
+.toast{position:absolute;left:14px;right:14px;bottom:14px;z-index:15;background:var(--raise);border:1px solid var(--teal);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 28px rgba(0,0,0,.4)}
+.toast b{color:var(--teal)}
+.cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:30;pointer-events:none;opacity:0;will-change:transform}
+.cursor svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.cursor .rip{position:absolute;left:-12px;top:-12px;width:26px;height:26px;border-radius:50%;border:2px solid var(--brass);opacity:0}
+.cursor.click .rip{animation:rip .45s ease-out}
+@keyframes rip{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(1.6)}}
+
+/* side rail */
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{background:var(--panel);padding:11px 12px;min-width:0}
+.kpi .lab{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap}
+.kpi .note{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.lh{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.logc{flex:1;display:flex;flex-direction:column;min-height:220px}
+.log{font-family:var(--mono);font-size:11px;line-height:1.5;flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:5px}
+.log div{animation:in .35s ease-out}
+.log .ts{color:var(--muted)} .log .who{color:var(--teal)} .log .who.h{color:var(--brass)} .log .who.w{color:var(--coral)}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+
+.impact{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:10px;padding:13px 16px}
+.il{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.impact p{margin:0;font-size:15px;line-height:1.45}
+.steps{display:flex;gap:5px}
+.steps span{font:600 11px var(--mono);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--muted)}
+.steps span.cur{background:var(--teal);border-color:var(--teal);color:var(--ink)}
+.foot{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+
+/* shared scene bits */
+.colh{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.chip{display:inline-block;font:600 9.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;border:1px solid var(--idle);color:var(--muted);white-space:nowrap}
+.chip.ok{border-color:transparent;background:rgba(92,194,179,.16);color:var(--teal)}
+.chip.warn{border-color:var(--brass);color:var(--brass)}
+.chip.bad{border-color:transparent;background:rgba(232,111,90,.18);color:var(--coral)}
+.chip.info{border-color:var(--sky);color:var(--sky)}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.fade{opacity:0;transform:translateY(6px);transition:opacity .45s,transform .45s}
+.fade.on{opacity:1;transform:none}
+
+@media (max-width:1020px){
+  .board{grid-template-columns:1fr}
+  .side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .logc{min-height:180px}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .side{grid-template-columns:1fr}
+  .impact{grid-template-columns:1fr}
+  .stage{padding:12px}
+  .xbtn{min-width:0}
+}
+@media (prefers-reduced-motion:reduce){ .log div{animation:none} .fade{transition:none} }
+
+
+/* Hex Squad theme: logo palette + the phase agent's signature color */
+:root{
+  --ink:#07090d; --panel:#0f1218; --raise:#161b24; --line:#1f2632; --fg:#f5f7fa; --muted:#8a93a2;
+  --teal:#3ee6c4; --brass:#ffb547; --sky:#6aa7ff; --coral:#ff6b5a; --idle:#323b4a;
+  --display:"Geist","Helvetica Neue",Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --accent:#3ee6c4; --acc-rgb:62,230,196;
+}
+h1{letter-spacing:-.035em}
+.eyebrow{color:var(--accent)}
+.stage-card{border-color:rgba(var(--acc-rgb),.3);background:radial-gradient(circle at 1px 1px,#151b25 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{background:rgba(15,18,24,.92)}
+.kpis{border-color:rgba(var(--acc-rgb),.25)}
+.impact{border-left-color:var(--accent)}
+.impact .il{color:var(--accent)}
+.steps span.cur{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.log .who{color:var(--accent)}
+.agent-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px 18px;margin-bottom:18px;padding:12px 16px 12px 12px;border:1px solid rgba(var(--acc-rgb),.28);border-radius:14px;background:radial-gradient(220px 140px at 70px 50%,rgba(var(--acc-rgb),.15),transparent 75%),var(--panel)}
+.agent-strip > svg{grid-row:span 2}
+.as-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.as-n{font-size:28px;font-weight:600;letter-spacing:-.04em;line-height:1.1;margin-top:3px;color:var(--fg)}
+.as-q{font-size:14px;font-style:italic;color:var(--accent);margin-top:4px}
+.as-traits{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.as-traits span{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:99px;border:1px solid rgba(var(--acc-rgb),.45);color:var(--accent)}
+.as-next{grid-column:2 / -1;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
+.as-next b{color:var(--fg);font-weight:500}
+@media (max-width:700px){.agent-strip{grid-template-columns:auto minmax(0,1fr)}.as-traits{grid-column:1 / -1;justify-content:flex-start}.as-next{grid-column:1 / -1;text-align:left}.agent-strip > svg{grid-row:auto;width:84px;height:84px}}
+
+
+:root{--accent:#ffb547;--acc-rgb:255,181,71}
+
+/* NeuraChain site header */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;align-items:center;gap:12px;color:var(--fg);text-decoration:none;border-radius:8px}
+.brand svg{flex:none;filter:drop-shadow(0 0 10px rgba(62,230,196,.35))}
+.brand .wm{display:flex;flex-direction:column;line-height:1}
+.brand .wm b{font:800 24px/1 var(--display);letter-spacing:-.035em;color:var(--fg)}
+.brand .wm span{margin-top:5px;font:600 10px/1 var(--mono);letter-spacing:.4em;text-transform:uppercase;color:#3ee6c4}
+.tnav{display:flex;align-items:center;gap:20px;font-size:14px}
+.tnav a{color:var(--muted);text-decoration:none}.tnav a:hover{color:var(--fg)}
+.tnav .tpill{font:500 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:9px 13px;border:1px solid rgba(62,230,196,.45);border-radius:99px;color:#3ee6c4;white-space:nowrap}
+@media (max-width:720px){.tnav .tl{display:none}.brand svg{width:38px;height:38px}.brand .wm b{font-size:20px}.brand .wm span{font-size:8.5px;letter-spacing:.32em}}
+/* service figure strip */
+.agent-strip > img{grid-row:span 2;height:118px;width:auto;filter:drop-shadow(0 8px 14px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(var(--acc-rgb),.25))}
+.as-next a{color:var(--fg);text-decoration:none;font-weight:500}.as-next a:hover{color:var(--accent);text-decoration:underline}
+@media (max-width:700px){.agent-strip > img{grid-row:auto;height:84px}}
+.steps a{font:600 11px var(--mono);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--muted);text-decoration:none}
+.steps a:hover{border-color:var(--accent);color:var(--fg)}
+.steps a.cur{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.foot a{color:var(--muted)}
+
+.vsm-scroll{overflow-x:auto;margin:-4px;padding:4px}
+.vsm{min-width:760px;display:flex;flex-direction:column;gap:16px}
+.vsm-top{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:14px}
+.ent{border:1px dashed var(--idle);border-radius:8px;padding:9px 11px;background:rgba(15,18,24,.85)}
+.ent b{display:block;font-size:13px;font-weight:600}
+.ent span{display:block;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:3px;transition:color .4s}
+.ent.ctrl{border-style:solid;border-color:rgba(var(--acc-rgb),.35);text-align:center}
+.ent.ctrl.pull span{color:var(--accent)}
+.flow,.ladder{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1fr) minmax(0,.62fr) minmax(0,1fr) minmax(0,.62fr) minmax(0,1fr) minmax(0,.62fr) minmax(0,1fr) minmax(0,.62fr) minmax(0,1fr) minmax(0,.62fr);gap:6px;align-items:end}
+.inv{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:118px}
+.inv svg{display:block;transition:transform .2s}
+.inv .d{font-family:var(--mono);font-size:10px;line-height:1.3;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums;text-align:center;min-height:26px;white-space:pre-line}
+.inv.sm svg polygon{fill:rgba(var(--acc-rgb),.18);stroke:var(--accent)}
+.proc{position:relative;border:1px solid var(--line);border-radius:8px;background:rgba(15,18,24,.95);padding:8px 8px 9px;min-height:118px;display:flex;flex-direction:column;gap:3px;transition:border-color .4s}
+.proc b{font-size:13px;font-weight:600}
+.proc .r{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);gap:4px}
+.proc .r i{font-style:normal;color:var(--fg);font-variant-numeric:tabular-nums}
+.proc .r i.chg{color:var(--accent)}
+.proc.k{border-color:rgba(var(--acc-rgb),.6)}
+.tag{position:absolute;left:50%;top:-11px;transform:translate(-50%,-4px) scale(.6);z-index:3;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:700 11px/1 var(--mono);opacity:0;transition:opacity .35s,transform .35s;pointer-events:none}
+.tag.on{opacity:1;transform:translate(-50%,0) scale(1)}
+.tag.w{background:var(--coral);color:var(--ink);box-shadow:0 0 12px rgba(255,107,90,.6)}
+.tag.kz{background:var(--accent);color:var(--ink);box-shadow:0 0 12px rgba(var(--acc-rgb),.6)}
+.proc .tag.w{left:30%}.proc .tag.kz{left:70%}
+.inv .tag{top:4px}
+.legend{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:14px}
+.legend .lh2{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.legend ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.legend li{display:flex;gap:8px;align-items:center;font-size:12px;opacity:.18;transition:opacity .35s}
+.legend li.on{opacity:1}
+.legend li i{flex:none;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font:700 10px/1 var(--mono);font-style:normal;color:var(--ink)}
+.legend .lw i{background:var(--coral)} .legend .lk i{background:var(--accent)}
+.ladder{align-items:stretch;margin-top:-4px}
+.ladder > div{font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums;padding:5px 0}
+.ladder .up{border-top:2px solid var(--idle);border-left:1px solid var(--idle);border-right:1px solid var(--idle);margin-bottom:16px;transition:border-color .4s,color .4s}
+.ladder .dn{border-bottom:2px solid rgba(var(--acc-rgb),.7);margin-top:16px;color:var(--accent)}
+.ladder .up.hot{border-top-color:var(--coral);color:var(--coral)}
+.vsm-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px}
+.state{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px}
+.state span{padding:5px 10px;border-radius:99px;border:1px solid var(--line);color:var(--muted);transition:all .4s}
+.state span.on{border-color:var(--accent);color:var(--ink);background:var(--accent)}
+.state .arr{border:0;padding:0}
+.tot{display:flex;gap:18px;font-family:var(--mono);font-size:11px;color:var(--muted);flex-wrap:wrap}
+.tot b{color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+
+#stage{display:flex;flex-direction:column;justify-content:center}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar">
+  <a class="brand" href="../" aria-label="NeuraChain Solutions home"><svg width="46" height="46" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"><path d="M99.8 37L60 14L20.2 37M20.2 83L60 106L99.8 83" stroke="#3ee6c4" opacity=".55"/><path d="M20.2 83V37L99.8 83V37" stroke="#3ee6c4"/></g><g fill="#07090d" stroke="#3ee6c4" stroke-width="5"><circle cx="20.2" cy="83" r="7"/><circle cx="20.2" cy="37" r="7"/><circle cx="99.8" cy="83" r="7"/><circle cx="99.8" cy="37" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="106" r="7"/></g></svg><span class="wm"><b>NeuraChain</b><span>Solutions</span></span></a>
+  <nav class="tnav" aria-label="Site"><a class="tl" href="../#services">All services</a><a class="tl" href="../about.html">About</a><a class="tpill" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a call</a></nav>
+</div>
+<header>
+  <div class="hgroup"><div class="eyebrow">NeuraChain Method · Phase 2 of 5 · LEAN process optimization</div><h1>Value stream mapping, from current to future state</h1><p class="sub"><b>What we do.</b> Our LEAN specialists walk the line, map every step and every pile of inventory, flag the waste, then run Kaizen events that build flow and pull. Each change is measured on the same map.</p></div>
+  <div class="controls"><span class="clock" id="clock">T+00:00</span><button id="toggle" type="button">Pause</button><button id="replay" type="button">Replay</button></div>
+</header>
+<div class="agent-strip">
+  <img src="../assets/s2.webp" alt="LEAN service figure: a robot holding a value stream map, with kanban cards" width="299" height="400">
+  <div class="as-txt"><div class="as-k">Service 02 · Start here</div><div class="as-n">LEAN Process Optimization</div><div class="as-q">“Eliminate waste, build flow, create a continuous improvement culture.”</div></div>
+  <div class="as-traits"><span>Value stream maps</span><span>Kaizen events</span><span>Kanban & pull</span><span>5S</span></div>
+  <div class="as-next">Next phase: <a href="engineering.html">Engineering &amp; Value →</a></div>
+</div>
+<div class="board" id="board">
+  <section class="stage-card" aria-label="Value stream map · bracket family simulation">
+    <div class="stage-head">
+      <div><div class="st-lab">Value stream map · bracket family</div><div class="st-sub">5 processes · 6 inventory points · sample plant data</div></div>
+      <div class="export"><button class="xbtn" id="xbtn" type="button" aria-haspopup="menu" aria-expanded="false"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13h10"/></svg><span class="xl">Export VSM report</span></button><div class="xmenu" id="xmenu" role="menu" hidden></div></div>
+    </div>
+    <div class="stage" id="stage"><div class="vsm-scroll">
+<div class="vsm">
+  <div class="vsm-top">
+    <div class="ent"><b>Supplier</b><span>Steel coil · weekly truck</span></div>
+    <div class="ent ctrl"><b>Production control</b><span id="ctrlmode">MRP push · weekly schedule</span></div>
+    <div class="ent"><b>Customer</b><span>1,200 units / week</span></div>
+  </div>
+  <div class="flow" id="flow"></div>
+  <div class="ladder" id="ladder"></div>
+  <div class="vsm-foot">
+    <div class="state"><span id="stA" class="on">Current state</span><span class="arr">→</span><span id="stB">Future state</span></div>
+    <div class="tot"><span>Lead time <b id="lt">23.5 days</b></span><span>Value-added <b>412 s</b></span><span>VA ratio <b id="var">0.06%</b></span></div>
+  </div>
+  <div class="legend"><div><div class="lh2">Waste found</div><ol class="lw" id="lw"></ol></div><div><div class="lh2">Kaizen actions</div><ol class="lk" id="lk"></ol></div></div>
+</div>
+</div>
+</div>
+    <div class="toast" id="toast" role="status" hidden></div>
+  </section>
+  <aside class="side"><div class="kpis" id="kpis"></div><div class="card logc"><div class="lh">Activity log</div><div class="log" id="log"></div></div></aside>
+  <div class="cursor" id="cursor" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 2l14 8.2-6.1 1.3L8.2 18z" fill="#e7edf5" stroke="#0d1726" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="rip"></span></div>
+</div>
+<section class="impact"><div class="il">Impact</div><p>Lead time down 74% and working capital freed from inventory, with a Kaizen plan your team keeps running.</p><nav class="steps" aria-label="The NeuraChain Method, five phases"><a href="../hex-squad/" class="" title="Phase 1: Strategic sourcing" aria-label="Phase 1: Strategic sourcing">1</a><a href="lean.html" class="cur" title="Phase 2: LEAN process optimization" aria-label="Phase 2: LEAN process optimization" aria-current="page">2</a><a href="engineering.html" class="" title="Phase 3: Engineering & value" aria-label="Phase 3: Engineering & value">3</a><a href="smart-factory.html" class="" title="Phase 4: Smart Factory" aria-label="Phase 4: Smart Factory">4</a><a href="ai-platform.html" class="" title="Phase 5: NeuraChain AI platform" aria-label="Phase 5: NeuraChain AI platform">5</a></nav></section>
+<div class="foot"><span>Illustrative simulation with sample data. The export button previews the deliverable.</span><span><a href="../#services">← Back to all services</a></span></div>
+</div>
+<script>
+const clamp = x => Math.max(0, Math.min(1, x));
+const ease = x => 1 - Math.pow(1 - clamp(x), 3);
+const prog = (t, s, e) => clamp((t - s) / (e - s));
+const fmt = n => Math.round(n).toLocaleString("en-US");
+const el = (tag, cls, html) => { const d = document.createElement(tag); if (cls) d.className = cls; if (html != null) d.innerHTML = html; return d; };
+
+function runScene(cfg){
+  const C = cfg.cycle, X = C - 6.5;
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const board = $("board"), xbtn = $("xbtn"), xmenu = $("xmenu"), toast = $("toast"), cursor = $("cursor"), stage = $("stage");
+  const xlabel = xbtn.querySelector(".xl");
+  const XL = xlabel.textContent;
+
+  // KPIs
+  const kw = $("kpis");
+  const kels = cfg.kpis.map(k => { const d = el("div","kpi",`<div class="lab">${k.lab}</div><div class="val"></div><div class="note"></div>`); kw.appendChild(d); return {k, v:d.querySelector(".val"), n:d.querySelector(".note")}; });
+
+  // log
+  const logEl = $("log"); let li = 0;
+  const scale = cfg.scale || 40;
+  const stamp = t => { const s = Math.floor(t*scale); return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`; };
+  function addLog(t, who, msg, kind){
+    const d = el("div", null, `<span class="ts">[${stamp(t)}]</span> <span class="who ${kind||""}">${who}</span> ${msg}`);
+    logEl.appendChild(d);
+    while (logEl.children.length > 8) logEl.firstChild.remove();
+  }
+
+  // export menu
+  const FMT = cfg.exports || [{l:"PDF report",x:"pdf",n:"summary + detail"},{l:"Excel workbook",x:"xlsx",n:"all tables"},{l:"CSV data",x:"csv",n:"raw rows"}];
+  FMT.forEach((f,i) => { const b = el("button", null, `<span>${f.l}</span><small>.${f.x} · ${f.n}</small>`); b.type="button"; b.setAttribute("role","menuitem"); b.dataset.i = i; xmenu.appendChild(b); });
+  let manualUntil = 0, manualPrep = null;
+  const menuOpen = o => { xmenu.hidden = !o; xbtn.setAttribute("aria-expanded", o); };
+  function showToast(html){ toast.innerHTML = html; toast.hidden = false; }
+  xbtn.addEventListener("click", () => { manualUntil = performance.now() + 9000; hideCursor(); menuOpen(xmenu.hidden); });
+  xmenu.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const f = FMT[+b.dataset.i]; menuOpen(false);
+    manualUntil = performance.now() + 9000;
+    manualPrep = {start: performance.now(), f};
+  });
+  document.addEventListener("click", e => { if (!e.target.closest(".export")) menuOpen(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") menuOpen(false); });
+  const file = f => `${cfg.file}.${f.x}`;
+  function setPrep(p, done){
+    xbtn.style.setProperty("--p", (p*100)+"%");
+    xbtn.classList.toggle("done", !!done);
+    xlabel.textContent = done ? "Exported" : p > 0 ? `Preparing ${Math.round(p*100)}%` : XL;
+  }
+
+  // cursor
+  function rel(node){ const b = board.getBoundingClientRect(), r = node.getBoundingClientRect(); return {x:r.left-b.left+r.width*0.55, y:r.top-b.top+r.height*0.6}; }
+  function placeCursor(p, o){ cursor.style.transform = `translate(${p.x}px,${p.y}px)`; cursor.style.opacity = o; }
+  function hideCursor(){ cursor.style.opacity = 0; }
+  let clicked = {};
+  function click(key){ if (clicked[key]) return; clicked[key] = true; cursor.classList.remove("click"); void cursor.offsetWidth; cursor.classList.add("click"); }
+  const lerp = (a,b,u) => ({x:a.x+(b.x-a.x)*u, y:a.y+(b.y-a.y)*u});
+
+  function demo(t){
+    const now = performance.now();
+    if (manualPrep){
+      const p = clamp((now - manualPrep.start)/1400);
+      setPrep(p, p >= 1);
+      if (p >= 1 && toast.hidden) showToast(`<b>Preview</b><span>On the live site this downloads <span class="mono">${file(manualPrep.f)}</span></span>`);
+      if (now - manualPrep.start > 5200){ manualPrep = null; toast.hidden = true; setPrep(0); }
+      return;
+    }
+    if (now < manualUntil) return;
+    const u = t - X;
+    if (u < 0){ hideCursor(); if (!xmenu.hidden && Object.keys(clicked).length) menuOpen(false); clicked = {}; setPrep(0); toast.hidden = true; xmenu.querySelectorAll("button").forEach(b=>b.classList.remove("hot")); return; }
+    const sr = stage.getBoundingClientRect(), br = board.getBoundingClientRect();
+    const start = {x: sr.left-br.left+sr.width*0.45, y: sr.top-br.top+sr.height*0.55};
+    const bp = rel(xbtn);
+    if (u < 1.6){ placeCursor(lerp(start, bp, ease((u-0.3)/1.3)), Math.min(1, u/0.4)); }
+    else if (u < 1.8){ placeCursor(bp, 1); click("a"); menuOpen(true); }
+    else if (u < 2.6){
+      menuOpen(true);
+      const item = xmenu.querySelector("button"); item.classList.add("hot");
+      placeCursor(lerp(bp, rel(item), ease((u-1.8)/0.7)), 1);
+    }
+    else if (u < 4.1){
+      const item = xmenu.querySelector("button");
+      if (!clicked.b){ placeCursor(rel(item), 1); click("b"); }
+      if (u > 2.75){ menuOpen(false); item.classList.remove("hot"); }
+      setPrep(prog(u, 2.75, 4.0));
+      cursor.style.opacity = 1 - prog(u, 3.4, 4.1);
+    }
+    else {
+      hideCursor(); setPrep(1, true);
+      if (toast.hidden) showToast(`<b>✓ Ready</b><span class="mono">${file(FMT[0])}</span><span class="muted">· ${FMT[0].n}</span>`);
+    }
+  }
+
+  // loop
+  cfg.build && cfg.build();
+  let playing = !reduce, t0 = performance.now(), held = 0, last = -1;
+  function reset(){ logEl.innerHTML = ""; li = 0; cfg.reset && cfg.reset(); }
+  function step(t, now){
+    $("clock").textContent = "T+" + stamp(Math.min(t, X));
+    const ts = Math.min(t, X);
+    kels.forEach(o => { const v = o.k.val(ts); if (o.v.textContent !== v) o.v.textContent = v; const n = typeof o.k.note === "function" ? o.k.note(ts) : o.k.note; if (o.n.textContent !== n) o.n.textContent = n; });
+    while (li < cfg.logs.length && cfg.logs[li][0] <= ts){ const L = cfg.logs[li]; addLog(L[0], L[1], L[2], L[3]); li++; }
+    cfg.render(ts, now);
+    demo(t);
+  }
+  function frame(now){
+    if (playing){
+      const t = Math.max(0, (now - t0)/1000) % C;
+      if (t < last) reset();
+      last = t; held = t;
+      step(t, now);
+    }
+    requestAnimationFrame(frame);
+  }
+  const tg = $("toggle");
+  tg.onclick = () => { playing = !playing; if (playing) t0 = performance.now() - held*1000; tg.textContent = playing ? "Pause" : "Play"; };
+  $("replay").onclick = () => { reset(); last = -1; t0 = performance.now(); held = 0; playing = true; tg.textContent = "Pause"; };
+  if (reduce){ held = X; step(X - 0.01, performance.now()); hideCursor(); tg.textContent = "Play"; }
+  else step(0, performance.now());
+  requestAnimationFrame(frame);
+}
+
+(() => {
+const P = [
+  {n:"Cut",     ct:62,  co:["30 min","30 min"], up:["92%","95%"]},
+  {n:"Weld",    ct:118, co:["45 min","12 min"], up:["78%","91%"]},
+  {n:"Paint",   ct:96,  co:["60 min","40 min"], up:["85%","90%"]},
+  {n:"Assemble",ct:84,  co:["15 min","10 min"], up:["90%","96%"]},
+  {n:"Pack",    ct:52,  co:["5 min","5 min"],   up:["97%","98%"]},
+];
+const INV_A = [5.0, 4.2, 6.1, 3.8, 2.6, 1.8];   // days, sums to 23.5
+const INV_B = [2.0, 1.0, 0.8, 1.0, 0.6, 0.8];   // days, sums to 6.2
+const INV_LAB_B = ["Supermarket","Kanban","FIFO","Std WIP","Std WIP","Daily ship"];
+// waste flags (current state) and kaizen bursts (future state): [time, column index, text]
+const WASTE = [[3.5,4,"6.1 days of WIP waiting in front of Paint"],[4.8,3,"45-min changeovers force big batches at Weld"],[6.0,0,"Weekly push builds 5 days of coil stock"]];
+const KAIZEN = [[8.6,3,"SMED on Weld · changeover 45 → 12 min"],[10.4,2,"Kanban supermarket · Cut → Weld"],[12.2,4,"FIFO lane into Paint · max 60 parts"],[14.0,7,"5S and standard work at Assemble"],[15.8,10,"Daily pull, leveled schedule"]];
+const M0 = 9, M1 = 18;
+let lwi = [], lki = [], cols = [], ladder = [], ctrl, stA, stB, lt, vr;
+
+const LOGS = [
+  [0.4,"VSM","Walking the line: 5 processes, 6 inventory points"],
+  [2.2,"VSM","Current state mapped · lead time 23.5 days, value-added 412 s"],
+  [3.5,"Waste","6.1 days of WIP waiting in front of Paint","w"],
+  [4.8,"Waste","45-min Weld changeovers force large batches","w"],
+  [6.0,"Waste","Weekly MRP push builds 5 days of coil stock","w"],
+  [8.6,"Kaizen","SMED event on Weld · changeover 45 → 12 min","h"],
+  [10.4,"Kaizen","Kanban supermarket between Cut and Weld · 2 bins × 40","h"],
+  [12.2,"Kaizen","FIFO lane into Paint · max 60 parts","h"],
+  [14.0,"Kaizen","5S and standard work at Assemble","h"],
+  [15.8,"Kaizen","Daily pull from the customer, leveled schedule","h"],
+  [18.6,"VSM","Future state · lead time 6.2 days (−74%)"],
+  [20.4,"VSM","90-day Kaizen plan ready for the plant team"],
+];
+const m = t => ease(prog(t, M0, M1));
+const sum = a => a.reduce((x,y)=>x+y,0);
+const days = t => INV_A.map((a,i) => a + (INV_B[i]-a)*m(t));
+const tri = s => `<svg width="46" height="40" viewBox="0 0 46 40" style="transform:scale(${s.toFixed(3)});transform-origin:50% 100%"><polygon points="23,3 43,37 3,37" fill="rgba(255,107,90,.14)" stroke="#ff6b5a" stroke-width="1.6"/><text x="23" y="31" text-anchor="middle" font-family="Geist Mono,monospace" font-size="11" font-weight="600" fill="#f5f7fa">I</text></svg>`;
+
+runScene({
+  cycle: 30, scale: 30, file: "neurachain-lean-vsm-report", logs: LOGS,
+  exports: [{l:"PDF report",x:"pdf",n:"current + future state VSM"},{l:"Kaizen plan",x:"xlsx",n:"actions, owners, dates"},{l:"Map file",x:"vsdx",n:"editable value stream map"}],
+  kpis: [
+    {lab:"Lead time", note:"was 23.5 days", val:t=>sum(days(t)).toFixed(1)+" d"},
+    {lab:"WIP inventory", note:"was $412K", val:t=>"$"+Math.round(412-(412-118)*m(t))+"K"},
+    {lab:"VA ratio", note:"value-added / lead time", val:t=>(412/(sum(days(t))*28800)*100).toFixed(2)+"%"},
+    {lab:"Throughput", note:"units / week", val:t=>fmt(1080+(1240-1080)*m(t))},
+  ],
+  build(){
+    const flow = document.getElementById("flow"), lad = document.getElementById("ladder");
+    for (let i = 0; i < 11; i++){
+      if (i % 2 === 0){
+        const k = i/2, d = el("div","inv",`<span class="tag w"></span><span class="tag kz"></span><div class="tri"></div><div class="d"></div>`);
+        flow.appendChild(d); cols.push({type:"inv", k, d, tri:d.querySelector(".tri"), lab:d.querySelector(".d"), w:d.querySelector(".tag.w"), kz:d.querySelector(".tag.kz"), lastS:-1});
+        const u = el("div","up",""); lad.appendChild(u); ladder.push(u);
+      } else {
+        const k = (i-1)/2, p = P[k];
+        const d = el("div","proc",`<span class="tag w"></span><span class="tag kz"></span><b>${p.n}</b><div class="r"><span>C/T</span><i>${p.ct} s</i></div><div class="r"><span>C/O</span><i class="co"></i></div><div class="r"><span>Uptime</span><i class="up"></i></div><div class="r"><span>Ops</span><i>1</i></div>`);
+        flow.appendChild(d); cols.push({type:"proc", k, d, co:d.querySelector(".co"), up:d.querySelector(".up"), w:d.querySelector(".tag.w"), kz:d.querySelector(".tag.kz")});
+        const dn = el("div","dn",`${p.ct} s`); lad.appendChild(dn); ladder.push(dn);
+      }
+    }
+    const lw = document.getElementById("lw"), lk = document.getElementById("lk");
+    WASTE.forEach(([,c,txt],n) => { cols[c].w.textContent = "!"; lw.appendChild(el("li",null,`<i>!</i><span>${txt}</span>`)); });
+    KAIZEN.forEach(([,c,txt],n) => { cols[c].kz.textContent = n+1; lk.appendChild(el("li",null,`<i>${n+1}</i><span>${txt}</span>`)); });
+    lwi = [...lw.children]; lki = [...lk.children];
+    ctrl = document.getElementById("ctrlmode"); stA = document.getElementById("stA"); stB = document.getElementById("stB");
+    lt = document.getElementById("lt"); vr = document.getElementById("var");
+  },
+  render(t){
+    const mm = m(t), D = days(t), fut = mm > .5;
+    cols.forEach((c, i) => {
+      if (c.type === "inv"){
+        const s = 0.42 + 0.58*Math.min(1, D[c.k]/6.1);
+        if (Math.abs(s - c.lastS) > .004){ c.tri.innerHTML = tri(s); c.lastS = s; }
+        const txt = fut && mm > .97 ? `${INV_LAB_B[c.k]}\n${D[c.k].toFixed(1)} d` : `${D[c.k].toFixed(1)} days`;
+        if (c.lab.textContent !== txt) c.lab.textContent = txt;
+        c.d.classList.toggle("sm", fut);
+        ladder[i].textContent = D[c.k].toFixed(1) + " d";
+      } else {
+        const p = P[c.k], ci = mm > .6 ? 1 : 0;
+        if (c.co.textContent !== p.co[ci]){ c.co.textContent = p.co[ci]; c.co.classList.toggle("chg", ci===1 && p.co[0]!==p.co[1]); }
+        if (c.up.textContent !== p.up[ci]){ c.up.textContent = p.up[ci]; c.up.classList.toggle("chg", ci===1); }
+      }
+    });
+    WASTE.forEach(([ts],n) => lwi[n].classList.toggle("on", t >= ts));
+    KAIZEN.forEach(([ts],n) => lki[n].classList.toggle("on", t >= ts));
+    WASTE.forEach(([ts,ci]) => { const on = t >= ts && t < 8.4; cols[ci].w.classList.toggle("on", on); if (ladder[ci].classList) ladder[ci].classList.toggle("hot", on); });
+    KAIZEN.forEach(([ts,ci]) => { const on = t >= ts; cols[ci].kz.classList.toggle("on", on); if (cols[ci].type==="proc") cols[ci].d.classList.toggle("k", on); });
+    ctrl.textContent = fut ? "Pull · kanban signals · daily leveling" : "MRP push · weekly schedule";
+    ctrl.parentElement.classList.toggle("pull", fut);
+    stA.classList.toggle("on", !fut); stB.classList.toggle("on", fut);
+    lt.textContent = sum(D).toFixed(1) + " days";
+    vr.textContent = (412/(sum(D)*28800)*100).toFixed(2) + "%";
+  }
+});
+})();
+
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ Static website for www.neurachainsolutions.com. Plain HTML, CSS and JavaScript w
 | `/about` | `about.html` | About NeuraChain and the founder |
 | `/hex-squad/` | `hex-squad/index.html` | Hex Squad overview: the six sourcing agents (linked from the Strategic Sourcing card) |
 | `/hex-squad/bouncer-bo` … `/hex-squad/watchdog-willa` | `hex-squad/*.html` | One page per agent / sourcing phase |
+| `/services/lean` … `/services/ai-platform` | `services/*.html` | Simulation page for each of services 2–5 (LEAN, Engineering, Smart Factory, AI Platform), linked from the service cards |
 | any missing page | `404.html` | "Page not found" page |
 
 Images and the hero video live in `assets/`. `favicon.svg` is the hexagon logo used as the browser-tab icon. `assets/og.jpg` is the preview image shown when the link is shared on LinkedIn, Slack, WhatsApp and similar.

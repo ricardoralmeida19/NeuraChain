@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NeuraChain AI Platform · NeuraChain Solutions</title>
+<meta name="description" content="See how the NeuraChain AI Platform unifies ERP, MES, PLM, CMMS and IoT data, builds should-be cost models and reschedules production around disruptions. Illustrative simulation of a platform in development.">
+<meta name="theme-color" content="#07090d">
+<link rel="canonical" href="https://www.neurachainsolutions.com/services/ai-platform">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NeuraChain Solutions">
+<meta property="og:title" content="NeuraChain AI Platform · NeuraChain Solutions">
+<meta property="og:description" content="See how the NeuraChain AI Platform unifies ERP, MES, PLM, CMMS and IoT data, builds should-be cost models and reschedules production around disruptions. Illustrative simulation of a platform in development.">
+<meta property="og:url" content="https://www.neurachainsolutions.com/services/ai-platform">
+<meta property="og:image" content="https://www.neurachainsolutions.com/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: control-room board. Header, then a stage (the animated scene) with a side rail of KPIs and the agent log, then an impact strip. One dark look by choice, shared by all seven pages. */
+:root{
+  --ink:#0d1726; --panel:#132136; --raise:#1a2b44; --line:#22344f; --fg:#e7edf5; --muted:#8a9bb3;
+  --brass:#e3a54a; --teal:#5cc2b3; --coral:#e86f5a; --sky:#6aa7e0; --idle:#3a4d6b;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--fg);font-family:var(--display);margin:0;font-size:14px}
+a{color:var(--teal)}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:22px 34px;display:flex;flex-direction:column;gap:16px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px}
+.hgroup{min-width:0;flex:1 1 520px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}
+h1{font-size:clamp(23px,3.3vw,36px);font-weight:800;margin:5px 0 0;letter-spacing:-.015em;line-height:1.08;text-wrap:balance}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.5;margin:8px 0 0;max-width:72ch}
+.sub b{color:var(--fg);font-weight:600}
+.controls{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12px}
+.clock{color:var(--muted);font-variant-numeric:tabular-nums;min-width:9ch;text-align:right}
+button{font:600 12px var(--mono);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--brass)}
+button:focus-visible,a:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+
+.board{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px}
+.stage-card{position:relative;border:1px solid var(--line);border-radius:12px;min-width:0;display:flex;flex-direction:column;
+  background:radial-gradient(circle at 1px 1px,#1a2a42 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);background:rgba(19,33,54,.9);border-radius:12px 12px 0 0;flex-wrap:wrap}
+.st-lab{font-weight:600;font-size:14px}
+.st-sub{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2px}
+.stage{position:relative;padding:16px;flex:1;min-height:440px;min-width:0}
+
+/* export */
+.export{position:relative}
+.xbtn{display:inline-flex;align-items:center;gap:8px;background:var(--brass);color:var(--ink);border-color:var(--brass);padding:8px 13px;position:relative;overflow:hidden;min-width:150px;justify-content:center}
+.xbtn:hover{background:#efb862;border-color:#efb862}
+.xbtn svg{flex:none}
+.xbtn::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--p,0%);background:var(--ink);opacity:.55}
+.xbtn.done{background:var(--teal);border-color:var(--teal)}
+.xmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:20;background:var(--raise);border:1px solid var(--line);border-radius:8px;padding:5px;min-width:228px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.xmenu button{display:flex;flex-direction:column;width:100%;gap:2px;background:transparent;border:0;border-radius:5px;padding:8px 9px;font-weight:400;text-align:left}
+.xmenu button:hover,.xmenu button.hot{background:var(--line)}
+.xmenu small{color:var(--muted);font-size:10.5px}
+[hidden]{display:none!important}
+.toast{position:absolute;left:14px;right:14px;bottom:14px;z-index:15;background:var(--raise);border:1px solid var(--teal);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 28px rgba(0,0,0,.4)}
+.toast b{color:var(--teal)}
+.cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:30;pointer-events:none;opacity:0;will-change:transform}
+.cursor svg{filter:drop-shadow(0 2px 3px rgba(0,0,0,.6))}
+.cursor .rip{position:absolute;left:-12px;top:-12px;width:26px;height:26px;border-radius:50%;border:2px solid var(--brass);opacity:0}
+.cursor.click .rip{animation:rip .45s ease-out}
+@keyframes rip{from{opacity:1;transform:scale(.3)}to{opacity:0;transform:scale(1.6)}}
+
+/* side rail */
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{background:var(--panel);padding:11px 12px;min-width:0}
+.kpi .lab{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:4px;white-space:nowrap}
+.kpi .note{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+.lh{font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.logc{flex:1;display:flex;flex-direction:column;min-height:220px}
+.log{font-family:var(--mono);font-size:11px;line-height:1.5;flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:5px}
+.log div{animation:in .35s ease-out}
+.log .ts{color:var(--muted)} .log .who{color:var(--teal)} .log .who.h{color:var(--brass)} .log .who.w{color:var(--coral)}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+
+.impact{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--brass);border-radius:10px;padding:13px 16px}
+.il{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.impact p{margin:0;font-size:15px;line-height:1.45}
+.steps{display:flex;gap:5px}
+.steps span{font:600 11px var(--mono);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--muted)}
+.steps span.cur{background:var(--teal);border-color:var(--teal);color:var(--ink)}
+.foot{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+
+/* shared scene bits */
+.colh{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.chip{display:inline-block;font:600 9.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;border:1px solid var(--idle);color:var(--muted);white-space:nowrap}
+.chip.ok{border-color:transparent;background:rgba(92,194,179,.16);color:var(--teal)}
+.chip.warn{border-color:var(--brass);color:var(--brass)}
+.chip.bad{border-color:transparent;background:rgba(232,111,90,.18);color:var(--coral)}
+.chip.info{border-color:var(--sky);color:var(--sky)}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.fade{opacity:0;transform:translateY(6px);transition:opacity .45s,transform .45s}
+.fade.on{opacity:1;transform:none}
+
+@media (max-width:1020px){
+  .board{grid-template-columns:1fr}
+  .side{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .logc{min-height:180px}
+}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .side{grid-template-columns:1fr}
+  .impact{grid-template-columns:1fr}
+  .stage{padding:12px}
+  .xbtn{min-width:0}
+}
+@media (prefers-reduced-motion:reduce){ .log div{animation:none} .fade{transition:none} }
+
+
+/* Hex Squad theme: logo palette + the phase agent's signature color */
+:root{
+  --ink:#07090d; --panel:#0f1218; --raise:#161b24; --line:#1f2632; --fg:#f5f7fa; --muted:#8a93a2;
+  --teal:#3ee6c4; --brass:#ffb547; --sky:#6aa7ff; --coral:#ff6b5a; --idle:#323b4a;
+  --display:"Geist","Helvetica Neue",Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --accent:#3ee6c4; --acc-rgb:62,230,196;
+}
+h1{letter-spacing:-.035em}
+.eyebrow{color:var(--accent)}
+.stage-card{border-color:rgba(var(--acc-rgb),.3);background:radial-gradient(circle at 1px 1px,#151b25 1px,transparent 0) 0 0/18px 18px,var(--ink)}
+.stage-head{background:rgba(15,18,24,.92)}
+.kpis{border-color:rgba(var(--acc-rgb),.25)}
+.impact{border-left-color:var(--accent)}
+.impact .il{color:var(--accent)}
+.steps span.cur{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.log .who{color:var(--accent)}
+.agent-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:6px 18px;margin-bottom:18px;padding:12px 16px 12px 12px;border:1px solid rgba(var(--acc-rgb),.28);border-radius:14px;background:radial-gradient(220px 140px at 70px 50%,rgba(var(--acc-rgb),.15),transparent 75%),var(--panel)}
+.agent-strip > svg{grid-row:span 2}
+.as-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.as-n{font-size:28px;font-weight:600;letter-spacing:-.04em;line-height:1.1;margin-top:3px;color:var(--fg)}
+.as-q{font-size:14px;font-style:italic;color:var(--accent);margin-top:4px}
+.as-traits{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.as-traits span{font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:99px;border:1px solid rgba(var(--acc-rgb),.45);color:var(--accent)}
+.as-next{grid-column:2 / -1;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:right}
+.as-next b{color:var(--fg);font-weight:500}
+@media (max-width:700px){.agent-strip{grid-template-columns:auto minmax(0,1fr)}.as-traits{grid-column:1 / -1;justify-content:flex-start}.as-next{grid-column:1 / -1;text-align:left}.agent-strip > svg{grid-row:auto;width:84px;height:84px}}
+
+
+:root{--accent:#7be38c;--acc-rgb:123,227,140}
+
+/* NeuraChain site header */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{display:inline-flex;align-items:center;gap:12px;color:var(--fg);text-decoration:none;border-radius:8px}
+.brand svg{flex:none;filter:drop-shadow(0 0 10px rgba(62,230,196,.35))}
+.brand .wm{display:flex;flex-direction:column;line-height:1}
+.brand .wm b{font:800 24px/1 var(--display);letter-spacing:-.035em;color:var(--fg)}
+.brand .wm span{margin-top:5px;font:600 10px/1 var(--mono);letter-spacing:.4em;text-transform:uppercase;color:#3ee6c4}
+.tnav{display:flex;align-items:center;gap:20px;font-size:14px}
+.tnav a{color:var(--muted);text-decoration:none}.tnav a:hover{color:var(--fg)}
+.tnav .tpill{font:500 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:9px 13px;border:1px solid rgba(62,230,196,.45);border-radius:99px;color:#3ee6c4;white-space:nowrap}
+@media (max-width:720px){.tnav .tl{display:none}.brand svg{width:38px;height:38px}.brand .wm b{font-size:20px}.brand .wm span{font-size:8.5px;letter-spacing:.32em}}
+/* service figure strip */
+.agent-strip > img{grid-row:span 2;height:118px;width:auto;filter:drop-shadow(0 8px 14px rgba(0,0,0,.55)) drop-shadow(0 0 18px rgba(var(--acc-rgb),.25))}
+.as-next a{color:var(--fg);text-decoration:none;font-weight:500}.as-next a:hover{color:var(--accent);text-decoration:underline}
+@media (max-width:700px){.agent-strip > img{grid-row:auto;height:84px}}
+.steps a{font:600 11px var(--mono);width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line);color:var(--muted);text-decoration:none}
+.steps a:hover{border-color:var(--accent);color:var(--fg)}
+.steps a.cur{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.foot a{color:var(--muted)}
+
+.ai{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.75fr) minmax(0,1.6fr);gap:16px;align-items:center}
+.src{display:flex;flex-direction:column;gap:7px;min-width:0}
+.sys{position:relative;border:1px solid var(--line);border-radius:8px;background:rgba(15,18,24,.92);padding:8px 10px;overflow:hidden;transition:border-color .35s}
+.sys.on{border-color:rgba(var(--acc-rgb),.5)}
+.sys b{font-size:13px;font-weight:600}
+.sys span{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px;font-variant-numeric:tabular-nums}
+.sys .bar{position:absolute;left:0;bottom:0;height:2px;background:var(--accent);width:0}
+.sys.on::after{content:"";position:absolute;right:-30%;top:50%;width:30%;height:2px;background:linear-gradient(90deg,transparent,var(--accent));animation:flow 1.2s linear infinite}
+@keyframes flow{from{transform:translateX(-200%)}to{transform:translateX(100%)}}
+.core{text-align:center;min-width:0}
+.hexc{width:min(130px,100%);height:auto;display:block;margin:0 auto}
+.hexc .pulse{transform-origin:60px 60px;animation:pulse 2.4s ease-out infinite;opacity:0}
+@keyframes pulse{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(1.25)}}
+.core-t{font-weight:600;font-size:14px;margin-top:8px}
+.core-n{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px}
+.core-n b{color:var(--accent);font-size:16px;font-variant-numeric:tabular-nums}
+.core-s{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:4px}
+.outs{display:flex;flex-direction:column;gap:12px;min-width:0}
+.out{border:1px solid var(--line);border-radius:10px;background:rgba(15,18,24,.95);padding:11px 12px;opacity:.4;transition:opacity .4s,border-color .4s}
+.out.on{opacity:1;border-color:rgba(var(--acc-rgb),.45)}
+.out-h{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.cost{display:flex;flex-direction:column;gap:5px}
+.cr{display:grid;grid-template-columns:78px minmax(0,1fr) 52px;gap:8px;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.cr .tr{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.cr .fl{height:100%;background:var(--accent);width:0;border-radius:99px}
+.cr.q .fl{background:var(--coral)}
+.cr b{color:var(--fg);text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.cr.tot{border-top:1px solid var(--line);padding-top:5px;margin-top:2px}
+.gap{margin-top:8px;font-family:var(--mono);font-size:11px;min-height:16px;color:var(--accent)}
+.gap.w{color:var(--coral)}
+.gantt{position:relative;display:flex;flex-direction:column;gap:5px}
+.gr{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;align-items:center;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.gt{position:relative;height:16px;overflow:hidden;border-radius:4px;background:repeating-linear-gradient(90deg,transparent 0 calc(20% - 1px),var(--line) calc(20% - 1px) 20%)}
+.gb{position:absolute;top:2px;bottom:2px;border-radius:3px;background:rgba(var(--acc-rgb),.75);transition:left .6s,width .6s,background .3s}
+.gb.late{background:rgba(255,107,90,.8)}
+.gdue{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--fg);opacity:.6}
+@media (max-width:900px){.ai{grid-template-columns:1fr}.src{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}.src .colh{grid-column:1 / -1}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="topbar">
+  <a class="brand" href="../" aria-label="NeuraChain Solutions home"><svg width="46" height="46" viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"><path d="M99.8 37L60 14L20.2 37M20.2 83L60 106L99.8 83" stroke="#3ee6c4" opacity=".55"/><path d="M20.2 83V37L99.8 83V37" stroke="#3ee6c4"/></g><g fill="#07090d" stroke="#3ee6c4" stroke-width="5"><circle cx="20.2" cy="83" r="7"/><circle cx="20.2" cy="37" r="7"/><circle cx="99.8" cy="83" r="7"/><circle cx="99.8" cy="37" r="7"/><circle cx="60" cy="14" r="7"/><circle cx="60" cy="106" r="7"/></g></svg><span class="wm"><b>NeuraChain</b><span>Solutions</span></span></a>
+  <nav class="tnav" aria-label="Site"><a class="tl" href="../#services">All services</a><a class="tl" href="../about.html">About</a><a class="tpill" href="mailto:ricardo.almeida@neurachainsolutions.com?subject=Discovery%20call%20request" target="_blank" rel="noopener">Book a call</a></nav>
+</div>
+<header>
+  <div class="hgroup"><div class="eyebrow">NeuraChain Method · Phase 5 of 5 · NeuraChain AI Platform</div><h1>One data model for sourcing, cost and scheduling</h1><p class="sub"><b>What it does.</b> The platform connects the systems you already run into one operational data model, then uses it to build should-be costs for negotiations and to reschedule production when something changes.</p></div>
+  <div class="controls"><span class="clock" id="clock">T+00:00</span><button id="toggle" type="button">Pause</button><button id="replay" type="button">Replay</button></div>
+</header>
+<div class="agent-strip">
+  <img src="../assets/s5.webp" alt="AI Platform service figure: a hero with a glass hexagon head holding a glowing data orb" width="243" height="400">
+  <div class="as-txt"><div class="as-k">Service 05 · AI Platform · beta planned for Year 3</div><div class="as-n">NeuraChain AI Platform</div><div class="as-q">“Unified data, predictive scheduling, autonomous decisions.”</div></div>
+  <div class="as-traits"><span>ERP · MES · PLM · CMMS · IoT</span><span>Should-be cost</span><span>Predictive scheduling</span><span>What-if</span></div>
+  <div class="as-next"><a href="../#services">Back to all services →</a></div>
+</div>
+<div class="board" id="board">
+  <section class="stage-card" aria-label="Operational data model · plant 1 simulation">
+    <div class="stage-head">
+      <div><div class="st-lab">Operational data model · plant 1</div><div class="st-sub">5 connected systems · sample data</div></div>
+      <div class="export"><button class="xbtn" id="xbtn" type="button" aria-haspopup="menu" aria-expanded="false"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13h10"/></svg><span class="xl">Export insights</span></button><div class="xmenu" id="xmenu" role="menu" hidden></div></div>
+    </div>
+    <div class="stage" id="stage"><div class="ai">
+  <div class="src" id="src"><div class="colh">Connected systems</div></div>
+  <div class="core">
+    <svg class="hexc" viewBox="0 0 120 120" aria-hidden="true"><polygon points="60,6 107,33 107,87 60,114 13,87 13,33" fill="rgba(123,227,140,.08)" stroke="#7be38c" stroke-width="2"/><polygon class="pulse" points="60,6 107,33 107,87 60,114 13,87 13,33" fill="none" stroke="#7be38c" stroke-width="2"/><path d="M38 78V42l44 36V42" fill="none" stroke="#7be38c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="core-t">Unified data model</div>
+    <div class="core-n"><b id="recs">0</b> records</div>
+    <div class="core-s" id="cores">waiting for sources</div>
+  </div>
+  <div class="outs">
+    <div class="out" id="o1">
+      <div class="out-h"><span class="colh" style="margin:0">Should-be cost · housing H-310</span><span class="chip" id="o1c">queued</span></div>
+      <div class="cost" id="cost"></div>
+      <div class="gap" id="gap"></div>
+    </div>
+    <div class="out" id="o2">
+      <div class="out-h"><span class="colh" style="margin:0">Predictive schedule · next 5 days</span><span class="chip" id="o2c">queued</span></div>
+      <div class="gantt" id="gantt"></div>
+      <div class="gap" id="sgap"></div>
+    </div>
+  </div>
+</div>
+</div>
+    <div class="toast" id="toast" role="status" hidden></div>
+  </section>
+  <aside class="side"><div class="kpis" id="kpis"></div><div class="card logc"><div class="lh">Activity log</div><div class="log" id="log"></div></div></aside>
+  <div class="cursor" id="cursor" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M3 2l14 8.2-6.1 1.3L8.2 18z" fill="#e7edf5" stroke="#0d1726" stroke-width="1.4" stroke-linejoin="round"/></svg><span class="rip"></span></div>
+</div>
+<section class="impact"><div class="il">Impact</div><p>Every buyer and planner works from one version of the truth, with cost and schedule decisions backed by data.</p><nav class="steps" aria-label="The NeuraChain Method, five phases"><a href="../hex-squad/" class="" title="Phase 1: Strategic sourcing" aria-label="Phase 1: Strategic sourcing">1</a><a href="lean.html" class="" title="Phase 2: LEAN process optimization" aria-label="Phase 2: LEAN process optimization">2</a><a href="engineering.html" class="" title="Phase 3: Engineering & value" aria-label="Phase 3: Engineering & value">3</a><a href="smart-factory.html" class="" title="Phase 4: Smart Factory" aria-label="Phase 4: Smart Factory">4</a><a href="ai-platform.html" class="cur" title="Phase 5: NeuraChain AI platform" aria-label="Phase 5: NeuraChain AI platform" aria-current="page">5</a></nav></section>
+<div class="foot"><span>Illustrative simulation with sample data. The NeuraChain AI Platform is in development, with a beta planned for Year 3.</span><span><a href="../#services">← Back to all services</a></span></div>
+</div>
+<script>
+const clamp = x => Math.max(0, Math.min(1, x));
+const ease = x => 1 - Math.pow(1 - clamp(x), 3);
+const prog = (t, s, e) => clamp((t - s) / (e - s));
+const fmt = n => Math.round(n).toLocaleString("en-US");
+const el = (tag, cls, html) => { const d = document.createElement(tag); if (cls) d.className = cls; if (html != null) d.innerHTML = html; return d; };
+
+function runScene(cfg){
+  const C = cfg.cycle, X = C - 6.5;
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const board = $("board"), xbtn = $("xbtn"), xmenu = $("xmenu"), toast = $("toast"), cursor = $("cursor"), stage = $("stage");
+  const xlabel = xbtn.querySelector(".xl");
+  const XL = xlabel.textContent;
+
+  // KPIs
+  const kw = $("kpis");
+  const kels = cfg.kpis.map(k => { const d = el("div","kpi",`<div class="lab">${k.lab}</div><div class="val"></div><div class="note"></div>`); kw.appendChild(d); return {k, v:d.querySelector(".val"), n:d.querySelector(".note")}; });
+
+  // log
+  const logEl = $("log"); let li = 0;
+  const scale = cfg.scale || 40;
+  const stamp = t => { const s = Math.floor(t*scale); return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`; };
+  function addLog(t, who, msg, kind){
+    const d = el("div", null, `<span class="ts">[${stamp(t)}]</span> <span class="who ${kind||""}">${who}</span> ${msg}`);
+    logEl.appendChild(d);
+    while (logEl.children.length > 8) logEl.firstChild.remove();
+  }
+
+  // export menu
+  const FMT = cfg.exports || [{l:"PDF report",x:"pdf",n:"summary + detail"},{l:"Excel workbook",x:"xlsx",n:"all tables"},{l:"CSV data",x:"csv",n:"raw rows"}];
+  FMT.forEach((f,i) => { const b = el("button", null, `<span>${f.l}</span><small>.${f.x} · ${f.n}</small>`); b.type="button"; b.setAttribute("role","menuitem"); b.dataset.i = i; xmenu.appendChild(b); });
+  let manualUntil = 0, manualPrep = null;
+  const menuOpen = o => { xmenu.hidden = !o; xbtn.setAttribute("aria-expanded", o); };
+  function showToast(html){ toast.innerHTML = html; toast.hidden = false; }
+  xbtn.addEventListener("click", () => { manualUntil = performance.now() + 9000; hideCursor(); menuOpen(xmenu.hidden); });
+  xmenu.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const f = FMT[+b.dataset.i]; menuOpen(false);
+    manualUntil = performance.now() + 9000;
+    manualPrep = {start: performance.now(), f};
+  });
+  document.addEventListener("click", e => { if (!e.target.closest(".export")) menuOpen(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") menuOpen(false); });
+  const file = f => `${cfg.file}.${f.x}`;
+  function setPrep(p, done){
+    xbtn.style.setProperty("--p", (p*100)+"%");
+    xbtn.classList.toggle("done", !!done);
+    xlabel.textContent = done ? "Exported" : p > 0 ? `Preparing ${Math.round(p*100)}%` : XL;
+  }
+
+  // cursor
+  function rel(node){ const b = board.getBoundingClientRect(), r = node.getBoundingClientRect(); return {x:r.left-b.left+r.width*0.55, y:r.top-b.top+r.height*0.6}; }
+  function placeCursor(p, o){ cursor.style.transform = `translate(${p.x}px,${p.y}px)`; cursor.style.opacity = o; }
+  function hideCursor(){ cursor.style.opacity = 0; }
+  let clicked = {};
+  function click(key){ if (clicked[key]) return; clicked[key] = true; cursor.classList.remove("click"); void cursor.offsetWidth; cursor.classList.add("click"); }
+  const lerp = (a,b,u) => ({x:a.x+(b.x-a.x)*u, y:a.y+(b.y-a.y)*u});
+
+  function demo(t){
+    const now = performance.now();
+    if (manualPrep){
+      const p = clamp((now - manualPrep.start)/1400);
+      setPrep(p, p >= 1);
+      if (p >= 1 && toast.hidden) showToast(`<b>Preview</b><span>On the live site this downloads <span class="mono">${file(manualPrep.f)}</span></span>`);
+      if (now - manualPrep.start > 5200){ manualPrep = null; toast.hidden = true; setPrep(0); }
+      return;
+    }
+    if (now < manualUntil) return;
+    const u = t - X;
+    if (u < 0){ hideCursor(); if (!xmenu.hidden && Object.keys(clicked).length) menuOpen(false); clicked = {}; setPrep(0); toast.hidden = true; xmenu.querySelectorAll("button").forEach(b=>b.classList.remove("hot")); return; }
+    const sr = stage.getBoundingClientRect(), br = board.getBoundingClientRect();
+    const start = {x: sr.left-br.left+sr.width*0.45, y: sr.top-br.top+sr.height*0.55};
+    const bp = rel(xbtn);
+    if (u < 1.6){ placeCursor(lerp(start, bp, ease((u-0.3)/1.3)), Math.min(1, u/0.4)); }
+    else if (u < 1.8){ placeCursor(bp, 1); click("a"); menuOpen(true); }
+    else if (u < 2.6){
+      menuOpen(true);
+      const item = xmenu.querySelector("button"); item.classList.add("hot");
+      placeCursor(lerp(bp, rel(item), ease((u-1.8)/0.7)), 1);
+    }
+    else if (u < 4.1){
+      const item = xmenu.querySelector("button");
+      if (!clicked.b){ placeCursor(rel(item), 1); click("b"); }
+      if (u > 2.75){ menuOpen(false); item.classList.remove("hot"); }
+      setPrep(prog(u, 2.75, 4.0));
+      cursor.style.opacity = 1 - prog(u, 3.4, 4.1);
+    }
+    else {
+      hideCursor(); setPrep(1, true);
+      if (toast.hidden) showToast(`<b>✓ Ready</b><span class="mono">${file(FMT[0])}</span><span class="muted">· ${FMT[0].n}</span>`);
+    }
+  }
+
+  // loop
+  cfg.build && cfg.build();
+  let playing = !reduce, t0 = performance.now(), held = 0, last = -1;
+  function reset(){ logEl.innerHTML = ""; li = 0; cfg.reset && cfg.reset(); }
+  function step(t, now){
+    $("clock").textContent = "T+" + stamp(Math.min(t, X));
+    const ts = Math.min(t, X);
+    kels.forEach(o => { const v = o.k.val(ts); if (o.v.textContent !== v) o.v.textContent = v; const n = typeof o.k.note === "function" ? o.k.note(ts) : o.k.note; if (o.n.textContent !== n) o.n.textContent = n; });
+    while (li < cfg.logs.length && cfg.logs[li][0] <= ts){ const L = cfg.logs[li]; addLog(L[0], L[1], L[2], L[3]); li++; }
+    cfg.render(ts, now);
+    demo(t);
+  }
+  function frame(now){
+    if (playing){
+      const t = Math.max(0, (now - t0)/1000) % C;
+      if (t < last) reset();
+      last = t; held = t;
+      step(t, now);
+    }
+    requestAnimationFrame(frame);
+  }
+  const tg = $("toggle");
+  tg.onclick = () => { playing = !playing; if (playing) t0 = performance.now() - held*1000; tg.textContent = playing ? "Pause" : "Play"; };
+  $("replay").onclick = () => { reset(); last = -1; t0 = performance.now(); held = 0; playing = true; tg.textContent = "Pause"; };
+  if (reduce){ held = X; step(X - 0.01, performance.now()); hideCursor(); tg.textContent = "Play"; }
+  else step(0, performance.now());
+  requestAnimationFrame(frame);
+}
+
+(() => {
+const S = [
+  {n:"ERP",  d:"orders, POs, invoices", rec:1.21, on:0.4},
+  {n:"MES",  d:"work-order events",     rec:0.86, on:1.4},
+  {n:"PLM",  d:"BOMs and drawings",     rec:0.18, on:2.4},
+  {n:"CMMS", d:"assets and work orders",rec:0.09, on:3.2},
+  {n:"IoT",  d:"machine signals",       rec:1.86, on:4.0},
+];
+const COST = [["Material",6.20],["Machining",4.10],["Overhead",2.35],["Margin",1.10]];
+const QUOTE = 17.90, SB = 13.75, C0 = 8.6, C1 = 13.2;
+// orders: name, start day, length (days), due day; after delay the plan re-sequences
+const O = [
+  {n:"SO-5512", a:[0.0,1.4], b:[0.0,1.4], due:1.6},
+  {n:"SO-5518", a:[1.4,1.6], b:[2.4,1.6], due:4.2, hit:true},
+  {n:"SO-5520", a:[3.0,1.0], b:[1.4,1.0], due:4.4, hit:true},
+  {n:"SO-5527", a:[4.0,0.9], b:[4.0,0.9], due:5.0, hit:true},
+];
+const D0 = 16.4, D1 = 18.2;
+let sys = [], rows = [], recs, cores, o1, o2, o1c, o2c, gap, sgap, gb = [];
+
+const LOGS = [
+  [0.4,"Connect","ERP connected · 1.2M transactions"],
+  [1.4,"Connect","MES connected · 860K work-order events"],
+  [2.4,"Connect","PLM connected · 18,400 parts and BOMs"],
+  [3.2,"Connect","CMMS connected · 2,100 assets"],
+  [4.0,"Connect","IoT streams connected · 24 machines"],
+  [5.6,"Model","Unified data model built · one part, one record"],
+  [8.6,"Cost","Should-be cost model: housing H-310"],
+  [13.2,"Cost","Quote $17.90 vs should-be $13.75 · 23% gap","h"],
+  [16.4,"Plan","Supplier delay: castings for SO-5518 +1 day · 2 orders at risk","w"],
+  [18.2,"Plan","Re-sequenced: SO-5520 pulled forward · all 4 on time","h"],
+  [20.5,"Model","Insights sent to buyer and planner dashboards"],
+];
+const rv = t => S.reduce((s,x) => s + x.rec*prog(t, x.on, x.on+1.2), 0);
+const sp = t => ease(prog(t, D1, D1+0.8));
+
+runScene({
+  cycle: 30, scale: 30, file: "neurachain-platform-insights", logs: LOGS,
+  exports: [{l:"Negotiation brief",x:"pdf",n:"should-be cost + targets"},{l:"Schedule",x:"xlsx",n:"re-sequenced plan"},{l:"API feed",x:"json",n:"to your ERP"}],
+  kpis: [
+    {lab:"Records unified", note:"5 systems, one model", val:t=>rv(t).toFixed(1)+"M"},
+    {lab:"Cost gaps found", note:"across 40 top parts", val:t=>"$"+Math.round(186*prog(t,C0,C1+1))+"K/yr"},
+    {lab:"On-time delivery", note:"next 5 days", val:t=>t < D0 ? "100%" : t < D1+0.8 ? "50%" : "100%"},
+    {lab:"Decisions surfaced", note:"for human approval", val:t=>String((t>=C1?1:0)+(t>=D1?1:0))},
+  ],
+  build(){
+    const sw = document.getElementById("src");
+    S.forEach(s => { const d = el("div","sys",`<b>${s.n}</b><span class="rc">${s.d}</span><i class="bar"></i>`); sw.appendChild(d); sys.push({d, rc:d.querySelector(".rc"), bar:d.querySelector(".bar")}); });
+    recs = document.getElementById("recs"); cores = document.getElementById("cores");
+    o1 = document.getElementById("o1"); o2 = document.getElementById("o2"); o1c = document.getElementById("o1c"); o2c = document.getElementById("o2c");
+    gap = document.getElementById("gap"); sgap = document.getElementById("sgap");
+    const cw = document.getElementById("cost");
+    COST.concat([["Should-be",SB],["Quote",QUOTE]]).forEach((c,i) => {
+      const cls = "cr" + (i===4 ? " tot" : "") + (i===5 ? " q" : "");
+      const d = el("div", cls, `<span>${c[0]}</span><div class="tr"><div class="fl"></div></div><b>$${c[1].toFixed(2)}</b>`);
+      cw.appendChild(d); rows.push({d, f:d.querySelector(".fl"), v:c[1]});
+    });
+    const gw = document.getElementById("gantt");
+    O.forEach(o => { const d = el("div","gr",`<span>${o.n}</span><div class="gt"><div class="gb"></div><div class="gdue" style="left:${o.due/5*100}%"></div></div>`); gw.appendChild(d); gb.push(d.querySelector(".gb")); });
+  },
+  render(t){
+    S.forEach((s,k) => { const p = prog(t, s.on, s.on+1.2), on = t >= s.on; sys[k].d.classList.toggle("on", on); sys[k].bar.style.width = (p*100)+"%"; sys[k].rc.textContent = on ? `${(s.rec*p).toFixed(2)}M records` : s.d; });
+    recs.textContent = (rv(t)).toFixed(2) + "M";
+    cores.textContent = t < 0.4 ? "waiting for sources" : t < 5.6 ? "mapping fields and matching parts…" : "one part, one record, every system";
+    // should-be cost
+    const c = t >= C0; o1.classList.toggle("on", c);
+    o1c.textContent = t < C0 ? "queued" : t < C1 ? "modeling" : "gap found"; o1c.className = "chip " + (t < C0 ? "" : t < C1 ? "info" : "warn");
+    rows.forEach((r,i) => { const p = i < 4 ? prog(t, C0 + i*0.9, C0 + i*0.9 + 0.8) : prog(t, C0+3.6, C0+4.4); r.f.style.width = (r.v/QUOTE*100*ease(p)) + "%"; });
+    gap.textContent = t >= C1 ? `Gap $${(QUOTE-SB).toFixed(2)} per unit (23%) · negotiation brief ready` : "";
+    // schedule
+    const s = t >= 14.6; o2.classList.toggle("on", s);
+    const delayed = t >= D0, fixed = t >= D1;
+    o2c.textContent = !s ? "queued" : !delayed ? "on track" : !fixed ? "at risk" : "re-planned"; o2c.className = "chip " + (!s ? "" : !delayed ? "ok" : !fixed ? "bad" : "ok");
+    const u = sp(t);
+    O.forEach((o,i) => {
+      let st = o.a[0], ln = o.a[1];
+      if (delayed && o.hit && !fixed) st = o.a[0] + 1.0 * ease(prog(t, D0, D0+0.6));
+      if (fixed){ const s0 = o.hit ? o.a[0]+1.0 : o.a[0]; st = s0 + (o.b[0]-s0)*u; ln = o.a[1] + (o.b[1]-o.a[1])*u; }
+      gb[i].style.left = (st/5*100)+"%"; gb[i].style.width = (ln/5*100)+"%";
+      gb[i].classList.toggle("late", st + ln > o.due + 0.01);
+    });
+    sgap.className = "gap" + (delayed && !fixed ? " w" : "");
+    sgap.textContent = !delayed ? "" : !fixed ? "SO-5520 and SO-5527 would miss their due dates" : "Re-sequenced: SO-5520 pulled forward, all 4 orders on time";
+  }
+});
+})();
+
+</script>
+</body>
+</html>
