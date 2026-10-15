@@ -577,7 +577,7 @@ runScene({
     P.forEach((p,i) => {
       const a = el("a","pc",`<span class="pc-top">${avatar(i, 40, "c"+i)}<span><span class="n">Phase ${i+1}</span><span class="pc-name">${AG[i].name}</span></span></span><span class="t">${p.t}</span><span class="i">${p.i}</span><span class="b"><i></i></span><span class="go">Meet ${AG[i].short} →</span>`);
       a.style.setProperty("--ac", AG[i].col);
-      a.href = LINKS[i+1] || "#"; a.target = "_blank"; a.rel = "noopener";
+      a.href = LINKS[i+1] || "#";
       cw.appendChild(a); cards.push({a, b:a.querySelector(".b i")});
     });
   },
