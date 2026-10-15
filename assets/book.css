@@ -46,3 +46,8 @@
 html.bk-lock{overflow:hidden}
 @media (max-width:560px){.bk form{grid-template-columns:1fr;padding:10px 18px 20px}.bk-h{padding:24px 18px 6px}.bk h2{font-size:23px}.bk-done{padding:6px 18px 24px}}
 @media (prefers-reduced-motion:reduce){.bk-ov,.bk{transition:none}}
+
+.bk-cal{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:9px 14px;border-radius:10px;border:1px solid rgba(62,230,196,.4);background:rgba(62,230,196,.06);color:#3ee6c4;font-size:14px;font-weight:500;text-decoration:none}
+.bk-cal:hover{background:rgba(62,230,196,.12)}
+.bk-now{margin-top:10px;text-decoration:none}
+.bk [hidden]{display:none!important}

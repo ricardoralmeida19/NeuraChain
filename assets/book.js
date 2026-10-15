@@ -10,6 +10,7 @@
 (() => {
   const FORM_ENDPOINT = "";            // e.g. "https://formspree.io/f/xxxxxxxx"
   const EMAIL = "ricardo.almeida@neurachainsolutions.com";
+  const CAL_URL = "https://calendly.com/ricardo-almeida-neurachainsolutions/30min";   // Calendly booking page ("" hides the calendar buttons)
   const me = document.currentScript;
   const BASE = (me && me.dataset.base) || "";          // path to site root from this page
   const SERVICES = ["Strategic sourcing & supply chain", "LEAN process optimization", "Engineering & value", "Smart Factory (IoT)", "NeuraChain AI platform", "Not sure yet"];
@@ -22,6 +23,7 @@
       <div class="bk-k">Free · 90 minutes · no commitment</div>
       <h2 id="bk-t">Book a discovery call</h2>
       <p>Tell us a little about your operation and we'll reply within one business day to set a time, on site or remote, anywhere in the U.S.</p>
+      ${CAL_URL ? `<a class="bk-cal" href="${CAL_URL}" target="_blank" rel="noopener"><span aria-hidden="true">📅</span> Prefer to pick a time yourself? Open the calendar →</a>` : ""}
     </div>
     <form novalidate>
       <div class="f"><label for="bk-name">Full name <i>*</i></label><input id="bk-name" name="name" type="text" autocomplete="name" required></div>
@@ -47,6 +49,7 @@
       <div class="ok" aria-hidden="true">✓</div>
       <h3 tabindex="-1">Thanks, we've got it.</h3>
       <p class="msg"></p>
+      ${CAL_URL ? `<a class="go bk-now" href="${CAL_URL}" target="_blank" rel="noopener">Pick a time now →</a>` : ""}
     </div>
   </div>
 </div>`;

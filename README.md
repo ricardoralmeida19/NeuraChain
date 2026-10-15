@@ -23,7 +23,7 @@ Edit the HTML file, commit, and push to `main`. The live site updates automatica
 Things you may want to change later:
 - **Discovery-call form:** every "Book a discovery call" button opens a request form (`assets/book.js`). Right now, submitting it opens the visitor's email app with their answers filled in. To receive submissions directly instead, create a free form endpoint (for example at formspree.io), paste its URL into `FORM_ENDPOINT` at the top of `assets/book.js`, and push.
 - **Social media:** the Instagram, LinkedIn, Facebook, X and TikTok icons in the footers are placeholders. To activate one, add `href="https://…"` to its `<a class="soc" …>` tag (in `index.html` and `about.html`) and remove `role="link" aria-disabled="true"`.
-- **Calendar link (optional):** if you later use a booking page (Calendly, Google appointment schedule), it can be added to the form's confirmation message in `assets/book.js`.
+- **Calendar link:** the Calendly booking page is set in `CAL_URL` at the top of `assets/book.js` (form header shortcut + "Pick a time now" after submitting) and on the "Pick a time on the calendar" button in the Contact section of `index.html`. If the Calendly link changes, update both places.
 - **Text:** each page's text is directly in its HTML file.
 - **Colors:** the variables at the top of each page's `<style>` block (`--mint`, `--amber`, `--sky`, `--violet`, `--green`).
 
