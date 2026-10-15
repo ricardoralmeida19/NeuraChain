@@ -51,3 +51,12 @@ html.bk-lock{overflow:hidden}
 .bk-cal:hover{background:rgba(62,230,196,.12)}
 .bk-now{margin-top:10px;text-decoration:none}
 .bk [hidden]{display:none!important}
+
+.bk-steps{list-style:none;display:flex;gap:8px;margin:14px 0 0;padding:0;font:500 12.5px/1 "Geist",ui-sans-serif,system-ui,sans-serif;color:#5f6b7c}
+.bk-steps li{display:inline-flex;align-items:center;gap:8px;padding:7px 12px 7px 7px;border:1px solid #1f2632;border-radius:99px}
+.bk-steps b{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#1f2632;color:#93a0b2;font:700 11px "Geist Mono",monospace}
+.bk-steps li.on{color:#f5f7fa;border-color:rgba(62,230,196,.5)}
+.bk-steps li.on b{background:#3ee6c4;color:#07090d}
+.bk-steps li.ok b{background:rgba(62,230,196,.2);color:#3ee6c4}
+.bk-steps li.ok b{font-size:0}.bk-steps li.ok b::after{content:"✓";font-size:11px}
+.bk fieldset.bad .chips label{border-color:#ff6b5a}
