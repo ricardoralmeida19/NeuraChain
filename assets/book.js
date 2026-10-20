@@ -13,7 +13,7 @@
   const CAL_URL = "https://calendly.com/ricardo-almeida-neurachainsolutions/30min";   // Calendly booking page ("" hides the calendar buttons)
   const me = document.currentScript;
   const BASE = (me && me.dataset.base) || "";          // path to site root from this page
-  const SERVICES = ["Strategic sourcing & supply chain", "LEAN process optimization", "Engineering & value", "Smart Factory (IoT)", "NeuraChain AI platform", "Not sure yet"];
+  const SERVICES = ["Strategic sourcing & supply chain", "LEAN process optimization", "Engineering & value", "Smart Factory (IoT)", "NeuraChain AI platform", "Training & courses (NeuraChain Academy)", "Not sure yet"];
 
   const html = `
 <div class="bk-ov" id="bk-ov" hidden>
@@ -72,8 +72,9 @@
     });
     form.addEventListener("submit", submit);
   }
-  function open(){
+  function open(topic){
     mount(); lastFocus = document.activeElement;
+    if (topic) form.querySelectorAll("[name=services]").forEach(i => { if (i.value.indexOf(topic) === 0) i.checked = true; });
     form.hidden = false; done.hidden = true; err.textContent = "";
     ov.querySelectorAll(".bk-steps li").forEach((l,i) => { l.classList.toggle("on", i===0); l.classList.remove("ok"); });
     ov.hidden = false; document.documentElement.classList.add("bk-lock");
@@ -144,7 +145,7 @@
   document.addEventListener("click", e => {
     const a = e.target.closest('a[href^="mailto:"][href*="Discovery%20call"], a[href="#book"], a[href$="#book"], .js-book');
     if (!a || (ov && ov.contains(a))) return;
-    e.preventDefault(); open();
+    e.preventDefault(); open(a.dataset ? a.dataset.topic : "");
   });
-  if (location.hash === "#book") addEventListener("load", open);
+  if (location.hash === "#book") addEventListener("load", () => open());
 })();
